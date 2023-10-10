@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import validator from "validator";
 import bcrypt from "bcryptjs";
+import ApiError from "../../utils/api-error.js";
 
 const userSchema = new Schema(
   {
@@ -29,7 +30,7 @@ const userSchema = new Schema(
       lowercase: true,
       validate(value) {
         if (!validator.isEmail(value)) {
-          throw new Error("Invalid email");
+          throw new ApiError(400, "Invalid Email");
         }
       },
     },

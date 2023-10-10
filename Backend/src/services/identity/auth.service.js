@@ -4,8 +4,9 @@ import * as userService from "./user.service.js";
 
 const generateAuthToken = async (user) => {
   const token = jwt.sign(
-    { userId: user._id.toString(), role: user.role },
-    process.env.JWT_SECRET
+    { userId: user._id, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.JWT_ACCESS_EXPIRATION }
   );
 
   user.tokens = user.tokens.concat(token);
