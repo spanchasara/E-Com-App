@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import validator from "validator";
 import bcrypt from "bcryptjs";
-import ApiError from "../../utils/api-error.js";
+import ApiError from "../utils/api-error.js";
 
 const userSchema = new Schema(
   {
@@ -53,12 +53,6 @@ const userSchema = new Schema(
       type: Date,
       default: Date.now(),
     },
-    tokens: [
-      {
-        type: String,
-        required: true,
-      },
-    ],
   },
   {
     timestamps: true,
@@ -76,6 +70,7 @@ userSchema.pre("save", async function (next) {
 
   if (user.isModified("password")) {
     user.password = await bcrypt.hash(user.password, 8);
+    user.passwordChangedAt = Date.now();
   }
 
   next();

@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 
-import User from "../../models/identity/user.model.js";
-import ApiError from "../../utils/api-error.js";
+import User from "../models/user.model.js";
+import ApiError from "../utils/api-error.js";
 
 const findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
