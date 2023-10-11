@@ -23,10 +23,8 @@ const register = async (registerBody) => {
 };
 
 const login = async (email, password) => {
-  const { userId, role } = await userService.findByCredentials(email, password);
-  const token = await generateAuthToken(userId, role);
-
-  const user = await userService.getUser({ _id: userId });
+  const user = await userService.findByCredentials(email, password);
+  const token = await generateAuthToken(user._id, user.role);
 
   return { user, token };
 };

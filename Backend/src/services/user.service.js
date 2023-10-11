@@ -21,7 +21,8 @@ const findByCredentials = async (email, password) => {
     throw new ApiError(httpStatus.BAD_REQUEST, "Invalid credentials !!");
   }
 
-  return { userId: user._id, role: user.role };
+  user.password = undefined;
+  return user;
 };
 
 const checkIsExistingUser = async (email, username) => {
