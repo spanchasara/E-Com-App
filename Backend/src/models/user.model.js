@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import validator from "validator";
 import bcrypt from "bcryptjs";
 import ApiError from "../utils/api-error.js";
+import httpStatus from "http-status";
 
 const userSchema = new Schema(
   {
@@ -20,17 +21,17 @@ const userSchema = new Schema(
       trim: true,
       index: true,
       required: true,
-      unique: true,
+      unique: [true, "username already exists"],
     },
     email: {
       type: String,
       required: true,
-      unique: true,
+      unique: [true, "email already exists"],
       trim: true,
       lowercase: true,
       validate(value) {
         if (!validator.isEmail(value)) {
-          throw new ApiError(400, "Invalid Email");
+          throw new ApiError(httpStatus.BAD_REQUEST, "Invalid Email !!");
         }
       },
     },
@@ -39,6 +40,7 @@ const userSchema = new Schema(
       required: true,
       trim: true,
       minlength: 3,
+      select: false,
     },
     role: {
       type: String,
@@ -59,11 +61,12 @@ const userSchema = new Schema(
   }
 );
 
-// validation for unique email
-userSchema.statics.isEmailTaken = async function (email, excludeUserId) {
-  const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
-  return !!user;
-};
+userSchema.pre(/^find/, function (next) {
+  this.select({
+    __v: 0,
+  });
+  next();
+});
 
 userSchema.pre("save", async function (next) {
   const user = this;
