@@ -1,0 +1,140 @@
+components:
+  schemas:
+    Role:
+      type: object
+      properties:
+        name:
+          type: string
+          enum: [customer, admin, seller]
+        permissions:
+          type: object
+          additionalProperties:
+            type: boolean
+      example:
+        name: customer
+        permissions:
+          create_user: true
+
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        username:
+          type: string
+        role:
+          type: string
+          enum: [customer, seller, admin]
+        password:
+          type: string
+        isActive:
+          type: boolean
+        passwordChangedAt:
+          type: string
+          format: date-time
+      example:
+        id: 5ebac534954b54139806c112
+        email: fake@example.com
+        firstName: fake
+        lastName: fake
+        username: fake
+        role: customer
+        isActive: true
+        passwordChangedAt: "2022-05-16"
+
+    Address:
+      type: object
+      properties:
+        userId:
+          $ref: "#/components/schemas/User"
+        fullName:
+          type: string
+        phoneNo:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+        city:
+          type: string
+        addressLane1:
+          type: string
+        addressLane2:
+          type: string
+        landmark:
+          type: string
+        pincode:
+          type: string
+        isActive:
+          type: boolean
+
+      example:
+        id: 5ebac534954b54139806c112
+        userId: 5ebac534954b54139806c112
+        fullName: fake
+        phoneNo: 1234567890
+        country: India
+        state: Maharashtra
+        city: Mumbai
+        addressLane1: fake
+        addressLane2: fake
+        landmark: fake
+        pincode: 123456
+        isActive: true
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: number
+        message:
+          type: string
+
+  responses:
+    DuplicateEmail:
+      description: Email already taken
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: 400
+            message: Email already taken
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: 401
+            message: Please authenticate
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: 403
+            message: Forbidden
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: 404
+            message: Not found
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
