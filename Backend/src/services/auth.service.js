@@ -2,32 +2,33 @@ import jwt from "jsonwebtoken";
 
 import * as userService from "./user.service.js";
 
-const generateAuthToken = async (user) => {
-  const token = jwt.sign(
-    { userId: user._id, role: user.role },
-    process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_ACCESS_EXPIRATION }
-  );
+const generateAuthToken = async (userId, role) => {
+  const token = jwt.sign({ userId, role }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_ACCESS_EXPIRATION,
+  });
 
   return token;
 };
 
 const register = async (registerBody) => {
-  const user = await userService.createUser(registerBody);
-  const token = await generateAuthToken(user);
+  const { email, username } = registerBody;
 
-  const userObject = user.toObject();
+  const isExistingUser = await userService.checkIsExistingUser(email, username);
 
-  return { user: userObject };
+  if (!isExistingUser) {
+    await userService.createUser(registerBody);
+  }
+
+  return { message: "Successfully registered !!" };
 };
 
 const login = async (email, password) => {
-  const user = await userService.findByCredentials(email, password);
-  const token = await generateAuthToken(user);
+  const { userId, role } = await userService.findByCredentials(email, password);
+  const token = await generateAuthToken(userId, role);
 
-  const userObject = user.toObject();
+  const user = await userService.getUser({ _id: userId });
 
-  return { user: userObject, token };
+  return { user, token };
 };
 
 export { register, login };

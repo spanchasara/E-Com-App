@@ -1,5 +1,5 @@
 import httpStatus from "http-status";
-import ApiError from "../utils/api-error.js"
+import ApiError from "../utils/api-error.js";
 
 // middleware to controll error
 const errorConverter = (err, req, res, next) => {
@@ -14,7 +14,7 @@ const errorConverter = (err, req, res, next) => {
 
 // middleware to handle error
 const errorHandler = (err, req, res, next) => {
-  let { statusCode = 400, message } = err;
+  let { statusCode = httpStatus.BAD_REQUEST, message } = err;
 
   res.locals.errorMessage = err.message;
   res.locals.stack = err.stack;
