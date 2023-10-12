@@ -1,0 +1,213 @@
+import * as userService from "../services/user.service.js";
+import catchAsync from "../utils/catch-async.js";
+
+/* getUserProfile - controller */
+const getUserProfile = catchAsync(async (req, res) => {
+  console.log(req.user);
+  res.send(req.user);
+});
+
+/* getAllUsers - controller */
+const getAllUsers = catchAsync(async (req, res) => {
+  const query = req.query;
+  const response = await userService.getAllUsers(query);
+  res.send(response);
+});
+
+/* getPublicUser - controller */
+const getPublicUser = catchAsync(async (req, res) => {
+  const userId = req.params.userId;
+  const response = await userService.getPublicUser(userId);
+  res.send(response);
+});
+
+/* updateUser - controller */
+const updateUser = catchAsync(async (req, res) => {
+  const userId = req.user._id;
+  const reqBody = req.body;
+  const response = await userService.updateUser(userId, reqBody);
+  res.send(response);
+});
+
+/* toggleAccountStatus - controller */
+const toggleAccountStatus = catchAsync(async (req, res) => {
+  const { userId } = req.params;
+  const { isSuspended } = req.query;
+
+  const response = await userService.toggleAccountStatus(userId, isSuspended);
+  res.send(response);
+});
+
+export {
+  getUserProfile,
+  getAllUsers,
+  getPublicUser,
+  updateUser,
+  toggleAccountStatus,
+};
+
+// get profile of logged in user
+/**
+ * @swagger
+ * tags:
+ *   name: User
+ *   description: user management
+ *
+ * /user/getMe:
+ *   get:
+ *     summary: get profile of logged in user.
+ *     tags: [User]
+ *     security:
+ *       -  bearerAuth: [] 
+ *     responses:
+ *       "200":
+ *         description: user fetched successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ */
+
+// get all users
+/**
+ * @swagger
+ * /user:
+ *   get:
+ *     summary: get all users.
+ *     tags: [User]
+ *     security:
+ *       -  bearerAuth: [] 
+ *     parameters:
+ *       -  in: query
+ *          name: page
+ *          schema:
+ *            type: number
+ *            default: 1
+ *          description: page number
+ *       -  in: query
+ *          name: limit
+ *          schema:
+ *            type: number
+ *            default: 10
+ *          description: page limit
+ *       -  in: query
+ *          name: sort
+ *          schema:
+ *            type: string
+ *          description: sorts the response
+ *     responses:
+ *       "200":
+ *         description: users fetched successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 docs:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/User'
+ *                 page:
+ *                   type: integer
+ *                   example: 2
+ *                 limit:
+ *                   type: integer
+ *                   example: 2
+ *                 sort:
+ *                   type: string
+ *                   example: firstName
+ *                 totalPages:
+ *                   type: integer
+ *                   example: 2
+ *                 totalResults:
+ *                   type: integer
+ *                   example: 2
+ */
+
+// get profile of public user
+/**
+ * @swagger
+ * /user/{userId}:
+ *   get:
+ *     summary: get profile of public user.
+ *     tags: [User]
+ *     security:
+ *       -  bearerAuth: [] 
+ *     parameters:
+ *       -  in: path
+ *          name: userId
+ *          schema:
+ *            type: string
+ *          description: public profile userId
+ *     responses:
+ *       "200":
+ *         description: user fetched successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ */
+
+// update profile of logged in user
+/**
+ * @swagger
+ * /user:
+ *   patch:
+ *     summary: update profile of logged in user.
+ *     tags: [User]
+ *     security:
+ *       -  bearerAuth: [] 
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *                 default: ''
+ *               lastName:
+ *                 type: string
+ *                 default: ''
+ *               username:
+ *                 type: string
+ *                 default: ''
+ *     responses:
+ *       "200":
+ *         description: user updated successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ */
+
+//  update account status of a user
+/**
+ * @swagger
+ * /user/toggleAccountStatus/{userId}:
+ *   patch:
+ *     summary: update account status of a user.
+ *     tags: [User]
+ *     security:
+ *       -  bearerAuth: [] 
+ *     parameters:
+ *       -  in: query
+ *          name: isSuspended
+ *          schema:
+ *            type: boolean
+ *            default: false
+ *          description: is suspended
+ *       -  in: path
+ *          name: userId
+ *          schema:
+ *            type: string
+ *          description: public profile userId
+ *     responses:
+ *       "200":
+ *         description: user account status updated successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ */

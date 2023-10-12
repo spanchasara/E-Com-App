@@ -64,4 +64,49 @@ const getUser = async (findBody) => {
   return user;
 };
 
-export { findByCredentials, createUser, checkIsExistingUser, getUser };
+const getAllUsers = async (options) => {
+  
+  const users = await User.paginate({}, options);
+  if (!users) {
+    throw new ApiError(httpStatus.NOT_FOUND, "No user not found !!");
+  }
+  return users;
+};
+
+const updateUser = async (userId, body) => {
+  const user = await User.findByIdAndUpdate(userId, body);
+  if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+  return user;
+};
+
+const getPublicUser = async(userId) => {
+  const user = await User.findById(userId);
+  if(!user){
+    throw new ApiError(httpStatus.NOT_FOUND, "User not found !!");
+
+  }
+  return user;
+
+}
+
+const toggleAccountStatus = async(userId, isSuspended) => {
+  const user = await User.findByIdAndUpdate(userId, {isActive : !isSuspended});
+  if(!user){
+    throw new ApiError(httpStatus.NOT_FOUND, "User not found !!");
+
+  }
+  return user;
+
+}
+
+
+export {
+  findByCredentials,
+  createUser,
+  checkIsExistingUser,
+  getUser,
+  getAllUsers,
+  updateUser,
+  getPublicUser,
+  toggleAccountStatus
+};
