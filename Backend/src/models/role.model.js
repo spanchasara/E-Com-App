@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const roleSchema = new Schema(
   {
-    role: {
+    name: {
       type: String,
       enum: ["customer", "seller", "admin"],
       default: "customer",

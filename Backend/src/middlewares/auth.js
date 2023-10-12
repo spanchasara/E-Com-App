@@ -54,7 +54,7 @@ const auth = (action) =>
     }
 
     // Authorization
-    const roleObject = await Role.findOne({ role: currentUser.role });
+    const roleObject = await Role.findOne({ name: currentUser.role });
 
     if (!roleObject) {
       return next(new ApiError(httpStatus.NOT_FOUND, "Role does not exist."));

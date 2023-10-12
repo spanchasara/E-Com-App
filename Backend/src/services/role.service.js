@@ -8,7 +8,7 @@ const createRolePermissions = async (rolePermissionsBody) => {
 
 const updateRolePermissions = async (role, permissions) => {
   const roleObject = await Role.findOneAndUpdate(
-    { role },
+    { name: role },
     { permissions },
     {
       new: true,

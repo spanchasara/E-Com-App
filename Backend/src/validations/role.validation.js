@@ -2,7 +2,7 @@ import Joi from "joi";
 
 const createRolePermissions = {
   body: Joi.object().keys({
-    role: Joi.string().required().valid("customer", "seller", "admin"),
+    name: Joi.string().required().valid("customer", "seller", "admin"),
     permissions: Joi.object().pattern(Joi.string(), Joi.boolean()).required(),
   }),
 };
