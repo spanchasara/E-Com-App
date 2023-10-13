@@ -17,6 +17,7 @@ const updateUser = {
     firstName: Joi.string(),
     lastName: Joi.string(),
     username: Joi.string(),
+    email: Joi.string().email(),
   }),
 };
 

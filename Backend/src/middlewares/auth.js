@@ -43,7 +43,17 @@ const auth = (action) =>
       );
     }
 
-    // 4) Check if user changed password after the token was issued
+    // 4) Check if user is active (not suspended)
+    if (!currentUser.isActive) {
+      return next(
+        new ApiError(
+          httpStatus.UNAUTHORIZED,
+          "Your account has been disabled. Please contact the administrator for more information."
+        )
+      );
+    }
+
+    // 5) Check if user changed password after the token was issued
     if (currentUser.passwordChangedAt.getTime() / 1000 > decoded.iat) {
       return next(
         new ApiError(
