@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,7 +8,7 @@ import { Component } from '@angular/core';
 })
 export class NavbarComponent {
   isLoggedIn: boolean = false;
-
+  constructor(private cookieService: CookieService){}
   getLoginStatus() {
     return this.isLoggedIn;
   }
@@ -15,6 +16,6 @@ export class NavbarComponent {
     this.isLoggedIn = true;
   }
   logout() {
-    this.isLoggedIn = false;
+    this.cookieService.set('userToken', '');
   }
 }
