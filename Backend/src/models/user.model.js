@@ -3,7 +3,7 @@ import validator from "validator";
 import bcrypt from "bcryptjs";
 import ApiError from "../utils/api-error.js";
 import httpStatus from "http-status";
-
+import paginate from 'mongoose-paginate-v2';
 const userSchema = new Schema(
   {
     firstName: {
@@ -78,7 +78,7 @@ userSchema.pre("save", async function (next) {
 
   next();
 });
-
+userSchema.plugin(paginate);
 const User = mongoose.model("User", userSchema);
 
 export default User;

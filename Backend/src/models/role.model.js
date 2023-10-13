@@ -2,34 +2,17 @@ import mongoose, { Schema } from "mongoose";
 
 const roleSchema = new Schema(
   {
-    role: {
+    name: {
       type: String,
       enum: ["customer", "seller", "admin"],
       default: "customer",
+      unique: [true, "Role already exists"],
     },
-    create_user: {
-        type: Boolean,
-        default: true,
-    },
-    update_user: {
-        type: Boolean,
-        default: true,
-    },
-    delete_user: {
-        type: Boolean,
-        default: true,
-    },
-    view_products: {
-        type: Boolean,
-        default: false,
-    },
-    add_to_cart: {
-        type: Boolean,
-        default: false,
-    },
-    manage_cart: {
-        type: Boolean,
-        default: false,
+    permissions: {
+      type: Map,
+      of: Boolean,
+      required: true,
+      default: {},
     },
   },
   {

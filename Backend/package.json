@@ -20,6 +20,9 @@
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.6.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
+    "mongoose-paginate-v2": "^1.7.4",
     "validator": "^13.11.0"
   },
   "devDependencies": {
