@@ -1,7 +1,7 @@
 <nav style="background-color: #112D4E;"
-class="navbar navbar-expand-lg ">
+class="navbar navbar-expand-lg sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand text-white" href="#">E-Commerce Website</a>
+    <a class="navbar-brand text-white" routerLink="/">E-Commerce Website</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -19,7 +19,7 @@ class="navbar navbar-expand-lg ">
         style="--bs-scroll-height: 100px"
       >
         <li class="nav-item">
-          <a class="nav-link active text-white" aria-current="page" href="#">Home</a>
+          <a class="nav-link active text-white" aria-current="page" routerLink="/">Home</a>
         </li>
       </ul>
       <form class="d-flex">
@@ -35,7 +35,7 @@ class="navbar navbar-expand-lg ">
         style="--bs-scroll-height: 100px"
       >
         <li class="nav-item" *ngIf="!isLoggedIn; else loggedIn">
-          <button class="nav-link text-white" (click)="login()" href="#">Login</button>
+          <button class="nav-link text-white" (click)="login()" routerLink="/login">Login</button>
         </li>
         <ng-template #loggedIn>
           <li class="nav-item">
