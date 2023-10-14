@@ -3,7 +3,7 @@ import validator from "validator";
 import bcrypt from "bcryptjs";
 import ApiError from "../utils/api-error.js";
 import httpStatus from "http-status";
-import paginate from 'mongoose-paginate-v2';
+import paginate from "mongoose-paginate-v2";
 const userSchema = new Schema(
   {
     firstName: {
@@ -14,7 +14,6 @@ const userSchema = new Schema(
     lastName: {
       type: String,
       trim: true,
-      required: true,
     },
     username: {
       type: String,
