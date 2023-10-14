@@ -35,11 +35,12 @@ class="navbar navbar-expand-lg sticky-top">
         style="--bs-scroll-height: 100px"
       >
         <li class="nav-item" *ngIf="!isLoggedIn; else loggedIn">
-          <button class="nav-link text-white" (click)="login()" routerLink="/login">Login</button>
+          <button class="nav-link text-white" routerLink="/login" >Login</button>
         </li>
         <ng-template #loggedIn>
           <li class="nav-item">
-            <button class="nav-link text-white" (click)="logout()" href="#">Logout</button>
+            <button class="nav-link text-white" routerLink="/user" >View Profile</button>
+            <button class="nav-link text-white" (click)="logout()">Logout</button>
           </li>
         </ng-template>
       </ul>
