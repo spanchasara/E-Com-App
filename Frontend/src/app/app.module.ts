@@ -12,6 +12,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
     LoginComponent,
     FooterComponent,
     WelcomePageComponent,
+    UserProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,11 +32,6 @@ import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
     SweetAlert2Module.forRoot(),
     AkitaNgDevtools.forRoot(),
   ],
-  // providers: [{
-  //   provide : HTTP_INTERCEPTORS,
-  //   useClass : AuthInterceptorService,
-  //   multi : true
-  // }],
   providers: [],
   bootstrap: [AppComponent],
 })

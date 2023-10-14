@@ -9,6 +9,3 @@ export type User = {
   passwordChangedAt: Date,
   token: string,
 };
-export function createUser(user: User) {
-  return user
-}
