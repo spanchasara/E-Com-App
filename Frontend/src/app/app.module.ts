@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -8,6 +9,10 @@ import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from './components/footer/footer.component';
+import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -16,8 +21,17 @@ import { FooterComponent } from './components/footer/footer.component';
     RegisterComponent,
     LoginComponent,
     FooterComponent,
+    WelcomePageComponent,
+    UserProfileComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    SweetAlert2Module.forRoot(),
+    AkitaNgDevtools.forRoot(),
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

@@ -1,9 +1,49 @@
-<nav class="navbar bg-primary" data-bs-theme="dark">
+<nav style="background-color: #112D4E;"
+class="navbar navbar-expand-lg sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand">Navbar</a>
-    <div>
-      <button class="btn btn-outline-primary">Login</button>
-      <button class="btn btn-outline-primary">Register</button>
+    <a class="navbar-brand text-white" routerLink="/">E-Commerce Website</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarScroll"
+      aria-controls="navbarScroll"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarScroll">
+      <ul
+        class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll"
+        style="--bs-scroll-height: 100px"
+      >
+        <li class="nav-item">
+          <a class="nav-link active text-white" aria-current="page" routerLink="/">Home</a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <input
+          class="form-control me-2"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+        />
+      </form>
+      <ul
+        class="navbar-nav ml-auto my-2 my-lg-0 navbar-nav-scroll"
+        style="--bs-scroll-height: 100px"
+      >
+        <li class="nav-item" *ngIf="!isLoggedIn; else loggedIn">
+          <button class="nav-link text-white" routerLink="/login" >Login</button>
+        </li>
+        <ng-template #loggedIn>
+          <li class="nav-item">
+            <button class="nav-link text-white" routerLink="/user" >View Profile</button>
+            <button class="nav-link text-white" (click)="logout()">Logout</button>
+          </li>
+        </ng-template>
+      </ul>
     </div>
   </div>
 </nav>

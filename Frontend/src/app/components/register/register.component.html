@@ -59,7 +59,7 @@
           <span
             class="help-block"
             style="color: red"
-            *ngIf="!password.valid && email.touched"
+            *ngIf="!password.valid && password.touched"
             >Please enter a password with minimum 3 characters long !</span
           >
         </div>
@@ -71,7 +71,6 @@
       <p class="mt-3">Already a customer? <a routerLink="/login">Login</a></p>
     </div>
     <div class="col-md-6 mb-3">
-      <!-- Inside your component's HTML file -->
       <svg width="450" height="450">
         <image
           *ngIf="true"
