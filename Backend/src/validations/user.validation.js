@@ -7,9 +7,9 @@ const getPublicUser = {
 };
 const getAllUsers = {
   query: Joi.object().keys({
-    page: Joi.number(),
-    limit: Joi.number(),
-    sort: Joi.string(),
+    page: Joi.number().integer().min(1).default(1),
+    limit: Joi.number().integer().min(1).default(10),
+    sort: Joi.string().allow(""),
   }),
 };
 const updateUser = {
