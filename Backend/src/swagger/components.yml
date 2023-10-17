@@ -47,6 +47,29 @@ components:
         isActive: true
         passwordChangedAt: "2022-05-16"
 
+    Product:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        specifications:
+          type: object
+          additionalProperties:
+            type: string
+        sellerId:
+          $ref: "#/components/schemas/User"
+      example:
+        id: 5ebac534954b54139806c112
+        title: fake
+        description: fake
+        price: 100
+        specifications: { "RAM": "4GB" }
+        sellerId: 5ebac534954b54139806c112
+
     Address:
       type: object
       properties:

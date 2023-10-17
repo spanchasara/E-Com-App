@@ -17,4 +17,11 @@ const login = {
   }),
 };
 
-export { register, login };
+const changePassword = {
+  body: Joi.object().keys({
+    oldPassword: Joi.string().required().min(3),
+    newPassword: Joi.string().required().min(3),
+  }),
+};
+
+export { register, login, changePassword };
