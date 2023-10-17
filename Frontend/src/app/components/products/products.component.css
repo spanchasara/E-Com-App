@@ -1,0 +1,22 @@
+.card-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  line-height: 1.25;
+}
+
+.align-sort {
+  width: 20%;
+  display: inline-block;
+  margin-left: 1%;
+}
+
+.link {
+  cursor: pointer;
+}
+
+.link:hover {
+  color: #c45500;
+}
