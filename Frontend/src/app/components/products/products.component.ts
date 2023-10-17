@@ -18,6 +18,7 @@ export class ProductsComponent {
     'Newest Arrivals': '-createdAt',
   };
   selectedSortOption: string = 'Default';
+  search: string = '';
 
   constructor(private productService: ProductService) {}
 
@@ -44,5 +45,11 @@ export class ProductsComponent {
         this.selectedSortOption as keyof typeof this.sortOptions
       ],
     });
+  }
+
+  resetForm() {
+    this.getProducts({});
+    this.search = '';
+    this.selectedSortOption = 'Default';
   }
 }

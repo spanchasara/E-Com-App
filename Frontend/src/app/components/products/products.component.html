@@ -1,16 +1,40 @@
 <div class="container mt-4">
-  <div class="form-group">
-    <label for="sortDropdown"><h6>Sort By:</h6></label>
-    <select
-      id="sortDropdown"
-      [ngModel]="selectedSortOption"
-      (change)="check($event)"
-      class="form-control align-sort"
+  <div class="form-group" style="display: flex; justify-content: space-between">
+    <div style="width: 20%">
+      <label for="sortDropdown" class="mt-2"><b>Sort By:</b></label>
+      <select
+        id="sortDropdown"
+        [ngModel]="selectedSortOption"
+        (change)="check($event)"
+        class="form-control align-sort"
+      >
+        <option *ngFor="let option of getOptions()" [value]="option">
+          {{ option }}
+        </option>
+      </select>
+    </div>
+    <form
+      class="d-flex"
+      style="width: 40%"
+      (ngSubmit)="this.getProducts({
+    keyword: this.search,
+  });"
     >
-      <option *ngFor="let option of getOptions()" [value]="option">
-        {{ option }}
-      </option>
-    </select>
+      <input
+        class="form-control me-2"
+        type="search"
+        name="search"
+        [(ngModel)]="search"
+        placeholder="Search"
+        aria-label="Search"
+      />
+      <button class="btn btn-primary" type="submit" [disabled]="!search">
+        search
+      </button>
+      <button class="btn btn-danger" (click)="resetForm()" [disabled]="!search">
+        reset
+      </button>
+    </form>
   </div>
 
   <div *ngFor="let product of products?.docs" class="mt-3">
