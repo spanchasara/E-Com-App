@@ -77,7 +77,9 @@ const getAllUsers = async (options) => {
 };
 
 const updateUser = async (userId, body) => {
-  const user = await User.findByIdAndUpdate(userId, body);
+  const user = await User.findByIdAndUpdate(userId, body, {
+    new: true
+  });
   if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   return user;
 };
