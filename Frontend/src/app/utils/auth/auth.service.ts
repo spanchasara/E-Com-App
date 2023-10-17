@@ -82,10 +82,32 @@ export class AuthService {
     this.isAuthenticated.next(false);
     this.router.navigate(['/']);
   }
+
   checkUserExists() {
     return localStorage.getItem('userToken') && this.userStore.getValue().user;
   }
+
   clearStore() {
     this.userStore.reset();
   }
+
+  changePassword(oldPassword: string, newPassword: string) {
+    return this.httpClient
+      .post<User>(this.apiUrl + 'auth/change-password', {oldPassword, newPassword}, {
+        observe: 'response',
+      })
+      .pipe(
+        tap((resData) => {
+          console.log(resData)
+          Swal.fire('Success', 'Password Updated Successfully!!', 'success').then(
+          );
+        }),
+        catchError((error) => {
+            console.log(error)
+          Swal.fire('Error', error.error?.message, 'error');
+          return of(error);
+        })
+      );
+  }
+
 }

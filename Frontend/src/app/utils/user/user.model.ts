@@ -6,6 +6,10 @@ export type User = {
   email: string,
   role: string,
   isActive: boolean,
-  passwordChangedAt: Date,
-  token: string,
 };
+export type UpdateUser = {
+  firstName?: string,
+  lastName?: string,
+  username?: string,
+  email?: string,
+}

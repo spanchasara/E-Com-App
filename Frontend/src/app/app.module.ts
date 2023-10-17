@@ -13,7 +13,9 @@ import { WelcomePageComponent } from './components/welcome-page/welcome-page.com
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { AuthInterceptor } from './utils/auth/authInterceptor.service';
 import { ProductsComponent } from './components/products/products.component';
+import { ChangePasswordComponent } from './user-profile/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,7 @@ import { ProductsComponent } from './components/products/products.component';
     WelcomePageComponent,
     UserProfileComponent,
     ProductsComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,7 +37,13 @@ import { ProductsComponent } from './components/products/products.component';
     SweetAlert2Module.forRoot(),
     AkitaNgDevtools.forRoot(),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
