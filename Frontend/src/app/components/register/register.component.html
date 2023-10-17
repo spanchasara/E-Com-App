@@ -70,24 +70,32 @@
             ngModel
             required
             minlength="3"
-            #password="ngModel"
+            #confirmPassword="ngModel"
             name="confirmPassword"
             class="form-control"
           />
-          <span
+          <div
             class="help-block"
             style="color: red"
-            *ngIf="!password.valid && password.touched"
-            >Please enter a password with minimum 3 characters long !</span
+            *ngIf="!confirmPassword.valid && confirmPassword.touched"
           >
+            Please enter a password with minimum 3 characters long !
+          </div>
+          <div
+            class="help-block"
+            style="color: red"
+            *ngIf="
+              confirmPassword.touched &&
+              confirmPassword.value !== password.value
+            "
+          >
+            Passwords do not match!
+          </div>
         </div>
-        <span
-            class="help-block"
-            style="color: red"
-            *ngIf="!passwordMismatch"
-            >Password should be same as Confirm Password</span
-          >
-        <br>
+        <span class="help-block" style="color: red" *ngIf="!passwordMismatch"
+          >Password should be same as Confirm Password</span
+        >
+        <br />
         <button class="btn btn-class mt-3" type="submit" [disabled]="!f.valid">
           Register
         </button>

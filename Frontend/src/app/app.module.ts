@@ -25,7 +25,7 @@ import { ChangePasswordComponent } from './user-profile/change-password/change-p
     NavbarComponent,
     RegisterComponent,
     LoginComponent,
-    FooterComponent,Implemented auth guard, user store
+    FooterComponent,
     WelcomePageComponent,
     UserProfileComponent,
     ProductsComponent,
