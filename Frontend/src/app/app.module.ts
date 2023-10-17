@@ -17,6 +17,7 @@ import { AuthInterceptor } from './utils/auth/authInterceptor.service';
 import { ProductsComponent } from './components/products/products.component';
 import { ProductComponent } from './components/product/product.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ChangePasswordComponent } from './user-profile/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -24,11 +25,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NavbarComponent,
     RegisterComponent,
     LoginComponent,
-    FooterComponent,
+    FooterComponent,Implemented auth guard, user store
     WelcomePageComponent,
     UserProfileComponent,
     ProductsComponent,
     ProductComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,
