@@ -13,6 +13,7 @@ import { WelcomePageComponent } from './components/welcome-page/welcome-page.com
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { ProductsComponent } from './components/products/products.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     FooterComponent,
     WelcomePageComponent,
     UserProfileComponent,
+    ProductsComponent,
   ],
   imports: [
     BrowserModule,

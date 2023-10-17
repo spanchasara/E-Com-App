@@ -6,7 +6,7 @@ import auth from "../../middlewares/auth.js";
 
 const router = express.Router();
 
-router.route("/getMe").get(auth("get_user"), userController.getUserProfile);
+router.route("/get-me").get(auth("get_user"), userController.getUserProfile);
 
 router.route("/").get(auth("get_all_users"), userController.getAllUsers);
 
@@ -19,7 +19,7 @@ router
   );
 
 router
-  .route("/")
+  .route("/update-me")
   .patch(
     auth("update_user"),
     validate(userValidation.updateUser),
@@ -27,7 +27,7 @@ router
   );
 
 router
-  .route("/toggleAccountStatus/:userId")
+  .route("/toggle-account-status/:userId")
   .patch(
     auth("toggle_user"),
     validate(userValidation.toggleAccountStatus),

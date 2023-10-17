@@ -13,11 +13,6 @@ const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const response = await authService.login(email, password);
 
-  // res.cookie("token", response.token, {
-  //   httpOnly: true,
-  //   expire: Date.now() + process.env.JWT_ACCESS_EXPIRATION * 60 * 60 * 1000,
-  // });
-
   res.send(response);
 });
 
