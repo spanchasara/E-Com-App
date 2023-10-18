@@ -39,4 +39,12 @@ export class SearchbarComponent {
     this.enteredSearch.emit('');
     this.selectedSortOption = 'Default';
   }
+  onSearchChange(){
+    if (this.search.trim() !== ''){
+      this.onSubmit()
+    }
+    else{
+      this.resetForm()
+    }
+  }
 }

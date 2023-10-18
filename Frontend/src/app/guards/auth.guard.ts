@@ -29,13 +29,17 @@ export class AuthGuard implements CanActivate {
 
     if (route.url[0]?.path === 'login' || route.url[0]?.path === 'register') {
       if (isAuthenticated) {
-        return this.router.navigate(['/', role === 'admin' ? 'admin' : '']);
+        return this.router.navigate(['/']);
       } else {
         return true;
       }
     } else if (!isAuthenticated) {
       // User is not authenticated, redirect to the login page
       return this.router.navigate(['/login']);
+    } else if (isAuthenticated && route.url[0]?.path === 'dashboard') {
+      if(role ==='admin')
+        return true;
+      return this.router.navigate(['/']);
     } else {
       return true;
     }

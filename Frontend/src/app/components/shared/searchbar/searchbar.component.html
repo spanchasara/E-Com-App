@@ -24,6 +24,7 @@
             type="search"
             name="search"
             [(ngModel)]="search"
+            (ngModelChange)="onSearchChange()"
             placeholder="Search"
             aria-label="Search"
             style="width: 75%"

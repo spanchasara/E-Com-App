@@ -77,6 +77,7 @@ userSchema.pre("save", async function (next) {
 
   next();
 });
+
 userSchema.plugin(paginate);
 const User = mongoose.model("User", userSchema);
 

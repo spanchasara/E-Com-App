@@ -64,7 +64,11 @@ export class AuthService {
 
           Swal.fire('Success', 'LoggedIn Successfully!!', 'success').then(
             (result) => {
-              if (result.isConfirmed) this.router.navigate(['/']);
+              if (result.isConfirmed && user && user.role != 'admin') {
+                this.router.navigate(['/']);
+              } else if (result.isConfirmed && user && user.role === 'admin') {
+                this.router.navigate(['/dashboard']);
+              }
             }
           );
         }),
@@ -119,5 +123,11 @@ export class AuthService {
           return of(error);
         })
       );
+  }
+  isAdmin() {
+    return (
+      this.userStore.getValue().user &&
+      this.userStore.getValue().user?.role === 'admin'
+    );
   }
 }

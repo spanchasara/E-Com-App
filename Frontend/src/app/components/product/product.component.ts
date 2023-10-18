@@ -11,7 +11,17 @@ import { ProductService } from 'src/app/utils/product/product.service';
 export class ProductComponent {
   id: string | null = null;
   product: Product | null = null;
-
+  slides = [
+    {
+      src: 'https://picsum.photos/id/944/900/500',
+    },
+    {
+      src: 'https://picsum.photos/id/1011/900/500',
+    },
+    {
+      src: 'https://picsum.photos/id/984/900/500',
+    },
+  ];
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService

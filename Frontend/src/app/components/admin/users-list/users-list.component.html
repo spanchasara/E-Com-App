@@ -1,27 +1,34 @@
 <div class="container mt-4">
-  <button
-    class="btn btn-primary"
-    (click)="toggleState('customer')"
-    [disabled]="role === 'customer'"
-  >
-    Customer
-  </button>
-  <button
-    class="btn btn-primary"
-    (click)="toggleState('seller')"
-    [disabled]="role === 'seller'"
-  >
-    Seller
-  </button>
-  <button
-    class="btn btn-primary"
-    (click)="toggleState('admin')"
-    [disabled]="role === 'admin'"
-  >
-    Admin
-  </button>
-
-  <table class="table table-striped">
+  <div class="nav nav-tabs">
+    <div class="nav-item">
+      <button
+        [ngClass]="role === 'customer' ? 'nav-link active text-black' : 'nav-link text-black'"
+        (click)="toggleState('customer')"
+        [disabled]="role === 'customer'"
+      >
+        Customer
+      </button>
+    </div>
+    <div class="nav-item">
+      <button
+        [ngClass]="role === 'seller' ? 'nav-link active text-black' : 'nav-link text-black'"
+        (click)="toggleState('seller')"
+        [disabled]="role === 'seller'"
+      >
+        Seller
+      </button>
+    </div>
+    <div class="nav-item">
+      <button
+        [ngClass]="role === 'admin' ? 'nav-link active text-black' : 'nav-link text-black'"
+        (click)="toggleState('admin')"
+        [disabled]="role === 'admin'"
+      >
+        Admin
+      </button>
+    </div>
+  </div>
+  <table class="table table-striped h-75">
     <thead>
       <tr>
         <th scope="col">#</th>

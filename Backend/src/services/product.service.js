@@ -22,7 +22,10 @@ const getProducts = async (keyword = "", options = {}) => {
         { description: { $regex: keywordRegx } },
       ],
     },
-    options
+    {...options, populate: {
+      path:'sellerId',
+      select: 'firstName lastName'
+    }}
   );
 
   if (!products) {

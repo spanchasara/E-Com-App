@@ -1,0 +1,22 @@
+.details {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.btn-class {
+  border-color: #112d4e;
+  color: #112d4e;
+}
+.btn-class:hover {
+  background-color: #112d4e;
+  color: #fff;
+}
+
+/*# sourceMappingURL=style.css.map */
