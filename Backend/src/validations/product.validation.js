@@ -18,6 +18,7 @@ const createProduct = {
     description: Joi.string().required().min(10).max(100),
     price: Joi.number().min(1).required(),
     specifications: Joi.object().required(),
+    stock: Joi.number().min(1).required(),
   }),
 };
 

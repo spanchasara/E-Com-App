@@ -27,6 +27,11 @@ const productSchema = new Schema(
       ref: "User",
       required: true,
     },
+    stock: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
   },
   {
     timestamps: true,

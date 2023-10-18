@@ -38,7 +38,7 @@ const createProduct = async (productBody) => {
   if (!product) {
     throw new ApiError(
       httpStatus.INTERNAL_SERVER_ERROR,
-      "Product not created !!"
+      "Error creating the product !!"
     );
   }
 
