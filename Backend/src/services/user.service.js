@@ -68,8 +68,8 @@ const checkPassword = async (userPassword, inputPassword) => {
   return await bcrypt.compare(inputPassword, userPassword);
 };
 
-const getAllUsers = async (options) => {
-  const users = await User.paginate({}, options);
+const getAllUsers = async (role, options) => {
+  const users = await User.paginate(role ? { role } : {}, options);
   if (!users) {
     throw new ApiError(httpStatus.NOT_FOUND, "No user not found !!");
   }
@@ -78,7 +78,7 @@ const getAllUsers = async (options) => {
 
 const updateUser = async (userId, body) => {
   const user = await User.findByIdAndUpdate(userId, body, {
-    new: true
+    new: true,
   });
   if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   return user;
@@ -93,7 +93,13 @@ const getPublicUser = async (userId) => {
 };
 
 const toggleAccountStatus = async (userId, isSuspended) => {
-  const user = await User.findByIdAndUpdate(userId, { isActive: !isSuspended });
+  const user = await User.findByIdAndUpdate(
+    userId,
+    { isActive: !isSuspended },
+    {
+      new: true,
+    }
+  );
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found !!");
   }

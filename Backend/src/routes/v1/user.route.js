@@ -8,7 +8,13 @@ const router = express.Router();
 
 router.route("/get-me").get(auth("get_user"), userController.getUserProfile);
 
-router.route("/").get(auth("get_all_users"), userController.getAllUsers);
+router
+  .route("/:role?")
+  .get(
+    auth("get_all_users"),
+    validate(userValidation.getAllUsers),
+    userController.getAllUsers
+  );
 
 router
   .route("/:userId")

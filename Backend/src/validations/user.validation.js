@@ -6,6 +6,9 @@ const getPublicUser = {
   }),
 };
 const getAllUsers = {
+  params: Joi.object().keys({
+    role: Joi.string().allow("customer", "admin", "seller", ""),
+  }),
   query: Joi.object().keys({
     page: Joi.number().integer().min(1).default(1),
     limit: Joi.number().integer().min(1).default(10),

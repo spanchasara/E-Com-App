@@ -33,23 +33,15 @@ export class ProductsComponent {
     });
   }
 
-  getOptions() {
-    return Object.keys(this.sortOptions);
-  }
-
-  check(e: Event) {
-    this.selectedSortOption = (e.target as HTMLSelectElement).value;
-
+  sortOption(sort: string) {
     this.getProducts({
-      sort: this.sortOptions[
-        this.selectedSortOption as keyof typeof this.sortOptions
-      ],
+      sort,
     });
   }
 
-  resetForm() {
-    this.getProducts({});
-    this.search = '';
-    this.selectedSortOption = 'Default';
+  enteredSearch(keyword: string) {
+    this.getProducts({
+      keyword,
+    });
   }
 }

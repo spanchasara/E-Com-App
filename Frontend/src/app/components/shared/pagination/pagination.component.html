@@ -1,0 +1,10 @@
+<div class="text-center mt-4">
+  <ngb-pagination
+    [collectionSize]="totalItems"
+    [page]="page"
+    (pageChange)="pageChanged($event)"
+    [pageSize]="limit"
+    aria-label="Default pagination"
+    class="d-flex justify-content-center"
+  ></ngb-pagination>
+</div>

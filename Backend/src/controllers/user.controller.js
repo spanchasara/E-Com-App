@@ -10,7 +10,8 @@ const getUserProfile = catchAsync(async (req, res) => {
 /* getAllUsers - controller */
 const getAllUsers = catchAsync(async (req, res) => {
   const query = req.query;
-  const response = await userService.getAllUsers(query);
+  const { role } = req.params;
+  const response = await userService.getAllUsers(role, query);
   res.send(response);
 });
 
@@ -58,7 +59,7 @@ export {
  *     summary: get profile of logged in user.
  *     tags: [User]
  *     security:
- *       -  bearerAuth: [] 
+ *       -  bearerAuth: []
  *     responses:
  *       "200":
  *         description: user fetched successfully.
@@ -76,7 +77,7 @@ export {
  *     summary: get all users.
  *     tags: [User]
  *     security:
- *       -  bearerAuth: [] 
+ *       -  bearerAuth: []
  *     parameters:
  *       -  in: query
  *          name: page
@@ -132,7 +133,7 @@ export {
  *     summary: get profile of public user.
  *     tags: [User]
  *     security:
- *       -  bearerAuth: [] 
+ *       -  bearerAuth: []
  *     parameters:
  *       -  in: path
  *          name: userId
@@ -156,7 +157,7 @@ export {
  *     summary: update profile of logged in user.
  *     tags: [User]
  *     security:
- *       -  bearerAuth: [] 
+ *       -  bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -190,7 +191,7 @@ export {
  *     summary: update account status of a user.
  *     tags: [User]
  *     security:
- *       -  bearerAuth: [] 
+ *       -  bearerAuth: []
  *     parameters:
  *       -  in: query
  *          name: isSuspended

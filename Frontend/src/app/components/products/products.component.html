@@ -1,41 +1,8 @@
 <div class="container mt-4">
-  <div class="form-group" style="display: flex; justify-content: space-between">
-    <div style="width: 20%">
-      <label for="sortDropdown" class="mt-2"><b>Sort By:</b></label>
-      <select
-        id="sortDropdown"
-        [ngModel]="selectedSortOption"
-        (change)="check($event)"
-        class="form-control align-sort"
-      >
-        <option *ngFor="let option of getOptions()" [value]="option">
-          {{ option }}
-        </option>
-      </select>
-    </div>
-    <form
-      class="d-flex"
-      style="width: 40%"
-      (ngSubmit)="this.getProducts({
-    keyword: this.search,
-  });"
-    >
-      <input
-        class="form-control me-2"
-        type="search"
-        name="search"
-        [(ngModel)]="search"
-        placeholder="Search"
-        aria-label="Search"
-      />
-      <button class="btn btn-primary" type="submit" [disabled]="!search">
-        search
-      </button>
-      <button class="btn btn-danger" (click)="resetForm()" [disabled]="!search">
-        reset
-      </button>
-    </form>
-  </div>
+  <app-searchbar
+    (sortOption)="sortOption($event)"
+    (enteredSearch)="enteredSearch($event)"
+  ></app-searchbar>
 
   <div *ngFor="let product of products?.docs" class="mt-3">
     <div class="card">
@@ -69,14 +36,9 @@
     </div>
   </div>
 
-  <div class="text-center mt-4">
-    <ngb-pagination
-      [collectionSize]="products.totalDocs"
-      [page]="products.page"
-      (pageChange)="this.getProducts({ page: $event })"
-      [pageSize]="products.limit"
-      aria-label="Default pagination"
-      class="d-flex justify-content-center"
-    ></ngb-pagination>
-  </div>
+  <app-pagination
+    [totalItems]="products?.totalDocs || 0"
+    [page]="products?.page || 1"
+    (pageChange)="this.getProducts({ page: $event })"
+  ></app-pagination>
 </div>
