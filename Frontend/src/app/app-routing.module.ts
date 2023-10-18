@@ -5,6 +5,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
 import { AuthGuard } from './guards/auth.guard';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { ProductsComponent } from './components/products/products.component';
+import { ProductComponent } from './components/product/product.component';
 const routes: Routes = [
   {
     path: '',
@@ -24,6 +26,14 @@ const routes: Routes = [
     path: 'user',
     component: UserProfileComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'products',
+    component: ProductsComponent,
+  },
+  {
+    path: 'products/:id',
+    component: ProductComponent,
   },
 ];
 

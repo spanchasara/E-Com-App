@@ -1,16 +1,9 @@
 import { Injectable } from '@angular/core';
 import { SignIn, Signup } from './auth.model';
-import {
-  Observable,
-  Subject,
-  catchError,
-  of,
-  tap,
-} from 'rxjs';
+import { Observable, Subject, catchError, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../user/user.model';
 import { environment } from 'src/environment/environment';
-import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { UserStore } from '../../store/auth/user-store';
@@ -21,7 +14,6 @@ import { UserStore } from '../../store/auth/user-store';
 export class AuthService {
   constructor(
     private httpClient: HttpClient,
-    private cookieService: CookieService,
     private router: Router,
     private userStore: UserStore
   ) {}
@@ -65,7 +57,7 @@ export class AuthService {
           const token = resData.body?.token || '';
           const user = resData.body?.user || null;
 
-          this.cookieService.set('userToken', token);
+          localStorage.setItem('userToken', token);
           this.userStore.updateUserData(user);
 
           this.isAuthenticated.next(true);
@@ -85,17 +77,37 @@ export class AuthService {
   }
 
   logout() {
-    this.cookieService.deleteAll();
+    localStorage.removeItem('userToken');
     this.userStore.clearUserData();
     this.isAuthenticated.next(false);
     this.router.navigate(['/']);
   }
+
   checkUserExists() {
-    return (
-      this.cookieService.check('userToken') && this.userStore.getValue().user
-    );
+    return localStorage.getItem('userToken') && this.userStore.getValue().user;
   }
+
   clearStore() {
     this.userStore.reset();
   }
+
+  changePassword(oldPassword: string, newPassword: string) {
+    return this.httpClient
+      .post<User>(this.apiUrl + 'auth/change-password', {oldPassword, newPassword}, {
+        observe: 'response',
+      })
+      .pipe(
+        tap((resData) => {
+          console.log(resData)
+          Swal.fire('Success', 'Password Updated Successfully!!', 'success').then(
+          );
+        }),
+        catchError((error) => {
+            console.log(error)
+          Swal.fire('Error', error.error?.message, 'error');
+          return of(error);
+        })
+      );
+  }
+
 }

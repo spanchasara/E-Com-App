@@ -12,10 +12,22 @@ const register = catchAsync(async (req, res) => {
 const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const response = await authService.login(email, password);
+
   res.send(response);
 });
 
-export { register, login };
+/* changePassword - controller */
+const changePassword = catchAsync(async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  const response = await authService.changePassword(
+    req.user._id,
+    oldPassword,
+    newPassword
+  );
+  res.send(response);
+});
+
+export { register, login, changePassword };
 
 /**
  * @swagger
@@ -102,6 +114,47 @@ export { register, login };
  *                 user:
  *                   $ref: '#/components/schemas/User'
  *                 token:
+ *                   type: string
+ *       400:
+ *         description: Bad request. The request body is invalid.
+ *       401:
+ *         description: Unauthorized. The email or password is incorrect.
+ *       500:
+ *         description: Internal server error. There was an error logging in the user.
+ */
+
+/**
+ * @swagger
+ * /auth/change-password:
+ *   post:
+ *     summary: Changes the password of a user.
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               oldPassword:
+ *                 type: string
+ *                 minLength: 3
+ *               newPassword:
+ *                 type: string
+ *                 minLength: 3
+ *             required:
+ *              - oldPassword
+ *              - newPassword
+ *
+ *     responses:
+ *       200:
+ *         description: Password changed successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
  *                   type: string
  *       400:
  *         description: Bad request. The request body is invalid.

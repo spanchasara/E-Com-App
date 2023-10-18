@@ -1,6 +1,5 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
 import { AuthService } from 'src/app/utils/auth/auth.service';
 
 @Component({
@@ -11,10 +10,25 @@ import { AuthService } from 'src/app/utils/auth/auth.service';
 export class RegisterComponent {
   @ViewChild('f', { static: false })
   registerForm!: NgForm;
+  passwordMismatch: boolean = true;
 
   constructor(private authService: AuthService) {}
 
   onSubmit() {
-    this.authService.signup(this.registerForm.form.value).subscribe();
+    if (
+      this.registerForm.form.value?.confirmPassword !=
+      this.registerForm.form.value?.password
+    )
+      this.passwordMismatch = false;
+    else {
+      const formData = {
+        firstName: this.registerForm.form.value?.firstName,
+        lastName: this.registerForm.form.value?.lastName,
+        email: this.registerForm.form.value?.email,
+        password: this.registerForm.form.value?.password,
+        username: this.registerForm.form.value?.username,
+      };
+      this.authService.signup(formData).subscribe();
+    }
   }
 }

@@ -54,8 +54,8 @@ const createUser = async (userBody) => {
   return user;
 };
 
-const getUser = async (findBody) => {
-  const user = await User.findOne(findBody);
+const getUser = async (findBody, withPassword = false) => {
+  const user = await User.findOne(findBody).select(withPassword && "+password");
 
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found !!");
@@ -64,8 +64,11 @@ const getUser = async (findBody) => {
   return user;
 };
 
+const checkPassword = async (userPassword, inputPassword) => {
+  return await bcrypt.compare(inputPassword, userPassword);
+};
+
 const getAllUsers = async (options) => {
-  
   const users = await User.paginate({}, options);
   if (!users) {
     throw new ApiError(httpStatus.NOT_FOUND, "No user not found !!");
@@ -74,31 +77,28 @@ const getAllUsers = async (options) => {
 };
 
 const updateUser = async (userId, body) => {
-  const user = await User.findByIdAndUpdate(userId, body);
+  const user = await User.findByIdAndUpdate(userId, body, {
+    new: true
+  });
   if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   return user;
 };
 
-const getPublicUser = async(userId) => {
+const getPublicUser = async (userId) => {
   const user = await User.findById(userId);
-  if(!user){
+  if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found !!");
-
   }
   return user;
+};
 
-}
-
-const toggleAccountStatus = async(userId, isSuspended) => {
-  const user = await User.findByIdAndUpdate(userId, {isActive : !isSuspended});
-  if(!user){
+const toggleAccountStatus = async (userId, isSuspended) => {
+  const user = await User.findByIdAndUpdate(userId, { isActive: !isSuspended });
+  if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found !!");
-
   }
   return user;
-
-}
-
+};
 
 export {
   findByCredentials,
@@ -108,5 +108,6 @@ export {
   getAllUsers,
   updateUser,
   getPublicUser,
-  toggleAccountStatus
+  toggleAccountStatus,
+  checkPassword,
 };
