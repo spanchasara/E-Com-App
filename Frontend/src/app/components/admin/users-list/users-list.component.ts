@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UserStore } from 'src/app/store/auth/user-store';
-import { User } from 'src/app/utils/user/user.model';
+import { PaginatedUsers, User } from 'src/app/utils/user/user.model';
 import { UserService } from 'src/app/utils/user/user.service';
 
 @Component({
@@ -9,22 +9,30 @@ import { UserService } from 'src/app/utils/user/user.service';
 })
 export class UsersListComponent {
   role: string = 'customer';
+  currentUserId: string = '';
+  users!: PaginatedUsers | null;
 
   constructor(private userService: UserService, private userStore: UserStore) {}
 
   ngOnInit() {
     this.userService.getAllUsers(this.role).subscribe();
+    this.currentUserId = this.userStore.getValue().user?._id || '';
+
+    this.userStore.users$.subscribe((users) => {
+      this.users = users;
+    });
   }
 
   get tableData() {
-    return this.userStore.getValue().users?.docs;
+    return this.users?.docs;
   }
 
   toggleUserStatus(user: User, isSuspended: boolean = false) {
     this.userService
       .toggleAccountStatus(user._id, isSuspended)
       .subscribe(() => {
-        this.userService.getAllUsers(this.role).subscribe();
+        const options = { page: this.users?.page || 1 };
+        this.userService.getAllUsers(this.role, options).subscribe();
       });
   }
 
@@ -39,5 +47,10 @@ export class UsersListComponent {
       month: 'long',
       day: 'numeric',
     });
+  }
+
+  pageChange(page: number) {
+    const options = { page };
+    this.userService.getAllUsers(this.role, options).subscribe();
   }
 }

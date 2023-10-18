@@ -42,9 +42,16 @@ export class UserService {
       );
   }
 
-  getAllUsers(role: string = '') {
+  getAllUsers(role: string = '', options: any = {}) {
+    let params = new HttpParams();
+
+    params = params.append('limit', options?.limit || 10);
+    params = params.append('page', options?.page || 1);
+
     return this.httpClient
-      .get<PaginatedUsers>(this.apiUrl + `user/${role}`)
+      .get<PaginatedUsers>(this.apiUrl + `user/${role}`, {
+        params,
+      })
       .pipe(
         tap((resData) => {
           const users = resData;

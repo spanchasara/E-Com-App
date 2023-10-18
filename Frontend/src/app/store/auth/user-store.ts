@@ -11,6 +11,8 @@ export interface UserState {
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'user' })
 export class UserStore extends Store<UserState> {
+  users$ = this._select((state: { users: any }) => state.users);
+
   constructor() {
     super({ user: null, users: null });
   }
