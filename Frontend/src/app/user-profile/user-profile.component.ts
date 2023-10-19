@@ -10,8 +10,8 @@ import { UpdateUser, User } from '../utils/user/user.model';
 import { UserStore } from '../store/auth/user-store';
 import { NgForm } from '@angular/forms';
 import { UserService } from '../utils/user/user.service';
-import { AuthService } from '../utils/auth/auth.service';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { LoaderService } from '../utils/shared/loader.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -31,10 +31,12 @@ export class UserProfileComponent implements AfterViewInit {
   constructor(
     private userStore: UserStore,
     private userService: UserService,
+    private loaderService: LoaderService,
     private componentFactoryResolver: ComponentFactoryResolver
   ) {}
 
   ngAfterViewInit(): void {
+    this.loaderService.show();
     setTimeout(() => {
       const user = this.userStore.getValue().user;
       this.userObject = user;
@@ -44,6 +46,7 @@ export class UserProfileComponent implements AfterViewInit {
         email: user?.email,
         username: user?.username,
       });
+      this.loaderService.hide();
     });
   }
 
@@ -69,7 +72,6 @@ export class UserProfileComponent implements AfterViewInit {
       email: this.updateProfileForm.value?.email,
       username: this.updateProfileForm.value?.username,
     };
-    console.log('test ', this.updateProfileForm.value);
 
     this.userService.updateUser(updateUserData).subscribe((res) => {
       this.toggleEditMode(true);
@@ -84,7 +86,7 @@ export class UserProfileComponent implements AfterViewInit {
     const dynamicComponentRef = dynamicComponentFactory.create(
       this.changePasswordContainer?.injector
     );
-    this.changePasswordContainer.clear()
+    this.changePasswordContainer.clear();
     // const dynamicComponentInstance =
     //   dynamicComponentRef.instance as ChangePasswordComponent;
     this.changePasswordContainer.insert(dynamicComponentRef.hostView);

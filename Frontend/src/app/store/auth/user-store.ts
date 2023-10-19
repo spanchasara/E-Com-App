@@ -12,6 +12,7 @@ export interface UserState {
 @StoreConfig({ name: 'user' })
 export class UserStore extends Store<UserState> {
   users$ = this._select((state: { users: any }) => state.users);
+  user$ = this._select((state: { user: any }) => state.user);
 
   constructor() {
     super({ user: null, users: null });

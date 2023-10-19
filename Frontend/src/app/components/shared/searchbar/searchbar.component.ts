@@ -34,17 +34,11 @@ export class SearchbarComponent {
     this.enteredSearch.emit(this.search);
   }
 
-  resetForm() {
-    this.search = '';
-    this.enteredSearch.emit('');
-    this.selectedSortOption = 'Default';
-  }
-  onSearchChange(){
-    if (this.search.trim() !== ''){
-      this.onSubmit()
-    }
-    else{
-      this.resetForm()
+  onSearchChange(input: string) {
+    if (input === '') {
+      this.search = '';
+      this.enteredSearch.emit('');
+      this.selectedSortOption = 'Default';
     }
   }
 }

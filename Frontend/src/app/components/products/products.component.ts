@@ -28,7 +28,6 @@ export class ProductsComponent {
 
   getProducts(options: any) {
     this.productService.getProducts(false, options).subscribe((data) => {
-      console.log('Products Fetched ', data);
       this.products = data;
     });
   }

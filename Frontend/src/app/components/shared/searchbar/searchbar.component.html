@@ -17,27 +17,20 @@
       </div>
     </div>
     <div class="col-md-6">
-      <form (ngSubmit)="onSubmit()">
-        <div class="d-flex">
-          <input
-            class="form-control mx-2"
-            type="search"
-            name="search"
-            [(ngModel)]="search"
-            (ngModelChange)="onSearchChange()"
-            placeholder="Search"
-            aria-label="Search"
-            style="width: 75%"
-          />
-          <button
-            class="btn btn-primary mx-2"
-            type="submit"
-            [disabled]="!search"
-          >
-            search
-          </button>
-          <button class="btn btn-danger" (click)="resetForm()">reset</button>
-        </div>
+      <form (ngSubmit)="onSubmit()" class="d-flex justify-content-end">
+        <input
+          class="form-control mx-2"
+          type="search"
+          name="search"
+          [(ngModel)]="search"
+          (ngModelChange)="onSearchChange($event)"
+          placeholder="Search"
+          aria-label="Search"
+          style="width: 75%"
+        />
+        <button class="btn btn-primary" type="submit" [disabled]="!search">
+          search
+        </button>
       </form>
     </div>
   </div>

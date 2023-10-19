@@ -1,6 +1,11 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
-body{
-    height: 100vh;
-    width: 100%;
-    background-color: #F9F7F7;
-  }
+body {
+  width: 100%;
+  background-color: #f9f7f7;
+
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
