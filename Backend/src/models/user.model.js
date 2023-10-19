@@ -54,6 +54,10 @@ const userSchema = new Schema(
       type: Date,
       default: Date.now(),
     },
+    companyName: {
+      type: String,
+      default: null
+    }
   },
   {
     timestamps: true,

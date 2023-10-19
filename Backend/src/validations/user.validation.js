@@ -7,7 +7,7 @@ const getPublicUser = {
 };
 const getAllUsers = {
   params: Joi.object().keys({
-    role: Joi.string().allow("customer", "admin", "seller", ""),
+    role: Joi.string().valid("customer", "admin", "seller", ""),
   }),
   query: Joi.object().keys({
     page: Joi.number().integer().min(1).default(1),
@@ -32,5 +32,21 @@ const toggleAccountStatus = {
     isSuspended: Joi.boolean().required(),
   }),
 };
-
-export { getPublicUser, getAllUsers, updateUser, toggleAccountStatus };
+const toggleRole = {
+  params: Joi.object().keys({
+    role: Joi.string().required().valid("customer", "seller"),
+  }),
+};
+const sellerRegistration = {
+  body: Joi.object().keys({
+    companyName: Joi.string().required(),
+  }),
+}
+export {
+  getPublicUser,
+  getAllUsers,
+  updateUser,
+  toggleAccountStatus,
+  toggleRole,
+  sellerRegistration
+};

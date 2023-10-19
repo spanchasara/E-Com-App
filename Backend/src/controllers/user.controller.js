@@ -39,12 +39,30 @@ const toggleAccountStatus = catchAsync(async (req, res) => {
   res.send(response);
 });
 
+/* toggleUserRole - controller*/ 
+const toggleRole = catchAsync(async (req, res) => {
+  const userId = req.user._id;
+  const { role } = req.params;
+  const response = await userService.toggleRole(userId, role);
+  res.send(response);
+});
+
+/* toggleUserRole - controller*/ 
+const sellerRegistration = catchAsync(async (req, res) => {
+  const userId = req.user._id;
+  const { companyName } = req.body;
+  const response = await userService.sellerRegistration(userId, companyName);
+  res.send(response);   
+});
+
 export {
   getUserProfile,
   getAllUsers,
   getPublicUser,
+  toggleRole,
   updateUser,
   toggleAccountStatus,
+  sellerRegistration
 };
 
 // get profile of logged in user
@@ -186,7 +204,7 @@ export {
 //  update account status of a user
 /**
  * @swagger
- * /user/toggleAccountStatus/{userId}:
+ * /user/toggle-account-status/{userId}:
  *   patch:
  *     summary: update account status of a user.
  *     tags: [User]
@@ -207,6 +225,29 @@ export {
  *     responses:
  *       "200":
  *         description: user account status updated successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ */
+
+/**
+ * @swagger
+ * /user/toggle-role/{userId}:
+ *   patch:
+ *     summary: update role of a user.
+ *     tags: [User]
+ *     security:
+ *       -  bearerAuth: []
+ *     parameters:
+ *       -  in: path
+ *          name: role
+ *          schema:
+ *            type: string
+ *          description: pudates role
+ *     responses:
+ *       "200":
+ *         description: user role  updated successfully.
  *         content:
  *           application/json:
  *             schema:

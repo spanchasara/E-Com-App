@@ -39,5 +39,19 @@ router
     validate(userValidation.toggleAccountStatus),
     userController.toggleAccountStatus
   );
+router
+  .route("/toggle-role/:role")
+  .post(
+    auth("toggle_user_role"),
+    validate(userValidation.toggleRole),
+    userController.toggleRole
+  );
+router
+  .route("/seller-register")
+  .post(
+    auth("seller_register"),
+    validate(userValidation.sellerRegistration),
+    userController.sellerRegistration
+  );
 
 export default router;
