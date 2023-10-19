@@ -1,6 +1,18 @@
 body {
+  height: 100vh;
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f4f4f4;
 }
+
+/* .fixed-footer {
+  position: relative;
+  bottom: 0px;
+  /* margin-top: 15px;
+  bottom: 0;
+  left: 0;
+  height: 100px;
+  right: 0; 
+} */
+

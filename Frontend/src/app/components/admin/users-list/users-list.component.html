@@ -1,0 +1,87 @@
+<div class="container mt-4">
+  <div class="nav nav-tabs">
+    <div class="nav-item">
+      <button
+        [ngClass]="role === 'customer' ? 'nav-link active text-black' : 'nav-link text-black'"
+        (click)="toggleState('customer')"
+        [disabled]="role === 'customer'"
+      >
+        Customer
+      </button>
+    </div>
+    <div class="nav-item">
+      <button
+        [ngClass]="role === 'seller' ? 'nav-link active text-black' : 'nav-link text-black'"
+        (click)="toggleState('seller')"
+        [disabled]="role === 'seller'"
+      >
+        Seller
+      </button>
+    </div>
+    <div class="nav-item">
+      <button
+        [ngClass]="role === 'admin' ? 'nav-link active text-black' : 'nav-link text-black'"
+        (click)="toggleState('admin')"
+        [disabled]="role === 'admin'"
+      >
+        Admin
+      </button>
+    </div>
+  </div>
+  <table class="table table-striped h-75">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">username</th>
+        <th scope="col">Email</th>
+        <th scope="col">Registered On</th>
+        <th scope="col">Toggle Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of tableData; index as i">
+        <th scope="row">
+          {{ ((users?.page || 1) - 1) * (users?.limit || 1) + i + 1 }}
+        </th>
+        <td>
+          {{ data.firstName }}
+        </td>
+        <td>
+          {{ data.lastName }}
+        </td>
+        <td>
+          {{ data.username }}
+        </td>
+        <td>
+          {{ data.email }}
+        </td>
+        <td>
+          {{ parseDate(data.createdAt || "") }}
+        </td>
+        <td>
+          <ng-container *ngIf="currentUserId === data._id; else buttonTemplate">
+            You
+          </ng-container>
+
+          <ng-template #buttonTemplate>
+            <button
+              type="button"
+              [ngClass]="data.isActive ? 'btn btn-danger' : 'btn btn-success'"
+              (click)="toggleUserStatus(data, data.isActive)"
+            >
+              {{ data.isActive ? "Disable" : "Enable" }}
+            </button>
+          </ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <app-pagination
+    [totalItems]="users?.totalDocs || 0"
+    [page]="users?.page || 1"
+    (pageChange)="pageChange($event)"
+  ></app-pagination>
+</div>

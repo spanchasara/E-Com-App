@@ -18,6 +18,12 @@ import { ProductsComponent } from './components/products/products.component';
 import { ProductComponent } from './components/product/product.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChangePasswordComponent } from './user-profile/change-password/change-password.component';
+import { PaginationComponent } from './components/shared/pagination/pagination.component';
+import { SearchbarComponent } from './components/shared/searchbar/searchbar.component';
+import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
+import { UsersListComponent } from './components/admin/users-list/users-list.component';
+import { CarouselComponent } from './components/carousel/carousel.component';
+import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -31,6 +37,11 @@ import { ChangePasswordComponent } from './user-profile/change-password/change-p
     ProductsComponent,
     ProductComponent,
     ChangePasswordComponent,
+    PaginationComponent,
+    SearchbarComponent,
+    AdminDashboardComponent,
+    UsersListComponent,
+    CarouselComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,6 +51,7 @@ import { ChangePasswordComponent } from './user-profile/change-password/change-p
     NgbModule,
     SweetAlert2Module.forRoot(),
     AkitaNgDevtools.forRoot(),
+    NgbCarouselModule
   ],
   providers: [
     {

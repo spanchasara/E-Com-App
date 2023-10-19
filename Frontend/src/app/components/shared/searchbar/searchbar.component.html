@@ -1,0 +1,44 @@
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="d-flex align-items-center">
+        <label for="sortDropdown" class="my-2"><b>Sort By:</b></label>
+        <select
+          id="sortDropdown"
+          [ngModel]="selectedSortOption"
+          (change)="changeSort($event)"
+          class="form-control mx-2"
+          style="width: 30%"
+        >
+          <option *ngFor="let option of getOptions()" [value]="option">
+            {{ option }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <form (ngSubmit)="onSubmit()">
+        <div class="d-flex">
+          <input
+            class="form-control mx-2"
+            type="search"
+            name="search"
+            [(ngModel)]="search"
+            (ngModelChange)="onSearchChange()"
+            placeholder="Search"
+            aria-label="Search"
+            style="width: 75%"
+          />
+          <button
+            class="btn btn-primary mx-2"
+            type="submit"
+            [disabled]="!search"
+          >
+            search
+          </button>
+          <button class="btn btn-danger" (click)="resetForm()">reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

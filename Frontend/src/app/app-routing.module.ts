@@ -7,6 +7,8 @@ import { AuthGuard } from './guards/auth.guard';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ProductsComponent } from './components/products/products.component';
 import { ProductComponent } from './components/product/product.component';
+import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -34,6 +36,11 @@ const routes: Routes = [
   {
     path: 'products/:id',
     component: ProductComponent,
+  },
+  {
+    path: 'dashboard',
+    component: AdminDashboardComponent,
+    canActivate: [AuthGuard],
   },
 ];
 

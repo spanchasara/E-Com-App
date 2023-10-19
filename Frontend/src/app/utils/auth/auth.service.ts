@@ -58,13 +58,17 @@ export class AuthService {
           const user = resData.body?.user || null;
 
           localStorage.setItem('userToken', token);
-          this.userStore.updateUserData(user);
+          this.userStore.updateUserData({ user });
 
           this.isAuthenticated.next(true);
 
           Swal.fire('Success', 'LoggedIn Successfully!!', 'success').then(
             (result) => {
-              if (result.isConfirmed) this.router.navigate(['/']);
+              if (result.isConfirmed && user && user.role != 'admin') {
+                this.router.navigate(['/']);
+              } else if (result.isConfirmed && user && user.role === 'admin') {
+                this.router.navigate(['/dashboard']);
+              }
             }
           );
         }),
@@ -84,7 +88,11 @@ export class AuthService {
   }
 
   checkUserExists() {
-    return localStorage.getItem('userToken') && this.userStore.getValue().user;
+    return {
+      isAuthenticated:
+        localStorage.getItem('userToken') && !!this.userStore.getValue().user,
+      role: this.userStore.getValue().user?.role,
+    };
   }
 
   clearStore() {
@@ -93,21 +101,33 @@ export class AuthService {
 
   changePassword(oldPassword: string, newPassword: string) {
     return this.httpClient
-      .post<User>(this.apiUrl + 'auth/change-password', {oldPassword, newPassword}, {
-        observe: 'response',
-      })
+      .post<User>(
+        this.apiUrl + 'auth/change-password',
+        { oldPassword, newPassword },
+        {
+          observe: 'response',
+        }
+      )
       .pipe(
         tap((resData) => {
-          console.log(resData)
-          Swal.fire('Success', 'Password Updated Successfully!!', 'success').then(
-          );
+          console.log(resData);
+          Swal.fire(
+            'Success',
+            'Password Updated Successfully!!',
+            'success'
+          ).then();
         }),
         catchError((error) => {
-            console.log(error)
+          console.log(error);
           Swal.fire('Error', error.error?.message, 'error');
           return of(error);
         })
       );
   }
-
+  isAdmin() {
+    return (
+      this.userStore.getValue().user &&
+      this.userStore.getValue().user?.role === 'admin'
+    );
+  }
 }
