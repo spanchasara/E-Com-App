@@ -1,4 +1,6 @@
+import httpStatus from "http-status";
 import * as userService from "../services/user.service.js";
+import ApiError from "../utils/api-error.js";
 import catchAsync from "../utils/catch-async.js";
 
 /* getUserProfile - controller */
@@ -39,20 +41,44 @@ const toggleAccountStatus = catchAsync(async (req, res) => {
   res.send(response);
 });
 
-/* toggleUserRole - controller*/ 
+/* toggleUserRole - controller*/
 const toggleRole = catchAsync(async (req, res) => {
   const userId = req.user._id;
   const { role } = req.params;
-  const response = await userService.toggleRole(userId, role);
+
+  if (req.user.role === role) {
+    throw new ApiError(httpStatus.BAD_REQUEST, `User is already a ${role}`);
+  }
+
+  if (req.user.role === "customer" && req.user.companyName === null) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "User is not registered as seller"
+    );
+  }
+
+  const response = await userService.updateUser(userId, { role });
   res.send(response);
 });
 
-/* toggleUserRole - controller*/ 
+/* toggleUserRole - controller*/
 const sellerRegistration = catchAsync(async (req, res) => {
   const userId = req.user._id;
   const { companyName } = req.body;
-  const response = await userService.sellerRegistration(userId, companyName);
-  res.send(response);   
+
+  if (req.user.role !== "customer" && req.user.companyName !== null) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "User already registered as seller"
+    );
+  }
+
+  const response = await userService.updateUser(userId, {
+    role: "seller",
+    companyName,
+  });
+
+  res.send(response);
 });
 
 export {
@@ -62,7 +88,7 @@ export {
   toggleRole,
   updateUser,
   toggleAccountStatus,
-  sellerRegistration
+  sellerRegistration,
 };
 
 // get profile of logged in user

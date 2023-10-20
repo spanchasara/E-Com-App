@@ -39,6 +39,7 @@ router
     validate(userValidation.toggleAccountStatus),
     userController.toggleAccountStatus
   );
+
 router
   .route("/toggle-role/:role")
   .post(
@@ -46,6 +47,7 @@ router
     validate(userValidation.toggleRole),
     userController.toggleRole
   );
+
 router
   .route("/seller-register")
   .post(
