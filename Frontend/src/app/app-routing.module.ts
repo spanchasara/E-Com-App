@@ -10,6 +10,7 @@ import { ProductComponent } from './components/product/product.component';
 import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AdminGuard } from './guards/admin.guard';
+import { SellerDashboardComponent } from './components/seller/seller-dashboard/seller-dashboard.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,12 @@ const routes: Routes = [
     path: 'dashboard',
     component: AdminDashboardComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path:'sellerDashboard',
+    component: SellerDashboardComponent,
+    canActivate: [AuthGuard]
+
   },
   { path: '**', component: NotFoundComponent },
 ];

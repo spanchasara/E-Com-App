@@ -62,4 +62,38 @@ export class ProductService {
         })
       );
   }
+
+  getSellerProducts(options: {
+    keyword?: string;
+    page?: number;
+    limit?: number;
+    sort?: string;
+  }): Observable<any> {
+    this.loaderService.show();
+    let params = new HttpParams();
+
+    params = params.append('keyword', options?.keyword || '');
+    params = params.append('page', options?.page || 1);
+    params = params.append('limit', options?.limit || 10);
+    params = params.append('sort', options?.sort || '');
+
+    return this.httpClient
+      .get<PaginatedProducts | Product>(
+        this.apiUrl + "product/get-seller",
+        {
+          params,
+        }
+      )
+      .pipe(
+        tap(() => {
+          this.loaderService.hide();
+        }),
+        catchError((error) => {
+          this.loaderService.hide();
+          console.log(error);
+          Swal.fire('Error', error.error?.message, 'error');
+          return of(error);
+        })
+      );
+  }
 }

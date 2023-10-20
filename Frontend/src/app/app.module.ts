@@ -26,6 +26,9 @@ import { CarouselComponent } from './components/shared/carousel/carousel.compone
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { LoaderComponent } from './components/shared/loader/loader.component';
+import { CardComponent } from './components/shared/card/card.component';
+import { ProductsListComponent } from './components/seller/products-list/products-list.component';
+import { SellerDashboardComponent } from './components/seller/seller-dashboard/seller-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +49,9 @@ import { LoaderComponent } from './components/shared/loader/loader.component';
     CarouselComponent,
     NotFoundComponent,
     LoaderComponent,
+    CardComponent,
+    ProductsListComponent,
+    SellerDashboardComponent,
   ],
   imports: [
     BrowserModule,
