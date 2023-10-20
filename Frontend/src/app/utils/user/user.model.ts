@@ -7,6 +7,7 @@ export type User = {
   role: string;
   isActive: boolean;
   createdAt?: string;
+  companyName: string;
 };
 export type UpdateUser = {
   firstName?: string;

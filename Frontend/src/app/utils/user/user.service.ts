@@ -96,4 +96,40 @@ export class UserService {
         })
       );
   }
+  
+  sellerRegistration(companyName: string){
+    return this.httpClient
+    .post<User>(this.apiUrl + 'user/seller-register', {companyName})
+    .pipe(
+      tap((resData) => {
+        const user = resData;
+        console.log(user);
+        this.userStore.updateUserData({ user });
+      }),
+      catchError((error) => {
+        console.log(error);
+        Swal.fire('Error', error.error?.message, 'error');
+        return of(error);
+      })
+    );
+
+  }
+
+  toggleRole(role: string){
+    return this.httpClient
+    .post<User>(this.apiUrl + `user/toggle-role/${role}`, {})
+    .pipe(
+      tap((resData) => {
+        const user = resData;
+        this.userStore.updateUserData({ user });
+      }),
+      catchError((error) => {
+        console.log(error);
+        Swal.fire('Error', error.error?.message, 'error');
+        return of(error);
+      })
+    );
+
+  }
+
 }

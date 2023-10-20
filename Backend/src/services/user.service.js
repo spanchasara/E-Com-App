@@ -114,9 +114,29 @@ const toggleAccountStatus = async (userId, isSuspended) => {
   return user;
 };
 
+const toggleRole = async(userId, role) => {
+  const user = await User.findById(userId);
+  if(user.role === role){
+    return user;
+  }
+  user.role = role;
+  return user.save();
+}
+const sellerRegistration = async(userId, companyName) => {
+  const user = await User.findById(userId);
+  if(user.role != 'customer' && user.companyName != null){
+    throw new ApiError(httpStatus.BAD_REQUEST, "User already registered as seller");
+  }
+  user.role = 'seller'
+  user.companyName = companyName;
+  return user.save();
+  
+}
+
 export {
   findByCredentials,
   createUser,
+  toggleRole,
   checkIsExistingUser,
   getUser,
   getAllUsers,
@@ -124,4 +144,5 @@ export {
   getPublicUser,
   toggleAccountStatus,
   checkPassword,
+  sellerRegistration
 };
