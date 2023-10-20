@@ -9,7 +9,7 @@ const getProducts = catchAsync(async (req, res) => {
     const product = await productService.getProductById(productId);
     res.send(product);
   } else {
-    const { keyword } = req.query;
+    const { keyword = "" } = req.query;
     const keywordRegx = new RegExp(keyword, "i");
 
     const filterQuery = {
@@ -34,7 +34,16 @@ const getProducts = catchAsync(async (req, res) => {
 
 /* getSellerProducts - controller */
 const getSellerProducts = catchAsync(async (req, res) => {
-  const filterQuery = { sellerId: req.user._id };
+  const { keyword = "" } = req.query;
+  const keywordRegx = new RegExp(keyword, "i");
+
+  const filterQuery = {
+    $or: [
+      { title: { $regex: keywordRegx } },
+      { description: { $regex: keywordRegx } },
+    ],
+    sellerId: req.user._id,
+  };
 
   const products = await productService.getProducts(filterQuery, req.query);
   res.send(products);

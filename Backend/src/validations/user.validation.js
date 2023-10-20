@@ -21,6 +21,7 @@ const updateUser = {
     lastName: Joi.string(),
     username: Joi.string(),
     email: Joi.string().email(),
+    companyName: Joi.string(),
   }),
 };
 
@@ -41,12 +42,12 @@ const sellerRegistration = {
   body: Joi.object().keys({
     companyName: Joi.string().required(),
   }),
-}
+};
 export {
   getPublicUser,
   getAllUsers,
   updateUser,
   toggleAccountStatus,
   toggleRole,
-  sellerRegistration
+  sellerRegistration,
 };

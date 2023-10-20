@@ -9,7 +9,7 @@ import { AuthService } from 'src/app/utils/auth/auth.service';
 export class NavbarComponent implements OnInit {
   isLoggedIn: boolean = false;
   constructor(private authService: AuthService) {}
-  ngOnInit(): void {
+  ngOnInit() {
     this.isLoggedIn = localStorage.getItem('userToken') ? true : false;
     this.authService.isAuthenticated.subscribe((loginStatus) => {
       this.isLoggedIn = loginStatus;

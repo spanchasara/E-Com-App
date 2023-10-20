@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PaginatedProducts } from 'src/app/utils/product/product.model';
 import { ProductService } from 'src/app/utils/product/product.service';
 
@@ -7,7 +7,7 @@ import { ProductService } from 'src/app/utils/product/product.service';
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css'],
 })
-export class ProductsComponent {
+export class ProductsComponent implements OnInit {
   products!: PaginatedProducts;
   sortOptions = {
     Default: '',
@@ -22,7 +22,7 @@ export class ProductsComponent {
 
   constructor(private productService: ProductService) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.getProducts({});
   }
 

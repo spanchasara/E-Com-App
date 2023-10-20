@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PaginatedProducts } from 'src/app/utils/product/product.model';
 import { ProductService } from 'src/app/utils/product/product.service';
 
@@ -7,7 +7,7 @@ import { ProductService } from 'src/app/utils/product/product.service';
   templateUrl: './welcome-page.component.html',
   styleUrls: ['./welcome-page.component.css'],
 })
-export class WelcomePageComponent {
+export class WelcomePageComponent implements OnInit {
   constructor(private productService: ProductService) {}
 
   products!: PaginatedProducts;

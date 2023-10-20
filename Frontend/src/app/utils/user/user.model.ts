@@ -14,6 +14,7 @@ export type UpdateUser = {
   lastName?: string;
   username?: string;
   email?: string;
+  companyName?: string;
 };
 
 export type PaginatedUsers = {

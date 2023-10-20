@@ -34,6 +34,7 @@ export class UserProfileComponent implements AfterViewInit {
   textInput: string = '';
   sellerCheck: boolean = true;
   toggleAccountRoleCheck: boolean = false;
+  showCompany: boolean = true;
 
   constructor(
     private userStore: UserStore,
@@ -48,17 +49,25 @@ export class UserProfileComponent implements AfterViewInit {
     this.loaderService.show();
     setTimeout(() => {
       this.userStore.user$.subscribe((user) => {
-        console.log("heyy ", user)
         this.userObject = user;
+        this.showCompany = user?.role === 'seller';
         this.toggleAccountRoleCheck =
           user?.role !== 'admin' && user?.companyName;
         this.sellerCheck = user?.role === 'customer' && !user?.companyName;
-        this.updateProfileForm.setValue({
+
+        const obj = {
           firstName: user?.firstName,
           lastName: user?.lastName,
           email: user?.email,
           username: user?.username,
-        });
+        };
+
+        if (user?.role === 'seller') {
+          // @ts-ignore
+          obj.companyName = user?.companyName;
+        }
+        this.updateProfileForm.setValue(obj);
+        console.log(this.updateProfileForm);
       });
       this.loaderService.hide();
     });
@@ -74,6 +83,7 @@ export class UserProfileComponent implements AfterViewInit {
         firstName: user?.firstName,
         lastName: user?.lastName,
         email: user?.email,
+        companyName: user?.companyName,
         username: user?.username,
       });
     }
@@ -86,6 +96,10 @@ export class UserProfileComponent implements AfterViewInit {
       email: this.updateProfileForm.value?.email,
       username: this.updateProfileForm.value?.username,
     };
+
+    if (this.userObject?.role === 'seller') {
+      updateUserData.companyName = this.updateProfileForm.value?.companyName;
+    }
 
     this.userService.updateUser(updateUserData).subscribe((res) => {
       this.toggleEditMode(true);
@@ -150,11 +164,12 @@ export class UserProfileComponent implements AfterViewInit {
     this.toggleAccountRoleCheck =
       this.userObject?.role !== 'admin' && !!this.userObject?.companyName;
     if (this.userObject?.role === 'customer') {
+      this.showCompany = true;
       this.userService.toggleRole('seller').subscribe(() => {
         Swal.fire('Success', 'Shifted to seller!!', 'success');
       });
-    }
-    else if(this.userObject?.role === 'seller'){
+    } else if (this.userObject?.role === 'seller') {
+      this.showCompany = false;
       this.userService.toggleRole('customer').subscribe(() => {
         Swal.fire('Success', 'Shifted to customer!!', 'success');
       });
