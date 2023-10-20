@@ -22,8 +22,10 @@ import { PaginationComponent } from './components/shared/pagination/pagination.c
 import { SearchbarComponent } from './components/shared/searchbar/searchbar.component';
 import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
 import { UsersListComponent } from './components/admin/users-list/users-list.component';
-import { CarouselComponent } from './components/carousel/carousel.component';
+import { CarouselComponent } from './components/shared/carousel/carousel.component';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { LoaderComponent } from './components/shared/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
     AdminDashboardComponent,
     UsersListComponent,
     CarouselComponent,
+    NotFoundComponent,
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,7 +55,7 @@ import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
     NgbModule,
     SweetAlert2Module.forRoot(),
     AkitaNgDevtools.forRoot(),
-    NgbCarouselModule
+    NgbCarouselModule,
   ],
   providers: [
     {

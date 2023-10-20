@@ -13,6 +13,8 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { LoaderService } from '../utils/shared/loader.service';
+
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -36,12 +38,14 @@ export class UserProfileComponent implements AfterViewInit {
   constructor(
     private userStore: UserStore,
     private userService: UserService,
-    private componentFactoryResolver: ComponentFactoryResolver,
     private modalService: NgbModal,
-    private router: Router
+    private router: Router,
+    private loaderService: LoaderService,
+    private componentFactoryResolver: ComponentFactoryResolver
   ) {}
 
   ngAfterViewInit(): void {
+    this.loaderService.show();
     setTimeout(() => {
       this.userStore.user$.subscribe((user) => {
         console.log("heyy ", user)
@@ -56,6 +60,7 @@ export class UserProfileComponent implements AfterViewInit {
           username: user?.username,
         });
       });
+      this.loaderService.hide();
     });
   }
 
@@ -81,7 +86,6 @@ export class UserProfileComponent implements AfterViewInit {
       email: this.updateProfileForm.value?.email,
       username: this.updateProfileForm.value?.username,
     };
-    console.log('test ', this.updateProfileForm.value);
 
     this.userService.updateUser(updateUserData).subscribe((res) => {
       this.toggleEditMode(true);

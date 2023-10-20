@@ -30,9 +30,7 @@ export class ProductComponent {
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
-
       this.productService.getProducts(true, id as string).subscribe((data) => {
-        console.log('Product Fetched ', data);
         this.product = data;
       });
     });

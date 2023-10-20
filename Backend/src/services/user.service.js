@@ -69,7 +69,15 @@ const checkPassword = async (userPassword, inputPassword) => {
 };
 
 const getAllUsers = async (role, options) => {
-  const users = await User.paginate(role ? { role } : {}, options);
+  let query = role ? { role } : {};
+
+  if (role && role === "seller") {
+    query = {
+      $or: [{ role }, { role: "customer", companyName: { $ne: null } }],
+    };
+  }
+
+  const users = await User.paginate(query, options);
   if (!users) {
     throw new ApiError(httpStatus.NOT_FOUND, "No user not found !!");
   }

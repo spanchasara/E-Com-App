@@ -1,7 +1,11 @@
 <app-navbar></app-navbar>
-<div>
+<div style="min-height: 65vh">
   <router-outlet></router-outlet>
+  <app-loader></app-loader>
 </div>
 <div>
-  <app-footer [ngClass]="{'fixed-footer': !hideFooter}" *ngIf="!hideFooter"></app-footer>
+  <app-footer
+    [ngClass]="{ 'fixed-footer': !hideFooter }"
+    *ngIf="!hideFooter"
+  ></app-footer>
 </div>
