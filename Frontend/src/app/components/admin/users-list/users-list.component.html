@@ -2,7 +2,11 @@
   <div class="nav nav-tabs">
     <div class="nav-item">
       <button
-        [ngClass]="role === 'customer' ? 'nav-link active text-black' : 'nav-link text-black'"
+        [ngClass]="
+          role === 'customer'
+            ? 'nav-link active text-black'
+            : 'nav-link text-black'
+        "
         (click)="toggleState('customer')"
         [disabled]="role === 'customer'"
       >
@@ -11,7 +15,11 @@
     </div>
     <div class="nav-item">
       <button
-        [ngClass]="role === 'seller' ? 'nav-link active text-black' : 'nav-link text-black'"
+        [ngClass]="
+          role === 'seller'
+            ? 'nav-link active text-black'
+            : 'nav-link text-black'
+        "
         (click)="toggleState('seller')"
         [disabled]="role === 'seller'"
       >
@@ -20,7 +28,11 @@
     </div>
     <div class="nav-item">
       <button
-        [ngClass]="role === 'admin' ? 'nav-link active text-black' : 'nav-link text-black'"
+        [ngClass]="
+          role === 'admin'
+            ? 'nav-link active text-black'
+            : 'nav-link text-black'
+        "
         (click)="toggleState('admin')"
         [disabled]="role === 'admin'"
       >
@@ -28,7 +40,7 @@
       </button>
     </div>
   </div>
-  <table class="table table-striped h-75">
+  <table class="table table-striped">
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -37,6 +49,7 @@
         <th scope="col">username</th>
         <th scope="col">Email</th>
         <th scope="col">Registered On</th>
+        <th scope="col" *ngIf="role === 'seller'">Current Role</th>
         <th scope="col">Toggle Status</th>
       </tr>
     </thead>
@@ -59,6 +72,9 @@
         </td>
         <td>
           {{ parseDate(data.createdAt || "") }}
+        </td>
+        <td *ngIf="role === 'seller'">
+          {{ data.role }}
         </td>
         <td>
           <ng-container *ngIf="currentUserId === data._id; else buttonTemplate">

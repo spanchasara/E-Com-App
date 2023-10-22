@@ -5,6 +5,7 @@ import { environment } from 'src/environment/environment';
 import Swal from 'sweetalert2';
 import { PaginatedProducts, Product } from './product.model';
 import { ProductStore } from 'src/app/store/products/product.store';
+import { LoaderService } from '../shared/loader.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,8 @@ import { ProductStore } from 'src/app/store/products/product.store';
 export class ProductService {
   constructor(
     private httpClient: HttpClient,
-    private productStore: ProductStore
+    private productStore: ProductStore,
+    private loaderService: LoaderService
   ) {}
   isAuthenticated = new Subject<boolean>();
 
@@ -30,6 +32,7 @@ export class ProductService {
           sort?: string;
         }
   ): Observable<any> {
+    this.loaderService.show();
     let params = new HttpParams();
 
     if (!isSingle && typeof productData === 'object') {
@@ -48,9 +51,45 @@ export class ProductService {
       )
       .pipe(
         tap((resData) => {
+          this.loaderService.hide();
           this.productStore.updateProductData(isSingle, resData);
         }),
         catchError((error) => {
+          this.loaderService.hide();
+          console.log(error);
+          Swal.fire('Error', error.error?.message, 'error');
+          return of(error);
+        })
+      );
+  }
+
+  getSellerProducts(options: {
+    keyword?: string;
+    page?: number;
+    limit?: number;
+    sort?: string;
+  }): Observable<any> {
+    this.loaderService.show();
+    let params = new HttpParams();
+
+    params = params.append('keyword', options?.keyword || '');
+    params = params.append('page', options?.page || 1);
+    params = params.append('limit', options?.limit || 10);
+    params = params.append('sort', options?.sort || '');
+
+    return this.httpClient
+      .get<PaginatedProducts | Product>(
+        this.apiUrl + "product/get-seller",
+        {
+          params,
+        }
+      )
+      .pipe(
+        tap(() => {
+          this.loaderService.hide();
+        }),
+        catchError((error) => {
+          this.loaderService.hide();
           console.log(error);
           Swal.fire('Error', error.error?.message, 'error');
           return of(error);

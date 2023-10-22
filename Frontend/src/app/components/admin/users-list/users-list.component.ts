@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserStore } from 'src/app/store/auth/user-store';
 import { PaginatedUsers, User } from 'src/app/utils/user/user.model';
 import { UserService } from 'src/app/utils/user/user.service';
@@ -7,7 +7,7 @@ import { UserService } from 'src/app/utils/user/user.service';
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
 })
-export class UsersListComponent {
+export class UsersListComponent implements OnInit {
   role: string = 'customer';
   currentUserId: string = '';
   users!: PaginatedUsers | null;

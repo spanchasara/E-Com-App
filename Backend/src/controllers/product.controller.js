@@ -9,10 +9,44 @@ const getProducts = catchAsync(async (req, res) => {
     const product = await productService.getProductById(productId);
     res.send(product);
   } else {
-    const { keyword } = req.query;
-    const products = await productService.getProducts(keyword, req.query);
+    const { keyword = "" } = req.query;
+    const keywordRegx = new RegExp(keyword, "i");
+
+    const filterQuery = {
+      $or: [
+        { title: { $regex: keywordRegx } },
+        { description: { $regex: keywordRegx } },
+      ],
+    };
+
+    const options = {
+      ...req.query,
+      populate: {
+        path: "sellerId",
+        select: "firstName lastName",
+      },
+    };
+
+    const products = await productService.getProducts(filterQuery, options);
     res.send(products);
   }
+});
+
+/* getSellerProducts - controller */
+const getSellerProducts = catchAsync(async (req, res) => {
+  const { keyword = "" } = req.query;
+  const keywordRegx = new RegExp(keyword, "i");
+
+  const filterQuery = {
+    $or: [
+      { title: { $regex: keywordRegx } },
+      { description: { $regex: keywordRegx } },
+    ],
+    sellerId: req.user._id,
+  };
+
+  const products = await productService.getProducts(filterQuery, req.query);
+  res.send(products);
 });
 
 /* createProduct - controller */
@@ -25,7 +59,42 @@ const createProduct = catchAsync(async (req, res) => {
   res.status(201).send(product);
 });
 
-export { getProducts, createProduct };
+/* updateProduct - controller */
+const updateProduct = catchAsync(async (req, res) => {
+  const productBody = req.body;
+  const { productId } = req.params;
+
+  const query = {
+    _id: productId,
+    sellerId: req.user._id,
+  };
+
+  const product = await productService.updateProduct(query, productBody);
+  res.send(product);
+});
+
+/* deleteProduct - controller */
+const deleteProduct = catchAsync(async (req, res) => {
+  const { productId } = req.params;
+
+  const query = {
+    _id: productId,
+    sellerId: req.user._id,
+  };
+
+  await productService.deleteProduct(query);
+  res.send({
+    message: "Product deleted successfully !!",
+  });
+});
+
+export {
+  getProducts,
+  getSellerProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+};
 
 /**
  * @swagger

@@ -6,6 +6,7 @@ import { catchError, of, tap } from 'rxjs';
 import Swal from 'sweetalert2';
 import { UserStore } from 'src/app/store/auth/user-store';
 import { Router } from '@angular/router';
+import { LoaderService } from '../shared/loader.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,19 +16,20 @@ export class UserService {
   constructor(
     private httpClient: HttpClient,
     private userStore: UserStore,
-    private router: Router
+    private router: Router,
+    private loaderService: LoaderService
   ) {}
   updateUser(updateUserData: UpdateUser) {
+    this.loaderService.show();
     return this.httpClient
       .patch<User>(this.apiUrl + 'user/update-me', updateUserData, {
         observe: 'response',
       })
       .pipe(
         tap((resData) => {
-          console.log(resData);
+          this.loaderService.hide();
           const user = resData.body;
           this.userStore.updateUserData({ user });
-          console.log(user);
           Swal.fire('Success', 'User Updated Successfully!!', 'success').then(
             (result) => {
               if (result.isConfirmed) this.router.navigate(['/user']);
@@ -35,6 +37,7 @@ export class UserService {
           );
         }),
         catchError((error) => {
+          this.loaderService.hide();
           console.log(error);
           Swal.fire('Error', error.error?.message, 'error');
           return of(error);
@@ -44,7 +47,7 @@ export class UserService {
 
   getAllUsers(role: string = '', options: any = {}) {
     let params = new HttpParams();
-
+    this.loaderService.show();
     params = params.append('limit', options?.limit || 10);
     params = params.append('page', options?.page || 1);
 
@@ -54,10 +57,12 @@ export class UserService {
       })
       .pipe(
         tap((resData) => {
+          this.loaderService.hide();
           const users = resData;
           this.userStore.updateUserData({ users });
         }),
         catchError((error) => {
+          this.loaderService.hide();
           console.log(error);
           Swal.fire('Error', error.error?.message, 'error');
           return of(error);
@@ -67,6 +72,7 @@ export class UserService {
 
   toggleAccountStatus(userId: string, isSuspended: boolean = false) {
     let params = new HttpParams();
+    this.loaderService.show();
 
     params = params.append('isSuspended', isSuspended);
 
@@ -80,13 +86,50 @@ export class UserService {
       )
       .pipe(
         tap((resData) => {
-          console.log(resData);
+          this.loaderService.hide();
         }),
         catchError((error) => {
+          this.loaderService.hide();
           console.log(error);
           Swal.fire('Error', error.error?.message, 'error');
           return of(error);
         })
       );
   }
+  
+  sellerRegistration(companyName: string){
+    return this.httpClient
+    .post<User>(this.apiUrl + 'user/seller-register', {companyName})
+    .pipe(
+      tap((resData) => {
+        const user = resData;
+        console.log(user);
+        this.userStore.updateUserData({ user });
+      }),
+      catchError((error) => {
+        console.log(error);
+        Swal.fire('Error', error.error?.message, 'error');
+        return of(error);
+      })
+    );
+
+  }
+
+  toggleRole(role: string){
+    return this.httpClient
+    .post<User>(this.apiUrl + `user/toggle-role/${role}`, {})
+    .pipe(
+      tap((resData) => {
+        const user = resData;
+        this.userStore.updateUserData({ user });
+      }),
+      catchError((error) => {
+        console.log(error);
+        Swal.fire('Error', error.error?.message, 'error');
+        return of(error);
+      })
+    );
+
+  }
+
 }

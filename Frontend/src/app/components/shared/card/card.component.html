@@ -1,0 +1,32 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-4">
+        <img
+          class="card-img-top link"
+          src="https://picsum.photos/200"
+          alt="Product Image"
+          height="200"
+          width="200"
+          [routerLink]="['/products', product._id]"
+        />
+      </div>
+      <div class="col-md-8">
+        <h5 class="card-title link" [routerLink]="['/products', product._id]">
+          {{ product.title }}
+        </h5>
+        <p class="card-text">
+          {{ product.description }}
+        </p>
+        <h6 class="text-muted">Price: ${{ product.price }}</h6>
+        <h6 *ngIf="product.stock > 0; else outOfStock">
+          Quantity: {{ product.stock }}
+        </h6>
+        <ng-template #outOfStock>
+          <h6> Out of stock</h6>
+        </ng-template>
+        <a href="#" class="btn btn-primary">Add to Cart</a>
+      </div>
+    </div>
+  </div>
+</div>

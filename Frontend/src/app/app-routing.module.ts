@@ -8,11 +8,15 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ProductsComponent } from './components/products/products.component';
 import { ProductComponent } from './components/product/product.component';
 import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { AdminGuard } from './guards/admin.guard';
+import { SellerDashboardComponent } from './components/seller/seller-dashboard/seller-dashboard.component';
 
 const routes: Routes = [
   {
     path: '',
     component: WelcomePageComponent,
+    canActivate: [AdminGuard],
   },
   {
     path: 'login',
@@ -42,6 +46,13 @@ const routes: Routes = [
     component: AdminDashboardComponent,
     canActivate: [AuthGuard],
   },
+  {
+    path:'sellerDashboard',
+    component: SellerDashboardComponent,
+    canActivate: [AuthGuard]
+
+  },
+  { path: '**', component: NotFoundComponent },
 ];
 
 @NgModule({

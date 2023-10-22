@@ -4,13 +4,12 @@ import { NavigationEnd, Router } from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-
-  hideFooter : boolean =  false;
-  constructor(private router: Router){}
-  ngOnInit(): void {
+  hideFooter: boolean = false;
+  constructor(private router: Router) {}
+  ngOnInit() {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         // Check the current route to determine whether to hide the footer
@@ -18,7 +17,7 @@ export class AppComponent implements OnInit {
       }
     });
   }
-  private shouldHideFooter (url: string){
-    return url.includes('/login') || url.includes('/register')
+  private shouldHideFooter(url: string) {
+    return url.includes('/login') || url.includes('/register');
   }
 }

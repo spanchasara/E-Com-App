@@ -1,4 +1,4 @@
-<div class="text-center mt-4">
+<div class="text-center mt-4" *ngIf="totalItems > limit">
   <ngb-pagination
     [collectionSize]="totalItems"
     [page]="page"

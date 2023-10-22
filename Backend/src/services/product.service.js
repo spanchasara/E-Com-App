@@ -12,21 +12,8 @@ const getProductById = async (productId) => {
   return product;
 };
 
-const getProducts = async (keyword = "", options = {}) => {
-  const keywordRegx = new RegExp(keyword, "i");
-
-  const products = await Product.paginate(
-    {
-      $or: [
-        { title: { $regex: keywordRegx } },
-        { description: { $regex: keywordRegx } },
-      ],
-    },
-    {...options, populate: {
-      path:'sellerId',
-      select: 'firstName lastName'
-    }}
-  );
+const getProducts = async (filterQuery = {}, options = {}) => {
+  const products = await Product.paginate(filterQuery, options);
 
   if (!products) {
     throw new ApiError(httpStatus.NOT_FOUND, "Products not found!!");
@@ -48,4 +35,42 @@ const createProduct = async (productBody) => {
   return product;
 };
 
-export { getProducts, getProductById, createProduct };
+const updateProduct = async (query, productBody) => {
+  if (Object.keys(productBody).length === 0) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "No data provided !!");
+  }
+
+  const product = await Product.findOneAndUpdate(query, productBody, {
+    new: true,
+  });
+
+  if (!product) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "Product not found or not registered with this seller !!"
+    );
+  }
+
+  return product;
+};
+
+const deleteProduct = async (query) => {
+  const product = await Product.findOneAndDelete(query);
+
+  if (!product) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "Product not found or not registered with this seller !!"
+    );
+  }
+
+  return product;
+};
+
+export {
+  getProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+};

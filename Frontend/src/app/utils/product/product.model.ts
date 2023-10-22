@@ -5,6 +5,8 @@ export type Product = {
   sellerId: string;
   specifications: object;
   price: number;
+  stock: number;
+
 };
 
 export type PaginatedProducts = {
