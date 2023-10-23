@@ -5,9 +5,11 @@ import {
   Product,
 } from 'src/app/utils/product/product.model';
 
-export interface UserState {
+export interface ProductState {
   products: PaginatedProducts;
   currentProduct: Product | null;
+  search: string;
+  sort: string;
 }
 
 const initialState = {
@@ -24,30 +26,26 @@ const initialState = {
     nextPage: null,
   },
   currentProduct: null,
+  search: '',
+  sort: 'Default',
 };
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'product' })
-export class ProductStore extends Store<UserState> {
+@StoreConfig({ name: 'product-management' })
+export class ProductStore extends Store<ProductState> {
   constructor() {
     super(initialState);
   }
 
-  updateProductData(
-    isSingle: boolean = false,
-    data: PaginatedProducts | Product
-  ) {
-    if (isSingle) {
-      this.update((state) => ({
-        ...state,
-        currentProduct: data as Product,
-      }));
-    } else {
-      this.update((state) => ({
-        ...state,
-        products: data as PaginatedProducts,
-      }));
-    }
+  products$ = this._select(
+    (state: { products: PaginatedProducts }) => state.products
+  );
+
+  search$ = this._select((state: { search: string }) => state.search);
+  sort$ = this._select((state: { sort: string }) => state.sort);
+
+  updateProductData(productData: Partial<ProductState>) {
+    this.update(productData);
   }
 
   clearProductData() {

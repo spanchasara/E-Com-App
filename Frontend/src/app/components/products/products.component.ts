@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ProductStore } from 'src/app/store/products/product.store';
 import { PaginatedProducts } from 'src/app/utils/product/product.model';
 import { ProductService } from 'src/app/utils/product/product.service';
 
@@ -20,10 +22,20 @@ export class ProductsComponent implements OnInit {
   selectedSortOption: string = 'Default';
   search: string = '';
 
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private productStore: ProductStore,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.getProducts({});
+    this.productStore.products$.subscribe((data) => {
+      this.products = data;
+    });
+
+    if (!this.products || this.products.totalDocs === 0) {
+      this.getProducts({});
+    }
   }
 
   getProducts(options: any) {

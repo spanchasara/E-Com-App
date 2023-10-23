@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ComponentFactoryResolver,
+  OnInit,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
@@ -20,7 +21,7 @@ import { LoaderService } from '../utils/shared/loader.service';
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css'],
 })
-export class UserProfileComponent implements AfterViewInit {
+export class UserProfileComponent implements AfterViewInit, OnInit {
   @ViewChild('updateProfileForm', { static: true })
   updateProfileForm!: NgForm;
   @ViewChild('sellerRegistrationForm', { static: true })
@@ -45,7 +46,7 @@ export class UserProfileComponent implements AfterViewInit {
     private componentFactoryResolver: ComponentFactoryResolver
   ) {}
 
-  ngAfterViewInit(): void {
+  loadProfile() {
     this.loaderService.show();
     setTimeout(() => {
       this.userStore.user$.subscribe((user) => {
@@ -67,10 +68,17 @@ export class UserProfileComponent implements AfterViewInit {
           obj.companyName = user?.companyName;
         }
         this.updateProfileForm.setValue(obj);
-        console.log(this.updateProfileForm);
       });
       this.loaderService.hide();
     });
+  }
+
+  ngOnInit(): void {
+    this.loadProfile();
+  }
+
+  ngAfterViewInit(): void {
+    this.loadProfile();
   }
 
   toggleEditMode(isCancel = false) {

@@ -18,12 +18,12 @@
         <p class="card-text">
           {{ product.description }}
         </p>
-        <h6 class="text-muted">Price: ${{ product.price }}</h6>
+        <h6 class="text-muted">Price: ₹{{ product.price }}</h6>
         <h6 *ngIf="product.stock > 0; else outOfStock">
           Quantity: {{ product.stock }}
         </h6>
         <ng-template #outOfStock>
-          <h6> Out of stock</h6>
+          <h6>Out of stock</h6>
         </ng-template>
         <a href="#" class="btn btn-primary">Add to Cart</a>
       </div>

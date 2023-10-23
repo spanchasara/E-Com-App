@@ -52,7 +52,11 @@ export class ProductService {
       .pipe(
         tap((resData) => {
           this.loaderService.hide();
-          this.productStore.updateProductData(isSingle, resData);
+
+          const obj: any = {};
+          obj[isSingle ? 'currentProduct' : 'products'] = resData;
+
+          this.productStore.updateProductData(obj);
         }),
         catchError((error) => {
           this.loaderService.hide();
@@ -78,12 +82,9 @@ export class ProductService {
     params = params.append('sort', options?.sort || '');
 
     return this.httpClient
-      .get<PaginatedProducts | Product>(
-        this.apiUrl + "product/get-seller",
-        {
-          params,
-        }
-      )
+      .get<PaginatedProducts | Product>(this.apiUrl + 'product/get-seller', {
+        params,
+      })
       .pipe(
         tap(() => {
           this.loaderService.hide();

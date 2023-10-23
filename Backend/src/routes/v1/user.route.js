@@ -17,7 +17,7 @@ router
   );
 
 router
-  .route("/:userId")
+  .route("/public/:userId")
   .get(
     auth("get_public_user"),
     validate(userValidation.getPublicUser),

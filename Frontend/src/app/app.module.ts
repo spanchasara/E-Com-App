@@ -29,6 +29,7 @@ import { LoaderComponent } from './components/shared/loader/loader.component';
 import { CardComponent } from './components/shared/card/card.component';
 import { ProductsListComponent } from './components/seller/products-list/products-list.component';
 import { SellerDashboardComponent } from './components/seller/seller-dashboard/seller-dashboard.component';
+import { PublicUserComponent } from './components/public-user/public-user.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { SellerDashboardComponent } from './components/seller/seller-dashboard/s
     CardComponent,
     ProductsListComponent,
     SellerDashboardComponent,
+    PublicUserComponent,
   ],
   imports: [
     BrowserModule,

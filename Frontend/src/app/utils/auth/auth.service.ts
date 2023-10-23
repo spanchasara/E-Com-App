@@ -31,6 +31,8 @@ export class AuthService {
   apiUrl = environment.apiUrl;
   error = new Subject<string>();
 
+  private tokenExpirationTimer: any;
+
   signup(userData: Signup): Observable<any> {
     this.loaderService.show();
     return this.httpClient
@@ -58,7 +60,7 @@ export class AuthService {
   signin(userData: SignIn): Observable<any> {
     this.loaderService.show();
     return this.httpClient
-      .post<{ user: User; token: string }>(
+      .post<{ user: User; token: string; tokenExpiresIn: number }>(
         this.apiUrl + 'auth/login',
         userData,
         {
@@ -70,18 +72,25 @@ export class AuthService {
           this.loaderService.hide();
           const token = resData.body?.token || '';
           const user = resData.body?.user || null;
+          const expiresInDuration = resData.body?.tokenExpiresIn || 0;
 
           localStorage.setItem('userToken', token);
           this.userStore.updateUserData({ user });
+
+          this.autoLogout(expiresInDuration * 1000);
 
           this.isAuthenticated.next(true);
 
           Swal.fire('Success', 'LoggedIn Successfully!!', 'success').then(
             (result) => {
-              if (result.isConfirmed && user && user.role !== 'admin') {
-                this.router.navigate(['/']);
-              } else if (result.isConfirmed && user && user.role === 'admin') {
-                this.router.navigate(['/dashboard']);
+              if (result.isConfirmed && user) {
+                if (user.role === 'admin') {
+                  this.router.navigate(['/admin/dashboard']);
+                } else if (user.role === 'seller') {
+                  this.router.navigate(['/seller/dashboard']);
+                } else {
+                  this.router.navigate(['/']);
+                }
               }
             }
           );
@@ -102,12 +111,30 @@ export class AuthService {
     this.isAuthenticated.next(false);
     this.loaderService.hide();
     this.router.navigate(['/']);
+    if (this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer);
+    }
+    this.tokenExpirationTimer = null;
   }
 
-  checkAdmin() {
+  autoLogout(expirationDuration: number) {
+    console.log('autoLogout', expirationDuration);
+    this.tokenExpirationTimer = setTimeout(() => {
+      Swal.fire(
+        'Session Expiry',
+        'The session will expire in 15 seconds',
+        'warning'
+      );
+      setTimeout(() => {
+        this.logout();
+      }, 5000);
+    }, expirationDuration - 15000);
+  }
+
+  checkRole(role: string) {
     return !!(
       this.userStore.getValue().user &&
-      this.userStore.getValue().user?.role === 'admin'
+      this.userStore.getValue().user?.role === role
     );
   }
 
