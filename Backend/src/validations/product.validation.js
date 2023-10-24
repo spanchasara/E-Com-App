@@ -27,7 +27,7 @@ const createProduct = {
     description: Joi.string().required().min(10).max(300),
     price: Joi.number().min(1).required(),
     specifications: Joi.object().required(),
-    stock: Joi.number().min(1).required(),
+    stock: Joi.number().min(0).required(),
   }),
 };
 
@@ -40,7 +40,7 @@ const updateProduct = {
     description: Joi.string().min(10).max(300),
     price: Joi.number().min(1),
     specifications: Joi.object(),
-    stock: Joi.number().min(1),
+    stock: Joi.number().min(0),
   }),
 };
 

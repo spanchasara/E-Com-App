@@ -1,13 +1,21 @@
 export type Product = {
-  _id: string;
+  _id?: string;
   title: string;
   description: string;
-  sellerId: string;
+  sellerId?: string;
   specifications: object;
   price: number;
   stock: number;
-
 };
+
+// export type AddProduct = {
+//   title: string;
+//   description: string;
+//   specifications: object;
+//   price: number;
+//   stock: number;
+//   sellerId?: string
+// };
 
 export type PaginatedProducts = {
   docs: Product[];

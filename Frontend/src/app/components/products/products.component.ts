@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductStore } from 'src/app/store/products/product.store';
-import { PaginatedProducts } from 'src/app/utils/product/product.model';
+import { PaginatedProducts, Product } from 'src/app/utils/product/product.model';
 import { ProductService } from 'src/app/utils/product/product.service';
 
 @Component({

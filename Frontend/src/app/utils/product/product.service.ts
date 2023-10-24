@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { PaginatedProducts, Product } from './product.model';
 import { ProductStore } from 'src/app/store/products/product.store';
 import { LoaderService } from '../shared/loader.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,8 @@ export class ProductService {
   constructor(
     private httpClient: HttpClient,
     private productStore: ProductStore,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private router: Router
   ) {}
   isAuthenticated = new Subject<boolean>();
 
@@ -88,6 +90,99 @@ export class ProductService {
       .pipe(
         tap(() => {
           this.loaderService.hide();
+          
+        }),
+        catchError((error) => {
+          this.loaderService.hide();
+          console.log(error);
+          Swal.fire('Error', error.error?.message, 'error');
+          return of(error);
+        })
+      );
+  }
+
+  addProduct(product: Product) {
+    this.loaderService.show();
+    delete product.sellerId;
+    delete product._id;
+    return this.httpClient
+      .post<Product>(this.apiUrl + 'product', product, {
+        observe: 'response',
+      })
+      .pipe(
+        tap((resData) => {
+          this.loaderService.hide();
+          const obj: any = {};
+          obj['currentProduct'] = resData;
+
+          this.productStore.updateProductData(obj);
+          Swal.fire('Success', 'Product Added Successfully!!', 'success').then(
+            (result) => {
+              if (result.isConfirmed) this.router.navigate(['/']);
+            }
+          );
+        }),
+        catchError((error) => {
+          this.loaderService.hide();
+          console.log(error);
+          Swal.fire('Error', error.error?.message, 'error');
+          return of(error);
+        })
+      );
+  }
+  editProduct(id: string, product: Product) {
+    this.loaderService.show();
+    delete product.sellerId;
+    delete product._id
+    return this.httpClient
+      .patch<Product>(this.apiUrl + 'product/' + id, product, {
+        observe: 'response',
+      })
+      .pipe(
+        tap((resData) => {
+          this.loaderService.hide();
+          const obj: any = {};
+          obj['currentProduct'] = resData;
+
+          this.productStore.updateProductData(obj);
+          Swal.fire(
+            'Success',
+            'Product Updated Successfully!!',
+            'success'
+          ).then((result) => {
+            if (result.isConfirmed){ this.router.navigate(['/products', id]);}
+          });
+        }),
+        catchError((error) => {
+          this.loaderService.hide();
+          console.log(error);
+          Swal.fire('Error', error.error?.message, 'error');
+          return of(error);
+        })
+      );
+  }
+  deleteProduct(id: string | undefined) {
+    this.loaderService.show();
+    return this.httpClient
+      .delete<{ message: string }>(this.apiUrl + 'product/' + id, {
+        observe: 'response',
+      })
+      .pipe(
+        tap((resData) => {
+          this.loaderService.hide();
+          console.log('deleted');
+
+          Swal.fire(
+            'Success',
+            'Product Deleted Successfully!!',
+            'success'
+          ).then((result) => {
+            if (result.isConfirmed) {
+              this.getSellerProducts({}).subscribe();
+              this.router.navigate(['/seller/dashboard'],{ queryParams: { refresh: new Date().getTime() } });
+              window.location.reload(); 
+            }
+          });
         }),
         catchError((error) => {
           this.loaderService.hide();

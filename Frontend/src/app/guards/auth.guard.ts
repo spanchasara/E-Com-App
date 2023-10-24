@@ -48,7 +48,15 @@ export class AuthGuard implements CanActivate {
     ) {
       if (role === 'seller') return true;
       return this.router.navigate(['/']);
-    } else {
+    } else if (isAuthenticated && route.url[0]?.path === 'addProduct') {
+      if(role ==='seller')
+        return true;
+      return this.router.navigate(['/']);
+    } else if (isAuthenticated && route.url[0]?.path === 'editProduct') {
+      if(role ==='seller')
+        return true;
+      return this.router.navigate(['/']);
+    }else {
       return true;
     }
   }

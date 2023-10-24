@@ -1,0 +1,205 @@
+<div class="container my-5">
+    <div class="row my-3 content">
+      <div class="col-md-8">
+        <form #f="ngForm" (ngSubmit)="onSubmit()">
+          <h2 style="text-align: center">{{!editMode ? "Add" : "Edit"}} Product</h2>
+  
+          <!-- product name -->
+          <div class="form-group mt-3">
+            <label class="control-label" for="productName">Product Name</label>
+            <div class="col-md-8">
+              <input
+                name="productName"
+                placeholder="Product Name"
+                class="form-control"
+                type="text"
+                #title="ngModel"
+                [(ngModel)]="product.title"
+              />
+              <span
+                class="help-block"
+                style="color: red"
+                *ngIf="!title.valid && title.touched"
+                >Please enter a valid product title!</span
+              >
+            </div>
+          </div>
+  
+          <!-- product descrpition-->
+          <div class="form-group mt-3">
+            <label class="control-label" for="productDescrption"
+              >Description</label
+            >
+            <div class="col-md-8">
+              <textarea
+                name="productDescription"
+                placeholder="Product Description"
+                class="form-control"
+                rows="4"
+                #description="ngModel"
+                cols="30"
+                ngModel
+                [(ngModel)]="product.description"
+              ></textarea>
+              <span
+                class="help-block"
+                style="color: red"
+                *ngIf="!description.valid && description.touched"
+                >Please enter a valid product description!</span
+              >
+            </div>
+          </div>
+  
+          <!-- product price -->
+          <div class="form-group mt-3">
+            <label class="control-label" for="price">Price</label>
+            <div class="col-md-8">
+              <input
+                type="text"
+                placeholder="Product Price"
+                name="productPrice"
+                #price="ngModel"
+                class="form-control"
+                [(ngModel)]="product.price"
+
+              />
+              <span
+                class="help-block"
+                style="color: red"
+                *ngIf="!price.valid && price.touched"
+                >Please enter a valid product price!</span
+              >
+            </div>
+          </div>
+  
+          <!-- product stock -->
+          <div class="form-group mt-3">
+            <label class="control-label" for="price">Stock</label>
+            <div class="col-md-8">
+              <input
+                type="number"
+                placeholder="Number of Products Available"
+                name="productStock"
+                #stock="ngModel"
+                class="form-control"
+                [(ngModel)]="product.stock"
+
+              />
+              <span
+                class="help-block"
+                style="color: red"
+                *ngIf="!stock.valid && stock.touched"
+                >Please enter a valid product description!</span
+              >
+            </div>
+          </div>
+          <div class="mt-3">
+            <!-- product specifications -->
+            <div
+              class="form-group"
+              *ngFor="let spec of specifications; let i = index"
+            >
+              <div class="row">
+                <div class="col-md-4">
+                  <label class="control-label" for="specKey{{ i }}"
+                    >Property</label
+                  >
+                  <input
+                    *ngIf="spec['key'] !== undefined"
+                    type="text"
+                    placeholder="Property"
+                    name="specKey{{ i }}"
+                    class="form-control"
+                    #stock="ngModel"
+                    [(ngModel)]="spec['key']"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label class="control-label" for="specValue{{ i }}"
+                    >Value</label
+                  >
+                  <input
+                    *ngIf="spec['value'] !== undefined"
+                    type="text"
+                    placeholder="Value"
+                    name="specValue{{ i }}"
+                    class="form-control"
+                    [(ngModel)]="spec['value']"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for=""></label>
+                  <br />
+                  <button class="btn btn-class" (click)="deleteSpecification(i)">
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+  
+            <!-- Add Specification Button -->
+            <button
+              class="btn btn-class mt-3"
+              type="button"
+              (click)="addSpecification()"
+            >
+              Add Specification
+            </button>
+          </div>
+          <div class="form-group text-center">
+            <button class="btn btn-class mt-3 text-center" type="submit" [disabled]="!f.valid">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-4">
+        <form class="form-control">
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="filebutton"
+              >main_image</label
+            >
+            <div class="col-md-4">
+              <input
+                id="filebutton"
+                name="filebutton"
+                class="input-file"
+                type="file"
+              />
+            </div>
+          </div>
+          <!-- File Button -->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="filebutton"
+              >auxiliary_images</label
+            >
+            <div class="col-md-4">
+              <input
+                id="filebutton"
+                name="filebutton"
+                class="input-file"
+                type="file"
+              />
+            </div>
+          </div>
+  
+          <!-- Button -->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="singlebutton"
+              >Single Button</label
+            >
+            <div class="col-md-4">
+              <button
+                id="singlebutton"
+                name="singlebutton"
+                class="btn btn-primary"
+              >
+                Button
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

@@ -6,25 +6,20 @@
       </div>
       <div class="col-md-6 mt-5">
         <h3>{{ product?.title }}</h3>
-        <!-- <div class="rating">
-          <div class="stars">
-            <span class="fa fa-star checked"></span>
-            <span class="fa fa-star checked"></span>
-            <span class="fa fa-star checked"></span>
-            <span class="fa fa-star"></span>
-            <span class="fa fa-star"></span>
-          </div>
-          <span class="review-no">41 reviews</span>
-        </div> -->
         <p>{{ product?.description }}</p>
         <h4>
           <strong>current price: </strong><span>{{ product?.price }}</span>
         </h4>
+        <p><strong>Items in Stock:</strong> {{product?.stock}}</p>
         <div class="action">
-          <button class="btn btn-class mt-1" type="button">add to cart</button>
+          <button class="btn btn-class mt-1" *ngIf="!isSellerByRole && !currentSeller" type="button">add to cart</button>
+          <button class="btn btn-class mt-1 mx-2" (click)="editProduct()" *ngIf="isSellerByRole && currentSeller" type="button">Edit Product</button>
+          <button class="btn btn-class mt-1 mx-2" (click)="deleteProduct()" *ngIf="isSellerByRole && currentSeller" type="button">Delete Product</button>
+
         </div>
         <br />
         <hr class="hr hr-blurry" width="90%" />
+        <!-- <button (click) = "clearStore()">Clear Store</button> -->
         <table *ngIf="product?.specifications" class="table my-2">
           <tbody>
             <thead>
