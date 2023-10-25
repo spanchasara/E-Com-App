@@ -70,6 +70,22 @@ export class UserService {
       );
   }
 
+  getPublicUser(id: string) {
+    this.loaderService.show();
+    return this.httpClient.get<User>(this.apiUrl + `user/public/${id}`).pipe(
+      tap((resData) => {
+        this.loaderService.hide();
+        return resData;
+      }),
+      catchError((error) => {
+        this.loaderService.hide();
+        console.log(error);
+        Swal.fire('Error', error.error?.message, 'error');
+        return of(error);
+      })
+    );
+  }
+
   toggleAccountStatus(userId: string, isSuspended: boolean = false) {
     let params = new HttpParams();
     this.loaderService.show();
@@ -96,40 +112,37 @@ export class UserService {
         })
       );
   }
-  
-  sellerRegistration(companyName: string){
-    return this.httpClient
-    .post<User>(this.apiUrl + 'user/seller-register', {companyName})
-    .pipe(
-      tap((resData) => {
-        const user = resData;
-        console.log(user);
-        this.userStore.updateUserData({ user });
-      }),
-      catchError((error) => {
-        console.log(error);
-        Swal.fire('Error', error.error?.message, 'error');
-        return of(error);
-      })
-    );
 
+  sellerRegistration(companyName: string) {
+    return this.httpClient
+      .post<User>(this.apiUrl + 'user/seller-register', { companyName })
+      .pipe(
+        tap((resData) => {
+          const user = resData;
+          console.log(user);
+          this.userStore.updateUserData({ user });
+        }),
+        catchError((error) => {
+          console.log(error);
+          Swal.fire('Error', error.error?.message, 'error');
+          return of(error);
+        })
+      );
   }
 
-  toggleRole(role: string){
+  toggleRole(role: string) {
     return this.httpClient
-    .post<User>(this.apiUrl + `user/toggle-role/${role}`, {})
-    .pipe(
-      tap((resData) => {
-        const user = resData;
-        this.userStore.updateUserData({ user });
-      }),
-      catchError((error) => {
-        console.log(error);
-        Swal.fire('Error', error.error?.message, 'error');
-        return of(error);
-      })
-    );
-
+      .post<User>(this.apiUrl + `user/toggle-role/${role}`, {})
+      .pipe(
+        tap((resData) => {
+          const user = resData;
+          this.userStore.updateUserData({ user });
+        }),
+        catchError((error) => {
+          console.log(error);
+          Swal.fire('Error', error.error?.message, 'error');
+          return of(error);
+        })
+      );
   }
-
 }

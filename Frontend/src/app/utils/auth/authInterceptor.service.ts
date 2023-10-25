@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
 import {
+  HttpErrorResponse,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
+  HttpResponse,
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, map, tap, throwError } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(){}
-    intercept(
+  constructor(private authService: AuthService) {}
+  intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
@@ -27,7 +30,13 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     }
 
-    // Pass the modified request to the next handler
-    return next.handle(req);
+    return next.handle(req).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error?.error?.message === 'jwt expired') {
+          this.authService.logout();
+        }
+        return throwError(() => error);
+      })
+    );
   }
 }

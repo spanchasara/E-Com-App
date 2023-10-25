@@ -21,10 +21,6 @@ const getProducts = catchAsync(async (req, res) => {
 
     const options = {
       ...req.query,
-      populate: {
-        path: "sellerId",
-        select: "firstName lastName",
-      },
     };
 
     const products = await productService.getProducts(filterQuery, options);

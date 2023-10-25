@@ -40,30 +40,25 @@
       </button>
     </div>
   </div>
-  <table class="table table-striped">
+  <table class="table table-striped text-center">
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">First Name</th>
-        <th scope="col">Last Name</th>
+        <th scope="col">Name</th>
         <th scope="col">username</th>
         <th scope="col">Email</th>
         <th scope="col">Registered On</th>
         <th scope="col" *ngIf="role === 'seller'">Current Role</th>
-        <th scope="col">Toggle Status</th>
+        <th scope="col">Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of tableData; index as i">
         <th scope="row">
-          {{ ((users?.page || 1) - 1) * (users?.limit || 1) + i + 1 }}
+          {{ ((users?.page || 1) - 1) * (users?.limit || 10) + i + 1 }}
         </th>
-        <td>
-          {{ data.firstName }}
-        </td>
-        <td>
-          {{ data.lastName }}
-        </td>
+        <td>{{ data.firstName }} {{ data.lastName }}</td>
+
         <td>
           {{ data.username }}
         </td>
@@ -82,6 +77,13 @@
           </ng-container>
 
           <ng-template #buttonTemplate>
+            <button
+              type="button"
+              class="btn btn-primary mx-2"
+              [routerLink]="['/user', data._id]"
+            >
+              View
+            </button>
             <button
               type="button"
               [ngClass]="data.isActive ? 'btn btn-danger' : 'btn btn-success'"

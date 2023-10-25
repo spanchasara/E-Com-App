@@ -28,7 +28,11 @@ const login = async (email, password) => {
   const user = await userService.findByCredentials(email, password);
   const token = await generateAuthToken(user._id, user.role);
 
-  return { user, token };
+  return {
+    user,
+    token,
+    tokenExpiresIn: process.env.JWT_ACCESS_EXPIRATION * 60 * 60,
+  };
 };
 
 const changePassword = async (userId, oldPassword, newPassword) => {

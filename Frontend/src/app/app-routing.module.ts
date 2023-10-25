@@ -11,6 +11,10 @@ import { AdminDashboardComponent } from './components/admin/admin-dashboard/admi
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AdminGuard } from './guards/admin.guard';
 import { SellerDashboardComponent } from './components/seller/seller-dashboard/seller-dashboard.component';
+import { PublicUserComponent } from './components/public-user/public-user.component';
+import { AddProductComponent } from './components/seller/add-product/add-product.component';
+import { EditProductComponent } from './components/seller/edit-product/edit-product.component';
+import { NotAuthorizedComponent } from './components/not-authorized/not-authorized.component';
 
 const routes: Routes = [
   {
@@ -34,6 +38,11 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'user/:id',
+    component: PublicUserComponent,
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'products',
     component: ProductsComponent,
   },
@@ -42,13 +51,30 @@ const routes: Routes = [
     component: ProductComponent,
   },
   {
-    path: 'dashboard',
+    path: 'admin/dashboard',
     component: AdminDashboardComponent,
     canActivate: [AuthGuard],
   },
   {
-    path:'sellerDashboard',
+    path: 'seller/dashboard',
     component: SellerDashboardComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path:'addProduct',
+    component: AddProductComponent,
+    canActivate: [AuthGuard]
+
+  },
+  {
+    path:'editProduct/:id',
+    component: EditProductComponent,
+    canActivate: [AuthGuard]
+
+  },
+  {
+    path:'notAuthorized',
+    component: NotAuthorizedComponent,
     canActivate: [AuthGuard]
 
   },

@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-not-found',
-  templateUrl: './not-found.component.html',
-  styleUrls: ['./not-found.component.css']
+  template: `
+  <div style="text-align: center; margin-top: 100px">
+    <h1>404 - Page Not Found</h1>
+    <p>The requested page does not exist.</p>
+  </div> `,
 })
-export class NotFoundComponent {
-
-}
+export class NotFoundComponent {}

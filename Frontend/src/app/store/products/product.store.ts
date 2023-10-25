@@ -1,53 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
-import {
-  PaginatedProducts,
-  Product,
-} from 'src/app/utils/product/product.model';
 
-export interface UserState {
-  products: PaginatedProducts;
-  currentProduct: Product | null;
+export interface ProductState {
+  search: string;
+  sort: string;
 }
 
 const initialState = {
-  products: {
-    docs: [],
-    totalDocs: 0,
-    limit: 0,
-    totalPages: 0,
-    page: 0,
-    pagingCounter: 0,
-    hasPrevPage: false,
-    hasNextPage: false,
-    prevPage: null,
-    nextPage: null,
-  },
-  currentProduct: null,
+  search: '',
+  sort: 'Default',
 };
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'product' })
-export class ProductStore extends Store<UserState> {
+@StoreConfig({ name: 'product-management' })
+export class ProductStore extends Store<ProductState> {
   constructor() {
     super(initialState);
   }
 
-  updateProductData(
-    isSingle: boolean = false,
-    data: PaginatedProducts | Product
-  ) {
-    if (isSingle) {
-      this.update((state) => ({
-        ...state,
-        currentProduct: data as Product,
-      }));
-    } else {
-      this.update((state) => ({
-        ...state,
-        products: data as PaginatedProducts,
-      }));
-    }
+  search$ = this._select((state: { search: string }) => state.search);
+  sort$ = this._select((state: { sort: string }) => state.sort);
+
+  updateProductData(productData: Partial<ProductState>) {
+    this.update(productData);
   }
 
   clearProductData() {

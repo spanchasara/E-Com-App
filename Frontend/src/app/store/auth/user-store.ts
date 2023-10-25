@@ -8,21 +8,26 @@ export interface UserState {
   users: PaginatedUsers | null;
 }
 
+const initialState: UserState = {
+  user: null,
+  users: null,
+};
+
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'user' })
+@StoreConfig({ name: 'user-management' })
 export class UserStore extends Store<UserState> {
   users$ = this._select((state: { users: any }) => state.users);
   user$ = this._select((state: { user: any }) => state.user);
 
   constructor() {
-    super({ user: null, users: null });
+    super(initialState);
   }
 
-  updateUserData(userData: any) {
+  updateUserData(userData: Partial<UserState>) {
     this.update(userData);
   }
 
   clearUserData() {
-    this.update({ user: null });
+    this.update(initialState);
   }
 }

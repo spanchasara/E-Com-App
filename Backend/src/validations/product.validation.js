@@ -23,11 +23,11 @@ const getSellerProducts = {
 
 const createProduct = {
   body: Joi.object().keys({
-    title: Joi.string().required().min(3).max(30),
-    description: Joi.string().required().min(10).max(100),
+    title: Joi.string().required().min(3).max(150),
+    description: Joi.string().required().min(10).max(300),
     price: Joi.number().min(1).required(),
     specifications: Joi.object().required(),
-    stock: Joi.number().min(1).required(),
+    stock: Joi.number().min(0).required(),
   }),
 };
 
@@ -36,11 +36,11 @@ const updateProduct = {
     productId: Joi.string().required(),
   }),
   body: Joi.object().keys({
-    title: Joi.string().min(3).max(30),
-    description: Joi.string().min(10).max(100),
+    title: Joi.string().min(3).max(150),
+    description: Joi.string().min(10).max(300),
     price: Joi.number().min(1),
     specifications: Joi.object(),
-    stock: Joi.number().min(1),
+    stock: Joi.number().min(0),
   }),
 };
 

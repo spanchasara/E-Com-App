@@ -29,6 +29,11 @@ import { LoaderComponent } from './components/shared/loader/loader.component';
 import { CardComponent } from './components/shared/card/card.component';
 import { ProductsListComponent } from './components/seller/products-list/products-list.component';
 import { SellerDashboardComponent } from './components/seller/seller-dashboard/seller-dashboard.component';
+import { PublicUserComponent } from './components/public-user/public-user.component';
+import { AddProductComponent } from './components/seller/add-product/add-product.component';
+import { EditProductComponent } from './components/seller/edit-product/edit-product.component';
+import { ProductFormComponent } from './components/seller/product-form/product-form.component';
+import { NotAuthorizedComponent } from './components/not-authorized/not-authorized.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +57,11 @@ import { SellerDashboardComponent } from './components/seller/seller-dashboard/s
     CardComponent,
     ProductsListComponent,
     SellerDashboardComponent,
+    PublicUserComponent,
+    AddProductComponent,
+    EditProductComponent,
+    ProductFormComponent,
+    NotAuthorizedComponent,
   ],
   imports: [
     BrowserModule,
