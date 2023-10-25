@@ -34,7 +34,7 @@ export class ProductFormComponent implements AfterViewInit {
     sellerId: '',
   };
   currentUserId: string = '';
-  specifications: Specification[] = [{ key: '', value: '' }];
+  specifications: Specification[] = [];
   constructor(
     private productService: ProductService,
     private router: Router,

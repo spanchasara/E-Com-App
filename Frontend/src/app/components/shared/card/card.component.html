@@ -23,13 +23,13 @@
           Quantity: {{ product.stock }}
         </h6>
         <ng-template #outOfStock>
-          <h6>Out of stock</h6>
+          <h6 style="color: red;">Out of stock</h6>
         </ng-template>
         <a href="#" *ngIf="!isSellerByRole" class="btn btn-class">Add to Cart</a>
       </div>
         <div class="col-md-2" *ngIf="isSellerByRole && isCurrentSeller">
           <button
-            class="custom-button mx-2"
+            class="custom-button mx-3"
             [routerLink]="['/editProduct', product._id]"
           >
             <svg
@@ -50,7 +50,7 @@
             </svg>
           </button>
 
-          <button class="custom-button mx-2" (click)="deleteProduct()">
+          <button class="custom-button mx-3" (click)="deleteProduct()">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="32"

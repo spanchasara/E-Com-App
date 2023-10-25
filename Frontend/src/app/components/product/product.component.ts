@@ -65,4 +65,8 @@ export class ProductComponent implements OnInit {
       }
     );
   }
+
+  checkObj(obj: any) {
+    return Object.keys(obj).length !== 0;
+  }
 }

@@ -5,14 +5,6 @@
 .link:hover {
   color: #c45500;
 }
-.btn-class {
-  border-color: #112d4e;
-  color: #112d4e;
-}
-.btn-class:hover {
-  background-color: #112d4e;
-  color: #fff;
-}
 .custom-button {
   border: none;
   background: none;

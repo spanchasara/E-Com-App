@@ -10,7 +10,10 @@
         <h4>
           <strong>current price: </strong><span>{{ product?.price }}</span>
         </h4>
-        <p><strong>Items in Stock:</strong> {{product?.stock}}</p>
+        <p *ngIf="product?.stock !== 0; else outOfStock"><strong>Items in Stock:</strong> {{product?.stock}}</p>
+        <ng-template #outOfStock>
+          <h4 style="color: red;"> Out Of Stock </h4>
+        </ng-template>
         <div class="action">
           <button class="btn btn-class mt-1" *ngIf="!isSellerByRole && !currentSeller" type="button">add to cart</button>
           <button class="btn btn-class mt-1 mx-2" (click)="editProduct()" *ngIf="isSellerByRole && currentSeller" type="button">Edit Product</button>
@@ -18,9 +21,9 @@
 
         </div>
         <br />
-        <hr class="hr hr-blurry" width="90%" />
         <!-- <button (click) = "clearStore()">Clear Store</button> -->
-        <table *ngIf="product?.specifications" class="table my-2">
+        <table *ngIf="checkObj(product?.specifications)" class="table my-2">
+          <hr class="hr hr-blurry" width="90%" />
           <tbody>
             <thead>
               <tr>
