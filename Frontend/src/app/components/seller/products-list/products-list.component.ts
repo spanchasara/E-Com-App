@@ -29,4 +29,13 @@ export class ProductsListComponent {
       this.sellerProducts = data;
     });
   }
+
+  toggleOutOfStock(e: any) {
+    const outOfStock = e.target.checked;
+
+    this.getSellerProducts({
+      sort: '-createdAt',
+      outOfStock,
+    });
+  }
 }
