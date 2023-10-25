@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css'],
 })
-export class CardComponent implements AfterViewInit{
+export class CardComponent implements AfterViewInit {
   @Input() product: Product = {
     _id: '',
     title: '',
@@ -20,19 +20,21 @@ export class CardComponent implements AfterViewInit{
     specifications: {},
     // defaultImage: 'https://picsum.photos/200'
   };
-  isSellerByRole : boolean = false;
-  isCurrentSeller: boolean = false  
+  isSellerByRole: boolean = false;
+  isCurrentSeller: boolean = false;
 
-  constructor(private productService: ProductService,
-    private userStore: UserStore) {}
+  constructor(
+    private productService: ProductService,
+    private userStore: UserStore
+  ) {}
 
   ngAfterViewInit(): void {
     this.isSellerByRole = this.userStore.getValue().user?.role === 'seller';
-    this.isCurrentSeller = this.product?.sellerId === this.userStore.getValue().user?._id
-    
+    this.isCurrentSeller =
+      this.product?.sellerId === this.userStore.getValue().user?._id;
   }
   deleteProduct() {
-    Swal.fire('Warning', 'Want to Delete Product!!', 'warning').then(
+    Swal.fire('Warning', 'Want to Delete Product ?', 'warning').then(
       (result) => {
         if (result.isConfirmed) {
           this.productService.deleteProduct(this.product._id).subscribe();

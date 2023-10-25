@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserStore } from 'src/app/store/auth/user-store';
-import { ProductStore } from 'src/app/store/products/product.store';
 import { Product } from 'src/app/utils/product/product.model';
 import { ProductService } from 'src/app/utils/product/product.service';
 import Swal from 'sweetalert2';
@@ -30,8 +29,7 @@ export class ProductComponent implements OnInit {
     private route: ActivatedRoute,
     private productService: ProductService,
     private router: Router,
-    private userStore: UserStore,
-    private productStore: ProductStore
+    private userStore: UserStore
   ) {}
   currentSeller: boolean = false;
   isSellerByRole: boolean = false;
@@ -55,7 +53,7 @@ export class ProductComponent implements OnInit {
     return Object.entries(obj).map(([key, value]) => ({ key, value }));
   }
   editProduct() {
-    this.router.navigate(['/editProduct', this.product?._id])
+    this.router.navigate(['/editProduct', this.product?._id]);
   }
   deleteProduct() {
     Swal.fire('Warning', 'Want to Delete Product!!', 'warning').then(
@@ -66,8 +64,5 @@ export class ProductComponent implements OnInit {
         }
       }
     );
-  }
-  clearStore() {
-    this.productStore.reset();
   }
 }

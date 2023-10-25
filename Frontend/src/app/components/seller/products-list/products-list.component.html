@@ -4,6 +4,11 @@
     <div *ngFor="let prod of sellerProducts?.docs" class="mt-3">
       <app-card [product]="prod"></app-card>
     </div>
+    <app-pagination
+      [totalItems]="sellerProducts?.totalDocs || 0"
+      [page]="sellerProducts?.page || 1"
+      (pageChange)="this.getSellerProducts({ page: $event })"
+    ></app-pagination>
   </div>
 
   <ng-template #noProducts>

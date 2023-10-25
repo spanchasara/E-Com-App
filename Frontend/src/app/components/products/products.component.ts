@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { ProductStore } from 'src/app/store/products/product.store';
-import { PaginatedProducts, Product } from 'src/app/utils/product/product.model';
+import { PaginatedProducts } from 'src/app/utils/product/product.model';
 import { ProductService } from 'src/app/utils/product/product.service';
 
 @Component({
@@ -19,23 +18,20 @@ export class ProductsComponent implements OnInit {
     'Name Z to A': '-title',
     'Newest Arrivals': '-createdAt',
   };
-  selectedSortOption: string = 'Default';
-  search: string = '';
 
   constructor(
     private productService: ProductService,
-    private productStore: ProductStore,
-    private router: Router
+    private productStore: ProductStore
   ) {}
 
   ngOnInit() {
-    this.productStore.products$.subscribe((data) => {
-      this.products = data;
+    const sortOptionKey = this.productStore.getValue().sort;
+    const sortOptionValue =
+      this.sortOptions[sortOptionKey as keyof typeof this.sortOptions];
+    this.getProducts({
+      keyword: this.productStore.getValue().search,
+      sort: sortOptionValue,
     });
-
-    if (!this.products || this.products.totalDocs === 0) {
-      this.getProducts({});
-    }
   }
 
   getProducts(options: any) {

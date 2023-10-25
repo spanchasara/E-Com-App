@@ -43,7 +43,11 @@ export class ProductFormComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.currentUserId = this.userStore.getValue().user?._id || '';
-    if (this.currentUserId != '' && this.product.sellerId!== '' &&  this.currentUserId != this.product.sellerId) {
+    if (
+      this.currentUserId != '' &&
+      this.product.sellerId !== '' &&
+      this.currentUserId != this.product.sellerId
+    ) {
       this.router.navigate(['/notAuthorized']);
     }
     if (this.editMode && this.product.specifications) {
@@ -100,5 +104,5 @@ export class ProductFormComponent implements AfterViewInit {
     }
     this.specifications = revspecifications;
     console.log(this.specifications);
-  } 
+  }
 }

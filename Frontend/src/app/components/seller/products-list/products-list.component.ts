@@ -5,13 +5,23 @@ import { ProductService } from 'src/app/utils/product/product.service';
 @Component({
   selector: 'app-products-list',
   templateUrl: './products-list.component.html',
-  styleUrls: ['./products-list.component.css']
+  styleUrls: ['./products-list.component.css'],
 })
 export class ProductsListComponent {
   sellerProducts!: PaginatedProducts;
   constructor(private productService: ProductService) {}
   ngOnInit(): void {
-    this.getSellerProducts({});
+    this.getSellerProducts({
+      sort: '-createdAt',
+    });
+
+    this.productService.callGetProducts.subscribe((data) => {
+      if (data) {
+        this.getSellerProducts({
+          sort: '-createdAt',
+        });
+      }
+    });
   }
 
   getSellerProducts(options: any) {
