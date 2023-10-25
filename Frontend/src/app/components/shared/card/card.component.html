@@ -25,7 +25,7 @@
         <ng-template #outOfStock>
           <h6 style="color: red;">Out of stock</h6>
         </ng-template>
-        <a href="#" *ngIf="!isSellerByRole" class="btn btn-class">Add to Cart</a>
+        <a href="#" *ngIf="!isSellerByRole && !isAdmin" class="btn btn-class">Add to Cart</a>
       </div>
         <div class="col-md-2" *ngIf="isSellerByRole && isCurrentSeller">
           <button
