@@ -5,6 +5,7 @@ import { environment } from 'src/environment/environment';
 import Swal from 'sweetalert2';
 import { LoaderService } from '../shared/loader.service';
 import { Cart, UpdateBody } from './cart.model';
+import { CartStore } from 'src/app/store/cart/cart.store';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,8 @@ import { Cart, UpdateBody } from './cart.model';
 export class CartService {
   constructor(
     private httpClient: HttpClient,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private cartStore: CartStore
   ) {}
 
   apiUrl = environment.apiUrl;
@@ -40,10 +42,17 @@ export class CartService {
     return this.httpClient.patch<Cart>(this.apiUrl + 'cart', updateBody).pipe(
       tap(() => {
         this.loaderService.hide();
+
+        if (updateBody?.qty === undefined) {
+          const { productId, isAdd } = updateBody;
+          this.cartStore.updateCartData(productId, isAdd);
+        }
+
         this.callGetCart.next(true);
       }),
       catchError((error) => {
         this.loaderService.hide();
+        this.callGetCart.next(true);
         console.log(error);
         Swal.fire('Error', error.error?.message, 'error');
         return of(error);

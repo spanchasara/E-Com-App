@@ -9,7 +9,10 @@ const updateCustomerCart = {
     })
     .custom((value, helpers) => {
       const { isAdd, qty } = value;
-      if ((!isAdd && !qty) || (isAdd && qty)) {
+      if (
+        (isAdd === undefined && qty === undefined) ||
+        (isAdd !== undefined && qty !== undefined)
+      ) {
         return helpers.message("Either qty or isAdd must be provided");
       }
 

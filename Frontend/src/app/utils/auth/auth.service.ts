@@ -15,6 +15,8 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { UserStore } from '../../store/auth/user-store';
 import { LoaderService } from '../shared/loader.service';
+import { CartStore } from 'src/app/store/cart/cart.store';
+import { ProductStore } from 'src/app/store/products/product.store';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +26,8 @@ export class AuthService {
     private httpClient: HttpClient,
     private router: Router,
     private userStore: UserStore,
+    private productStore: ProductStore,
+    private cartStore: CartStore,
     private loaderService: LoaderService
   ) {}
   isAuthenticated = new Subject<boolean>();
@@ -108,6 +112,8 @@ export class AuthService {
     this.loaderService.show();
     localStorage.removeItem('userToken');
     this.userStore.clearUserData();
+    this.productStore.clearProductData();
+    this.cartStore.clearCartData();
     this.isAuthenticated.next(false);
     this.loaderService.hide();
     this.router.navigate(['/']);

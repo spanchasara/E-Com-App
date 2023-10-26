@@ -15,12 +15,18 @@ import { PublicUserComponent } from './components/public-user/public-user.compon
 import { AddProductComponent } from './components/seller/add-product/add-product.component';
 import { EditProductComponent } from './components/seller/edit-product/edit-product.component';
 import { NotAuthorizedComponent } from './components/not-authorized/not-authorized.component';
+import { CartComponent } from './components/cart/cart.component';
 
 const routes: Routes = [
   {
     path: '',
     component: WelcomePageComponent,
     canActivate: [AdminGuard],
+  },
+  {
+    path: 'cart',
+    component: CartComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'login',
@@ -61,22 +67,19 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path:'addProduct',
+    path: 'addProduct',
     component: AddProductComponent,
-    canActivate: [AuthGuard]
-
+    canActivate: [AuthGuard],
   },
   {
-    path:'editProduct/:id',
+    path: 'editProduct/:id',
     component: EditProductComponent,
-    canActivate: [AuthGuard]
-
+    canActivate: [AuthGuard],
   },
   {
-    path:'notAuthorized',
+    path: 'notAuthorized',
     component: NotAuthorizedComponent,
-    canActivate: [AuthGuard]
-
+    canActivate: [AuthGuard],
   },
   { path: '**', component: NotFoundComponent },
 ];

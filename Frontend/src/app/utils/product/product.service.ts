@@ -99,7 +99,6 @@ export class ProductService {
   addProduct(product: Product) {
     this.loaderService.show();
     delete product.sellerId;
-    delete product._id;
     return this.httpClient
       .post<Product>(this.apiUrl + 'product', product, {
         observe: 'response',
@@ -125,7 +124,6 @@ export class ProductService {
   editProduct(id: string, product: Product) {
     this.loaderService.show();
     delete product.sellerId;
-    delete product._id;
     return this.httpClient
       .patch<Product>(this.apiUrl + 'product/' + id, product, {
         observe: 'response',

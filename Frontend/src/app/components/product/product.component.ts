@@ -56,17 +56,22 @@ export class ProductComponent implements OnInit {
     this.router.navigate(['/editProduct', this.product?._id]);
   }
   deleteProduct() {
-    Swal.fire('Warning', 'Want to Delete Product!!', 'warning').then(
-      (result) => {
-        if (result.isConfirmed) {
-          // console.log(this.product._id);
-          this.productService.deleteProduct(this.product?._id).subscribe();
-        }
+    Swal.fire({
+      title: 'Warning',
+      showCancelButton: true,
+      icon: 'warning',
+      html: 'Want to Delete Product ?',
+      confirmButtonText: 'Yes',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // console.log(this.product._id);
+        this.productService.deleteProduct(this.product?._id).subscribe();
       }
-    );
+    });
   }
 
   checkObj(obj: any) {
+    console.log(obj);
     return Object.keys(obj).length !== 0;
   }
 }
