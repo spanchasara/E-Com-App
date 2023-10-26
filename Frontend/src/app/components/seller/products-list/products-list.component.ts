@@ -9,6 +9,8 @@ import { ProductService } from 'src/app/utils/product/product.service';
 })
 export class ProductsListComponent {
   sellerProducts!: PaginatedProducts;
+  outOfStock: boolean = false;
+
   constructor(private productService: ProductService) {}
   ngOnInit(): void {
     this.getSellerProducts({
@@ -31,11 +33,19 @@ export class ProductsListComponent {
   }
 
   toggleOutOfStock(e: any) {
-    const outOfStock = e.target.checked;
+    this.outOfStock = e.target.checked;
 
     this.getSellerProducts({
       sort: '-createdAt',
-      outOfStock,
+      outOfStock: this.outOfStock,
+    });
+  }
+
+  pageChanged(page: number) {
+    this.getSellerProducts({
+      sort: '-createdAt',
+      page,
+      outOfStock: this.outOfStock,
     });
   }
 }

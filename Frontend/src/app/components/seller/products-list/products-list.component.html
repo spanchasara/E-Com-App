@@ -26,7 +26,7 @@
     <app-pagination
       [totalItems]="sellerProducts?.totalDocs || 0"
       [page]="sellerProducts?.page || 1"
-      (pageChange)="this.getSellerProducts({ page: $event })"
+      (pageChange)="pageChanged($event)"
     ></app-pagination>
   </div>
 
