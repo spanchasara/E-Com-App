@@ -34,6 +34,7 @@ import { AddProductComponent } from './components/seller/add-product/add-product
 import { EditProductComponent } from './components/seller/edit-product/edit-product.component';
 import { ProductFormComponent } from './components/seller/product-form/product-form.component';
 import { NotAuthorizedComponent } from './components/not-authorized/not-authorized.component';
+import { CartComponent } from './components/cart/cart.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { NotAuthorizedComponent } from './components/not-authorized/not-authoriz
     EditProductComponent,
     ProductFormComponent,
     NotAuthorizedComponent,
+    CartComponent,
   ],
   imports: [
     BrowserModule,

@@ -65,6 +65,7 @@ export class ProductService {
 
   getSellerProducts(options: {
     keyword?: string;
+    outOfStock?: boolean;
     page?: number;
     limit?: number;
     sort?: string;
@@ -73,6 +74,7 @@ export class ProductService {
     let params = new HttpParams();
 
     params = params.append('keyword', options?.keyword || '');
+    params = params.append('outOfStock', options?.outOfStock || false);
     params = params.append('page', options?.page || 1);
     params = params.append('limit', options?.limit || 10);
     params = params.append('sort', options?.sort || '');
@@ -97,7 +99,6 @@ export class ProductService {
   addProduct(product: Product) {
     this.loaderService.show();
     delete product.sellerId;
-    delete product._id;
     return this.httpClient
       .post<Product>(this.apiUrl + 'product', product, {
         observe: 'response',
@@ -123,7 +124,6 @@ export class ProductService {
   editProduct(id: string, product: Product) {
     this.loaderService.show();
     delete product.sellerId;
-    delete product._id;
     return this.httpClient
       .patch<Product>(this.apiUrl + 'product/' + id, product, {
         observe: 'response',

@@ -74,7 +74,16 @@ export class ProductFormComponent implements AfterViewInit {
 
     this.specifications.push({ key: '', value: '' });
   }
+
   onSubmit() {
+    if (
+      this.specifications.length > 0 &&
+      this.specifications[0]['key'] === '' &&
+      this.specifications[0]['value'] === ''
+    ) {
+      this.specifications = [];
+    }
+
     const productForm = {
       title: this.addProductForm.form.value?.productName,
       description: this.addProductForm.form.value?.productDescription,

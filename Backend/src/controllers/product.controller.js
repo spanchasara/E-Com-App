@@ -30,7 +30,7 @@ const getProducts = catchAsync(async (req, res) => {
 
 /* getSellerProducts - controller */
 const getSellerProducts = catchAsync(async (req, res) => {
-  const { keyword = "" } = req.query;
+  const { keyword = "", outOfStock = false } = req.query;
   const keywordRegx = new RegExp(keyword, "i");
 
   const filterQuery = {
@@ -40,6 +40,10 @@ const getSellerProducts = catchAsync(async (req, res) => {
     ],
     sellerId: req.user._id,
   };
+
+  if (outOfStock) {
+    filterQuery.stock = { $eq: 0 };
+  }
 
   const products = await productService.getProducts(filterQuery, req.query);
   res.send(products);
