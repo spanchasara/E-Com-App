@@ -13,7 +13,7 @@ const addressSchema = new Schema(
       required: true,
     },
     phoneNo: {
-      type: string,
+      type: String,
       trim: true,
       required: true,
     },
@@ -21,6 +21,7 @@ const addressSchema = new Schema(
       type: String,
       required: true,
       trim: true,
+      default: 'India'
     },
     state: {
       type: String,
@@ -50,11 +51,11 @@ const addressSchema = new Schema(
       required: true,
       trim: true,
     },
-    isActive: {
-      type: Boolean,
-      default: true,
-      required: true,
-    },
+    // isActive: {
+    //   type: Boolean,
+    //   default: true,
+    //   required: true,
+    // },
   },
   {
     timestamps: true,

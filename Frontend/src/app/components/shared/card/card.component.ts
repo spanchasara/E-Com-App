@@ -24,6 +24,7 @@ export class CardComponent implements OnInit, AfterViewInit {
   };
   isSellerByRole: boolean = false;
   isCurrentSeller: boolean = false;
+  isAdmin: boolean = false;
   addedProducts: { [key: string]: boolean } = {};
 
   constructor(
@@ -42,6 +43,7 @@ export class CardComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.isSellerByRole = this.userStore.getValue().user?.role === 'seller';
+    this.isAdmin = this.userStore.getValue().user?.role === 'admin';
     this.isCurrentSeller =
       this.product?.sellerId === this.userStore.getValue().user?._id;
   }
