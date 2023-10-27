@@ -5,7 +5,7 @@
     </div>
     <div class="card-body">
       <div class="table-responsive">
-        <table class="table table-bordered m-0">
+        <table class="table table-bordered m-0" *ngIf="cart.totalQty > 0">
           <thead>
             <tr>
               <th class="text-center py-3 px-4" style="min-width: 400px">
@@ -77,6 +77,7 @@
 
       <div
         class="d-flex flex-wrap justify-content-between align-items-center pb-4"
+        *ngIf="cart.totalQty > 0"
       >
         <!-- <div class="mt-4">
           <label class="text-muted font-weight-normal">Promocode</label>
@@ -86,7 +87,7 @@
           <div class="text-end mt-4">
             <label class="text-muted font-weight-normal m-0">Total qty</label>
             <div class="text-large">
-              <strong>{{ cart?.totalQty }}</strong>
+              <strong>{{ cart.totalQty }}</strong>
             </div>
           </div>
         </div>
@@ -94,7 +95,7 @@
           <div class="text-end mt-4">
             <label class="text-muted font-weight-normal m-0">Total price</label>
             <div class="text-large">
-              <strong>₹ {{ cart?.totalAmount }}</strong>
+              <strong>₹ {{ cart.totalAmount }}</strong>
             </div>
           </div>
         </div>
@@ -105,6 +106,22 @@
         </button>
         <button type="button" class="btn btn-lg btn-primary">Checkout</button>
       </div> -->
+
+      <div *ngIf="cart.totalQty === 0">
+        <div class="text-center">
+          <img
+            src="https://i.imgur.com/dCdflKN.png"
+            class="img-fluid"
+            alt="Empty cart"
+          />
+          <p class="lead mt-4">Your cart is empty.</p>
+          <p>
+            <a [routerLink]="['/products']" class="btn btn-outline-primary"
+              >Start shopping</a
+            >
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </div>

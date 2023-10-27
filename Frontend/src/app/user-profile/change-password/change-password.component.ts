@@ -17,7 +17,6 @@ export class ChangePasswordComponent {
   constructor(private authService: AuthService) {}
 
   changePassword() {
-    console.log(this.changePasswordForm);
     if (
       this.changePasswordForm.value.newPassword ===
       this.changePasswordForm.value.confirmPassword

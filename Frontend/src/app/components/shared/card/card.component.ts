@@ -26,6 +26,7 @@ export class CardComponent implements OnInit, AfterViewInit {
   isCurrentSeller: boolean = false;
   isAdmin: boolean = false;
   addedProducts: { [key: string]: boolean } = {};
+  isAuthenticated: boolean = false;
 
   constructor(
     private productService: ProductService,
@@ -36,7 +37,6 @@ export class CardComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.cartStore.addedProducts$.subscribe((addedProducts) => {
-      console.log(addedProducts);
       this.addedProducts = addedProducts;
     });
   }
@@ -46,6 +46,7 @@ export class CardComponent implements OnInit, AfterViewInit {
     this.isAdmin = this.userStore.getValue().user?.role === 'admin';
     this.isCurrentSeller =
       this.product?.sellerId === this.userStore.getValue().user?._id;
+    this.isAuthenticated = !!this.userStore.getValue().user;
   }
 
   deleteProduct() {
@@ -64,7 +65,11 @@ export class CardComponent implements OnInit, AfterViewInit {
 
   toggleCart(productId: string, isAdd: boolean = true) {
     if (!productId) return;
-    console.log(productId, isAdd);
-    this.cartService.updateCart({ productId, isAdd }).subscribe();
+
+    if (this.isAuthenticated) {
+      this.cartService.updateCart({ productId, isAdd }).subscribe();
+    } else {
+      this.cartService.updateLocalCart({ productId, isAdd });
+    }
   }
 }

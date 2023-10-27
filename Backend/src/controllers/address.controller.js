@@ -31,10 +31,8 @@ const editAddress = catchAsync(async (req, res) => {
 const deleteAddress = catchAsync(async (req, res) => {
   const userId = req.user._id;
   const { addressId } = req.params;
-  await addressService.deleteAddress(userId, addressId);
-  res.send({
-    message: "Address Deleted Successfully!",
-  });
+  const response = await addressService.deleteAddress(userId, addressId);
+  res.send(response);
 });
 
 const getUsersAddress = catchAsync(async (req, res) => {

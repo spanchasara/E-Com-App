@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Cart } from 'src/app/utils/cart/cart.model';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/utils/auth/auth.service';
+import { Cart, emptyCart } from 'src/app/utils/cart/cart.model';
 import { CartService } from 'src/app/utils/cart/cart.service';
 
 @Component({
@@ -8,15 +9,30 @@ import { CartService } from 'src/app/utils/cart/cart.service';
   styleUrls: ['./cart.component.css'],
 })
 export class CartComponent implements OnInit {
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService,
+    private authService: AuthService
+  ) {}
   cart!: Cart;
+  isAuthenticated: boolean = false;
 
-  ngOnInit(): void {
-    this.getCart();
+  ngOnInit() {
+    const { isAuthenticated } = this.authService.checkUserExists();
+    this.isAuthenticated = isAuthenticated;
 
-    this.cartService.callGetCart.subscribe((call) => {
-      if (call) this.getCart();
-    });
+    if (isAuthenticated) {
+      this.getCart();
+
+      this.cartService.callGetCart.subscribe((call) => {
+        if (call) this.getCart();
+      });
+    } else {
+      this.cart = this.cartService.getLocalCart();
+      console.log(this.cart);
+      this.cartService.callLocalCart.subscribe((call) => {
+        if (call) this.cart = this.cartService.getLocalCart();
+      });
+    }
   }
 
   getCart() {
@@ -26,10 +42,18 @@ export class CartComponent implements OnInit {
   }
 
   updateCart(productId: string, qty: number) {
-    this.cartService.updateCart({ productId, qty }).subscribe();
+    if (this.isAuthenticated) {
+      this.cartService.updateCart({ productId, qty }).subscribe();
+    } else {
+      this.cartService.updateLocalCart({ productId, qty });
+    }
   }
 
   removeFromCart(productId: string) {
-    this.cartService.updateCart({ productId, isAdd: false }).subscribe();
+    if (this.isAuthenticated) {
+      this.cartService.updateCart({ productId, isAdd: false }).subscribe();
+    } else {
+      this.cartService.updateLocalCart({ productId, isAdd: false });
+    }
   }
 }

@@ -21,7 +21,6 @@ const getSingleAddress = async (userId, addressId) => {
 };
 
 const addAddress = async (addressBody) => {
-  // have to send user id in address body
   const address = await Address.create(addressBody);
   if (!address) {
     throw new ApiError(
@@ -33,7 +32,6 @@ const addAddress = async (addressBody) => {
 };
 
 const editAddress = async (userId, addressId, addressBody) => {
-  // have to send user id in address body
   const address = await Address.findOneAndUpdate(
     { userId, _id: addressId },
     addressBody,
@@ -48,7 +46,7 @@ const editAddress = async (userId, addressId, addressBody) => {
 const deleteAddress = async (userId, addressId) => {
   const address = await Address.findOneAndDelete({ userId, _id: addressId });
   if (!address) throw new ApiError(httpStatus.NOT_FOUND, "Address Not Found");
-  return { message: "Deleted Successfully" };
+  return { message: "Address Deleted Successfully!" };
 };
 
 const getUsersAddress = async (userId) => {

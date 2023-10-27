@@ -159,7 +159,6 @@ export class ProductService {
       .pipe(
         tap((resData) => {
           this.loaderService.hide();
-          console.log('deleted');
 
           Swal.fire(
             'Success',

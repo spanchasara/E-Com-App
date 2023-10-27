@@ -51,7 +51,7 @@ const updateCustomerCart = catchAsync(async (req, res) => {
     if (existingProductIndex !== -1) {
       cart.products[existingProductIndex].qty = qty;
     } else {
-      throw new ApiError(httpStatus.BAD_REQUEST, "Product not found in cart!!");
+      cart.products.push({ productId, qty });
     }
   } else if (isAdd) {
     if (product.stock < 1) {

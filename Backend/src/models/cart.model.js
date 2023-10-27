@@ -47,7 +47,6 @@ cartSchema.pre(/^find/, function (next) {
 });
 
 cartSchema.pre("save", async function (next) {
-  console.log("pre save");
   await this.populate({
     path: "products.productId",
     select: "price",

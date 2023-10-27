@@ -26,8 +26,9 @@
           <h6 style="color: red">Out of stock</h6>
         </ng-template>
         <button
-          *ngIf="!isSellerByRole"
+          *ngIf="!isSellerByRole && !isAdmin && product.stock > 0"
           class="btn btn-class"
+          [disabled]=""
           (click)="
             toggleCart(product._id || '', !addedProducts[product._id || ''])
           "
