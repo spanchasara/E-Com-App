@@ -27,7 +27,7 @@ export class AuthService {
     private router: Router,
     private userStore: UserStore,
     private productStore: ProductStore,
-    private cartStore: CartStore,
+    // private cartStore: CartStore,
     private loaderService: LoaderService
   ) {}
   isAuthenticated = new Subject<boolean>();
@@ -113,7 +113,7 @@ export class AuthService {
     localStorage.removeItem('userToken');
     this.userStore.clearUserData();
     this.productStore.clearProductData();
-    this.cartStore.clearCartData();
+    // this.cartStore.clearCartData();
     this.isAuthenticated.next(false);
     this.loaderService.hide();
     this.router.navigate(['/']);
