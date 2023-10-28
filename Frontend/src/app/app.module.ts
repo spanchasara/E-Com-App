@@ -35,6 +35,11 @@ import { EditProductComponent } from './components/seller/edit-product/edit-prod
 import { ProductFormComponent } from './components/seller/product-form/product-form.component';
 import { NotAuthorizedComponent } from './components/not-authorized/not-authorized.component';
 import { CartComponent } from './components/cart/cart.component';
+import { AddressComponent } from './components/customer/address/address.component';
+import { AddressFormComponent } from './components/customer/address/address-form/address-form.component';
+import { AddAddressComponent } from './components/customer/address/add-address/add-address.component';
+import { EditAddressComponent } from './components/customer/address/edit-address/edit-address.component';
+import { AddressListComponent } from './components/customer/address/address-list/address-list.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +69,11 @@ import { CartComponent } from './components/cart/cart.component';
     ProductFormComponent,
     NotAuthorizedComponent,
     CartComponent,
+    AddressComponent,
+    AddressFormComponent,
+    AddAddressComponent,
+    EditAddressComponent,
+    AddressListComponent,
   ],
   imports: [
     BrowserModule,

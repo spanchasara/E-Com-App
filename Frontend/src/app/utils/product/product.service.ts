@@ -157,9 +157,8 @@ export class ProductService {
         observe: 'response',
       })
       .pipe(
-        tap((resData) => {
+        tap(() => {
           this.loaderService.hide();
-
           Swal.fire(
             'Success',
             'Product Deleted Successfully!!',
@@ -168,10 +167,6 @@ export class ProductService {
             if (result.isConfirmed) {
               this.router.navigate(['/']);
               this.callGetProducts.next(true);
-              // this.router.navigate(['/seller/dashboard'], {
-              //   queryParams: { refresh: new Date().getTime() },
-              // });
-              // window.location.reload();
             }
           });
         }),

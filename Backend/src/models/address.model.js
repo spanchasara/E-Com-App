@@ -51,11 +51,11 @@ const addressSchema = new Schema(
       required: true,
       trim: true,
     },
-    // isActive: {
-    //   type: Boolean,
-    //   default: true,
-    //   required: true,
-    // },
+    isDefault: {
+      type: Boolean,
+      default: true,
+      required: true,
+    },
   },
   {
     timestamps: true,

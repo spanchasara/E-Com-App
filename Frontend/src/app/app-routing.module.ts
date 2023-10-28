@@ -16,6 +16,9 @@ import { AddProductComponent } from './components/seller/add-product/add-product
 import { EditProductComponent } from './components/seller/edit-product/edit-product.component';
 import { NotAuthorizedComponent } from './components/not-authorized/not-authorized.component';
 import { CartComponent } from './components/cart/cart.component';
+import { AddAddressComponent } from './components/customer/address/add-address/add-address.component';
+import { EditAddressComponent } from './components/customer/address/edit-address/edit-address.component';
+import { AddressComponent } from './components/customer/address/address.component';
 
 const routes: Routes = [
   {
@@ -77,6 +80,30 @@ const routes: Routes = [
   },
   {
     path: 'notAuthorized',
+    component: NotAuthorizedComponent,
+    canActivate: [AuthGuard]
+
+  },
+  {
+    path: 'address',
+    component: AddressComponent,
+    canActivate: [AuthGuard]
+
+  },
+  {
+    path:'addAddress',
+    component: AddAddressComponent,
+    canActivate: [AuthGuard]
+
+  },
+  {
+    path:'editAddress/:id',
+    component: EditAddressComponent,
+    canActivate: [AuthGuard]
+
+  },
+  {
+    path:'notAuthorized',
     component: NotAuthorizedComponent,
     canActivate: [AuthGuard],
   },

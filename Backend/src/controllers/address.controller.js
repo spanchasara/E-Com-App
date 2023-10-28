@@ -16,7 +16,7 @@ const getSingleAddress = catchAsync(async (req, res) => {
 const addAddress = catchAsync(async (req, res) => {
   const userId = req.user._id;
   const body = req.body;
-  const address = await addressService.addAddress({ userId, ...body });
+  const address = await addressService.addAddress(userId, { userId, ...body });
   res.send(address);
 });
 
@@ -41,6 +41,13 @@ const getUsersAddress = catchAsync(async (req, res) => {
   res.send(addresses);
 });
 
+const toggleDefaultAddress = catchAsync(async (req, res) => {
+  const userId = req.user._id;
+  const {oldAddressId, newAddressId} = req.body;
+  const response = await addressService.toggleDefaultAddress(userId, oldAddressId, newAddressId);
+  res.send(response);
+});
+
 export {
   getAddress,
   getSingleAddress,
@@ -48,4 +55,5 @@ export {
   deleteAddress,
   editAddress,
   getUsersAddress,
+  toggleDefaultAddress
 };

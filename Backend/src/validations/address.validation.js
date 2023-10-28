@@ -16,11 +16,12 @@ const addAddress = {
     state: Joi.string().required(),
     city: Joi.string().required(),
     addressLane1: Joi.string().required(),
-    addressLane2: Joi.string().optional(),
-    landmark: Joi.string().optional(),
+    addressLane2: Joi.string().allow(""),
+    landmark: Joi.string().allow(""),
     pincode: Joi.string()
       .regex(/^\d{6}$/)
       .required(),
+    isDefault: Joi.boolean().default(false),
   }),
 };
 
@@ -37,8 +38,8 @@ const editAddress = {
     state: Joi.string().optional(),
     city: Joi.string().optional(),
     addressLane1: Joi.string().optional(),
-    addressLane2: Joi.string().optional(),
-    landmark: Joi.string().optional(),
+    addressLane2: Joi.string().allow(""),
+    landmark: Joi.string().allow(""),
     pincode: Joi.string()
       .regex(/^\d{6}$/)
       .optional(),
@@ -51,4 +52,17 @@ const deleteAddress = {
   }),
 };
 
-export { getSingleAddress, addAddress, deleteAddress, editAddress };
+const toggleDefaultAddress = {
+  body: Joi.object().keys({
+    oldAddressId: Joi.string().required(),
+    newAddressId: Joi.string().required(),
+  }),
+};
+
+export {
+  getSingleAddress,
+  addAddress,
+  deleteAddress,
+  editAddress,
+  toggleDefaultAddress,
+};

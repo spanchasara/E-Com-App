@@ -33,6 +33,14 @@ router
     addressController.addAddress
   );
 
+  router
+  .route("/toggle-default")
+  .patch(
+    auth("toggle_default_address"),
+    validate(addressValidation.toggleDefaultAddress),
+    addressController.toggleDefaultAddress
+  );
+
 router
   .route("/:addressId")
   .patch(

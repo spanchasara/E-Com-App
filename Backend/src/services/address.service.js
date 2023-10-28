@@ -9,7 +9,7 @@ const getAddress = async () => {
 };
 
 const getSingleAddress = async (userId, addressId) => {
-  const address = await Address.find({ userId, _id: addressId });
+  const address = await Address.findOne({ userId, _id: addressId });
 
   if (!address) {
     throw new ApiError(
@@ -20,7 +20,13 @@ const getSingleAddress = async (userId, addressId) => {
   return address;
 };
 
-const addAddress = async (addressBody) => {
+const addAddress = async (userId, addressBody) => {
+  
+  const addresses = await Address.find({ userId });
+
+  if(addresses.length === 0) {
+    addressBody.isDefault = true;
+  }
   const address = await Address.create(addressBody);
   if (!address) {
     throw new ApiError(
@@ -57,6 +63,19 @@ const getUsersAddress = async (userId) => {
   return addresses;
 };
 
+const toggleDefaultAddress = async (userId, oldAddressId, newAddressId) => {
+  const oldAddress = await Address.findOne({ userId, _id: oldAddressId });
+  const newAddress = await Address.findOne({ userId, _id: newAddressId });
+  if (!oldAddress || !newAddress)
+    throw new ApiError(httpStatus.NOT_FOUND, "No Address Found for the user!");
+
+    oldAddress.isDefault = false;
+    newAddress.isDefault = true;
+    await oldAddress.save();
+    await newAddress.save();
+  return {message: "Default Address Updated Successfully!!"}
+};
+
 export {
   getAddress,
   getSingleAddress,
@@ -64,4 +83,5 @@ export {
   deleteAddress,
   editAddress,
   getUsersAddress,
+  toggleDefaultAddress
 };

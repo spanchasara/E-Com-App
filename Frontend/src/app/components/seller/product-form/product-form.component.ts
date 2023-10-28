@@ -22,7 +22,7 @@ interface Specification {
 })
 export class ProductFormComponent implements AfterViewInit {
   @ViewChild('f', { static: false })
-  addProductForm!: NgForm;
+  productForm!: NgForm;
   @Input() editMode: boolean = false;
   @Input() productId: string = '';
   @Input() product: Product = {
@@ -85,10 +85,10 @@ export class ProductFormComponent implements AfterViewInit {
     }
 
     const productForm = {
-      title: this.addProductForm.form.value?.productName,
-      description: this.addProductForm.form.value?.productDescription,
-      stock: this.addProductForm.form.value?.productStock,
-      price: this.addProductForm.form.value?.productPrice,
+      title: this.productForm.form.value?.productName,
+      description: this.productForm.form.value?.productDescription,
+      stock: this.productForm.form.value?.productStock,
+      price: this.productForm.form.value?.productPrice,
       specifications: this.getSpecifications(),
       sellerId: this.userStore.getValue().user?._id || '',
     };

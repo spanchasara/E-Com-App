@@ -130,7 +130,7 @@ export class AuthService {
     localStorage.removeItem('userToken');
     this.userStore.clearUserData();
     this.productStore.clearProductData();
-    this.cartStore.clearCartData();
+    // this.cartStore.clearCartData();
     this.isAuthenticated.next(false);
     this.loaderService.hide();
     this.router.navigate(['/']);
