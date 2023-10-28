@@ -4,13 +4,21 @@
     (enteredSearch)="enteredSearch($event)"
   ></app-searchbar>
 
-  <div *ngFor="let prod of products?.docs" class="mt-3">
-    <app-card [product] = "prod"></app-card>
+  <div *ngIf="products.totalDocs > 0; else noProducts">
+    <div *ngFor="let prod of products?.docs" class="mt-3">
+      <app-card [product]="prod"></app-card>
+    </div>
   </div>
 
+  <ng-template #noProducts>
+    <div class="text-center mt-5">
+      <h3>No products found</h3>
+    </div>
+  </ng-template>
+
   <app-pagination
-    [totalItems]="products?.totalDocs || 0"
-    [page]="products?.page || 1"
+    [totalItems]="products.totalDocs || 0"
+    [page]="products.page || 1"
     (pageChange)="this.getProducts({ page: $event })"
   ></app-pagination>
 </div>

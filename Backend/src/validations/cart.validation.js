@@ -4,7 +4,7 @@ const updateCustomerCart = {
   body: Joi.object()
     .keys({
       productId: Joi.string().required(),
-      isAdd: Joi.boolean().default(false),
+      isAdd: Joi.boolean(),
       qty: Joi.number().integer().min(0),
     })
     .custom((value, helpers) => {

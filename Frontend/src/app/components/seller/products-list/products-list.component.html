@@ -24,8 +24,8 @@
       <app-card [product]="prod"></app-card>
     </div>
     <app-pagination
-      [totalItems]="sellerProducts?.totalDocs || 0"
-      [page]="sellerProducts?.page || 1"
+      [totalItems]="sellerProducts.totalDocs || 0"
+      [page]="sellerProducts.page || 1"
       (pageChange)="pageChanged($event)"
     ></app-pagination>
   </div>

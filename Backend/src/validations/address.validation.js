@@ -2,7 +2,7 @@ import Joi from "joi";
 
 const getSingleAddress = {
   params: Joi.object().keys({
-    addressId: Joi.string().allow(""),
+    addressId: Joi.string().required(),
   }),
 };
 
@@ -26,6 +26,9 @@ const addAddress = {
 };
 
 const editAddress = {
+  params: Joi.object().keys({
+    addressId: Joi.string().required(),
+  }),
   body: Joi.object().keys({
     fullName: Joi.string().optional(),
     phoneNo: Joi.string()
@@ -45,7 +48,7 @@ const editAddress = {
 
 const deleteAddress = {
   params: Joi.object().keys({
-    addressId: Joi.string().allow(""),
+    addressId: Joi.string().required(),
   }),
 };
 

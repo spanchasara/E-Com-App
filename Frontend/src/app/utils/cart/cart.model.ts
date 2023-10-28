@@ -6,6 +6,14 @@ export type Cart = {
   products: CartProduct[];
 };
 
+export const emptyCart: Cart = {
+  _id: '',
+  customerId: '',
+  totalAmount: 0,
+  totalQty: 0,
+  products: [],
+};
+
 export type CartProduct = {
   _id: string;
   productId: Product;

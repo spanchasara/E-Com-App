@@ -112,6 +112,5 @@ export class ProductFormComponent implements AfterViewInit {
       revspecifications.push({ key, value: specifications[key] });
     }
     this.specifications = revspecifications;
-    console.log(this.specifications);
   }
 }

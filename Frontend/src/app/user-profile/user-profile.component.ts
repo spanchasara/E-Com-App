@@ -137,7 +137,6 @@ export class UserProfileComponent implements AfterViewInit, OnInit {
 
   openModal(content: any) {
     this.modalService.open(content, { size: 'lg', centered: true });
-    console.log('seller registration form' + this.sellerRegistrationForm.value);
   }
 
   saveSeller() {
