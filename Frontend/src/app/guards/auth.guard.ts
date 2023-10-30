@@ -1,4 +1,3 @@
-// auth.guard.ts
 import { Injectable } from '@angular/core';
 import {
   CanActivate,
@@ -8,7 +7,7 @@ import {
   Router,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService } from '../utils/auth/auth.service';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +23,7 @@ export class AuthGuard implements CanActivate {
     | UrlTree
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree> {
-    // Check the authentication state in the AuthStore
+    // Check the authentication stwate in the AuthStore
     const isAuthenticated = this.authService.checkUserExists();
 
     const currentPath = route.url[0]?.path.toLowerCase();

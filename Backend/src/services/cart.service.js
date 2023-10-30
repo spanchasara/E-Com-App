@@ -3,13 +3,11 @@ import ApiError from "../utils/api-error.js";
 import httpStatus from "http-status";
 
 const getCustomerCart = async (filterQuery, populate = {}) => {
-  const cart = await Cart.findOne(filterQuery).populate(populate);
+  const cart1 = await Cart.findOne(filterQuery).populate(populate);
 
-  if (!cart) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Cart not found !!");
-  }
+ const cart2 = cart1 || await createCustomerCart(filterQuery)
 
-  return cart;
+  return cart2;
 };
 
 const customerCartExists = async (filterQuery) => {
