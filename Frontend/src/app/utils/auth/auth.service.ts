@@ -106,9 +106,9 @@ export class AuthService {
             (result) => {
               if (result.isConfirmed && user) {
                 if (user.role === 'admin') {
-                  this.router.navigate(['/admin/dashboard']);
+                  this.router.navigate(['/admin']);
                 } else if (user.role === 'seller') {
-                  this.router.navigate(['/seller/dashboard']);
+                  this.router.navigate(['/seller']);
                 } else {
                   this.router.navigate(['/']);
                 }
@@ -162,11 +162,9 @@ export class AuthService {
   }
 
   checkUserExists() {
-    return {
-      isAuthenticated:
-        !!localStorage.getItem('userToken') && !!this.userStore.getValue().user,
-      role: this.userStore.getValue().user?.role,
-    };
+    return (
+      !!localStorage.getItem('userToken') && !!this.userStore.getValue().user
+    );
   }
 
   clearStore() {

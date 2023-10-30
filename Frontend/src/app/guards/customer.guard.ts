@@ -12,7 +12,7 @@ import { AuthService } from '../utils/auth/auth.service';
 @Injectable({
   providedIn: 'root',
 })
-export class AdminGuard implements CanActivate {
+export class CustomerGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(
@@ -23,7 +23,7 @@ export class AdminGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (this.authService.checkRole('admin')) {
+    if (this.authService.checkRole('customer')) {
       return true;
     } else {
       return this.router.navigate(['/']);

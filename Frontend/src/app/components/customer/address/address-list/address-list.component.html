@@ -32,10 +32,7 @@
         {{ data.pincode }}
       </td>
       <td>
-        <button
-          class="custom-button mx-3"
-          [routerLink]="['/editAddress', data._id]"
-        >
+        <button class="custom-button mx-3" [routerLink]="['edit', data._id]">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -55,7 +52,8 @@
         </button>
 
         <button
-          class="custom-button mx-3" *ngIf="currentAddressId !== data._id"
+          class="custom-button mx-3"
+          *ngIf="currentAddressId !== data._id"
           (click)="deleteAddress(data._id || '')"
         >
           <svg

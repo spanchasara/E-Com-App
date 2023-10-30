@@ -14,9 +14,8 @@ export class AddressListComponent implements OnInit {
   role: string = '';
   addresses: Address[] = [];
   currentUserId: string = '';
-  currentAddressId: string = ''
-  newAddressId: string = ''
-
+  currentAddressId: string = '';
+  newAddressId: string = '';
 
   constructor(
     private addressService: AddressService,
@@ -26,10 +25,10 @@ export class AddressListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAddresses();
-    
+
     this.addressService.callGetUsersAddress.subscribe(() => {
       this.getAddresses();
-    })
+    });
   }
   get tableData() {
     return this.addresses;
@@ -47,12 +46,12 @@ export class AddressListComponent implements OnInit {
       }
     });
   }
-  getAddresses(){
+  getAddresses() {
     this.addressService.getAllUsersAddresses().subscribe((data) => {
       this.addresses = data;
 
       this.currentAddressId = data.filter((d: Address) => d.isDefault)[0]._id;
-      this.newAddressId = this.currentAddressId
+      this.newAddressId = this.currentAddressId;
 
       this.role = this.userStore.getValue().user?.role || '';
       this.currentUserId = this.userStore.getValue().user?._id || '';
@@ -61,16 +60,18 @@ export class AddressListComponent implements OnInit {
         this.currentUserId !== '' &&
         this.currentUserId !== this.addresses[0].userId
       ) {
-        this.router.navigate(['/notAuthorized']);
+        this.router.navigate(['/']);
       }
     });
   }
 
   check(e: Event) {
-    console.log(e)
-    this.newAddressId = (e.target as HTMLInputElement).value
+    console.log(e);
+    this.newAddressId = (e.target as HTMLInputElement).value;
   }
-  updateDefaultAddress(){
-    this.addressService.changeDefaultAddress(this.currentAddressId, this.newAddressId).subscribe()
+  updateDefaultAddress() {
+    this.addressService
+      .changeDefaultAddress(this.currentAddressId, this.newAddressId)
+      .subscribe();
   }
 }

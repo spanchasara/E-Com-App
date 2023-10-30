@@ -11,7 +11,7 @@ import { environment } from 'src/environment/environment';
   styleUrls: ['./address-form.component.css'],
 })
 export class AddressFormComponent implements AfterViewInit {
-  @ViewChild('f',{static: false})
+  @ViewChild('f', { static: false })
   addressForm!: NgForm;
   @Input() address: Address = {
     fullName: '',
@@ -23,7 +23,7 @@ export class AddressFormComponent implements AfterViewInit {
     addressLane2: '',
     landmark: '',
     pincode: '',
-    isDefault: false
+    isDefault: false,
   };
   @Input() editMode: boolean = false;
   states: any[] = [];
@@ -37,35 +37,24 @@ export class AddressFormComponent implements AfterViewInit {
   ngAfterViewInit() {
     const user = this.userStore.getValue().user;
     this.address.userId = user?._id || '';
-    if (user?.role !== 'customer') this.router.navigate(['/notAuthorized']);
-    this.states = environment.states 
+    if (user?.role !== 'customer') this.router.navigate(['/']);
+    this.states = environment.states;
     // console.log(this.states);
-    
-    console.log(this.address)
 
-    if(this.editMode) {
-       this.address.state ;
+    console.log(this.address);
+
+    if (this.editMode) {
+      this.address.state;
     }
   }
   onSubmit() {
-      // this.address.fullName= this.addressForm.form.value?.fullName;
-      // this.address.phoneNo= this.addressForm.form.value?.phoneNo;
-      // this.address.country= this.address?.country;
-      // this.address.state= this.addressForm.form.value?.state;
-      // this.address.city= this.addressForm.form.value?.city;
-      // this.address.addressLane1= this.addressForm.form.value?.addressLane1;
-      // this.address.addressLane2= this.addressForm.form.value?.addressLane2;
-      // this.address.landmark= this.addressForm.form.value?.landmark;
-      // this.address.pincode= this.addressForm.form.value?.pincode;
-     console.log(this.address)
-    if(!this.editMode)
-      this.addressService.addAddress(this.address).subscribe();  
-    else
-      this.addressService.editAddress(this.address).subscribe();  
+    console.log(this.address);
+    if (!this.editMode)
+      this.addressService.addAddress(this.address).subscribe();
+    else this.addressService.editAddress(this.address).subscribe();
   }
 
   check(e: any) {
-    console.log(e)
+    console.log(e);
   }
-  
 }

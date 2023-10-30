@@ -17,7 +17,7 @@ export class CartComponent implements OnInit {
   isAuthenticated: boolean = false;
 
   ngOnInit() {
-    const { isAuthenticated } = this.authService.checkUserExists();
+    const isAuthenticated = this.authService.checkUserExists();
     this.isAuthenticated = isAuthenticated;
 
     if (isAuthenticated) {

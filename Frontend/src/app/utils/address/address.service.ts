@@ -51,6 +51,7 @@ export class AddressService {
     delete address.createdAt;
     delete address.updatedAt;
     delete address.__v;
+    delete address.isDefault;
     return this.http
       .patch<Address>(this.apiUrl + `address/${addressId}`, address, {
         observe: 'response',

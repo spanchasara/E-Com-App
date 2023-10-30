@@ -48,7 +48,7 @@ export class ProductFormComponent implements AfterViewInit {
       this.product.sellerId !== '' &&
       this.currentUserId != this.product.sellerId
     ) {
-      this.router.navigate(['/notAuthorized']);
+      this.router.navigate(['/']);
     }
     if (this.editMode && this.product.specifications) {
       this.revertToSpecifications(this.product.specifications as Specification);

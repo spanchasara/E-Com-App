@@ -64,7 +64,7 @@ export class ProductComponent implements OnInit {
     return Object.entries(obj).map(([key, value]) => ({ key, value }));
   }
   editProduct() {
-    this.router.navigate(['/editProduct', this.product?._id]);
+    this.router.navigate(['seller/products/edit', this.product?._id]);
   }
   deleteProduct() {
     Swal.fire({

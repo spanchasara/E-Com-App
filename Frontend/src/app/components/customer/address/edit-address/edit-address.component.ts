@@ -12,8 +12,8 @@ import { AddressService } from 'src/app/utils/address/address.service';
 export class EditAddressComponent implements OnInit {
   id: string = '';
   address!: Address;
-  role: string='';
-  currentUserId: string= '';
+  role: string = '';
+  currentUserId: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -28,17 +28,19 @@ export class EditAddressComponent implements OnInit {
       if (!this.id.match(/^[0-9a-fA-F]{24}$/)) {
         this.router.navigate(['/not-found']);
       } else {
-        this.addressService
-          .getSingleAddress(this.id)
-          .subscribe((data) => {
-            this.role = this.userStore.getValue().user?.role || '';
-            this.currentUserId = this.userStore.getValue().user?._id || '';
-            if(this.role !== 'customer' && this.currentUserId !== '' && this.currentUserId !== this.address.userId){
-              this.router.navigate(['/notAuthorized']);
-            }
-            this.address = data;
-          });
+        this.addressService.getSingleAddress(this.id).subscribe((data) => {
+          this.role = this.userStore.getValue().user?.role || '';
+          this.currentUserId = this.userStore.getValue().user?._id || '';
+          if (
+            this.role !== 'customer' &&
+            this.currentUserId !== '' &&
+            this.currentUserId !== this.address.userId
+          ) {
+            this.router.navigate(['/']);
+          }
+          this.address = data;
+        });
       }
-    })
+    });
   }
 }
