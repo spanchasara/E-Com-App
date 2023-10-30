@@ -28,16 +28,24 @@ export class AddressService {
       .pipe(
         tap(() => {
           this.loaderService.hide();
-          Swal.fire('Success', 'Address Added Successfully!!', 'success').then(
-            (result) => {
-              if (result.isConfirmed) this.router.navigate(['/address']);
-            }
-          );
+          Swal.fire({
+            title: 'Success',
+            html: 'Address Added Successfully!!',
+            icon: 'success',
+            width: 400,
+          }).then((result) => {
+            if (result.isConfirmed) this.router.navigate(['/address']);
+          });
         }),
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire('Error', error.error?.message, 'error');
+          Swal.fire({
+            title: 'Error',
+            html: error.error?.message,
+            icon: 'error',
+            width: 400,
+          });
           return of(error);
         })
       );
@@ -59,18 +67,25 @@ export class AddressService {
       .pipe(
         tap(() => {
           this.loaderService.hide();
-          Swal.fire(
-            'Success',
-            'Address Updated Successfully!!',
-            'success'
-          ).then((result) => {
+          Swal.fire({
+            title: 'Success',
+            html: 'Address Updated Successfully!!',
+            icon: 'success',
+            width: 400,
+          }).then((result) => {
             if (result.isConfirmed) this.router.navigate(['/address']);
           });
         }),
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire('Error', error.error?.message, 'error');
+
+          Swal.fire({
+            title: 'Error',
+            html: error.error?.message,
+            icon: 'error',
+            width: 400,
+          });
           return of(error);
         })
       );
@@ -85,7 +100,12 @@ export class AddressService {
       catchError((error) => {
         this.loaderService.hide();
         console.log(error);
-        Swal.fire('Error', error.error?.message, 'error');
+        Swal.fire({
+          title: 'Error',
+          html: error.error?.message,
+          icon: 'error',
+          width: 400,
+        });
         return of(error);
       })
     );
@@ -100,7 +120,12 @@ export class AddressService {
       catchError((error) => {
         this.loaderService.hide();
         console.log(error);
-        Swal.fire('Error', error.error?.message, 'error');
+        Swal.fire({
+          title: 'Error',
+          html: error.error?.message,
+          icon: 'error',
+          width: 400,
+        });
         return of(error);
       })
     );
@@ -115,11 +140,12 @@ export class AddressService {
       .pipe(
         tap(() => {
           this.loaderService.hide();
-          Swal.fire(
-            'Success',
-            'Address Deleted Successfully!!',
-            'success'
-          ).then((result) => {
+          Swal.fire({
+            title: 'Success',
+            html: 'Address Deleted Successfully!!',
+            icon: 'success',
+            width: 400,
+          }).then((result) => {
             if (result.isConfirmed) {
               this.callGetUsersAddress.next(true);
             }
@@ -128,7 +154,12 @@ export class AddressService {
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire('Error', error.error?.message, 'error');
+          Swal.fire({
+            title: 'Error',
+            html: error.error?.message,
+            icon: 'error',
+            width: 400,
+          });
           return of(error);
         })
       );
@@ -148,11 +179,12 @@ export class AddressService {
       .pipe(
         tap(() => {
           this.loaderService.hide();
-          Swal.fire(
-            'Success',
-            'Default Address Updated Successfully!!',
-            'success'
-          ).then((result) => {
+          Swal.fire({
+            title: 'Success',
+            html: 'Default Address Updated Successfully!!',
+            icon: 'success',
+            width: 400,
+          }).then((result) => {
             if (result.isConfirmed) {
               this.callGetUsersAddress.next(true);
             }
@@ -161,7 +193,12 @@ export class AddressService {
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire('Error', error.error?.message, 'error');
+          Swal.fire({
+            title: 'Error',
+            html: error.error?.message,
+            icon: 'error',
+            width: 400,
+          });
           return of(error);
         })
       );

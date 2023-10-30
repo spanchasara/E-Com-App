@@ -42,16 +42,24 @@ export class AuthService {
       .pipe(
         tap(() => {
           this.loaderService.hide();
-          Swal.fire('Success', 'Registered Successfully!!', 'success').then(
-            (result) => {
-              if (result.isConfirmed) this.router.navigate(['/login']);
-            }
-          );
+          Swal.fire({
+            title: 'Success',
+            html: 'Registered Successfully!!',
+            icon: 'success',
+            width: 400,
+          }).then((result) => {
+            if (result.isConfirmed) this.router.navigate(['/login']);
+          });
         }),
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire('Error', error.error?.message, 'error');
+          Swal.fire({
+            title: 'Error',
+            html: error.error?.message,
+            icon: 'error',
+            width: 400,
+          });
           return of(error);
         })
       );
@@ -96,24 +104,32 @@ export class AuthService {
           }
           localStorage.removeItem('cart');
 
-          Swal.fire('Success', 'LoggedIn Successfully!!', 'success').then(
-            (result) => {
-              if (result.isConfirmed && user) {
-                if (user.role === 'admin') {
-                  this.router.navigate(['/admin']);
-                } else if (user.role === 'seller') {
-                  this.router.navigate(['/seller']);
-                } else {
-                  this.router.navigate(['/']);
-                }
+          Swal.fire({
+            title: 'Success',
+            html: 'LoggedIn Successfully!!',
+            icon: 'success',
+            width: 400,
+          }).then((result) => {
+            if (result.isConfirmed && user) {
+              if (user.role === 'admin') {
+                this.router.navigate(['/admin']);
+              } else if (user.role === 'seller') {
+                this.router.navigate(['/seller']);
+              } else {
+                this.router.navigate(['/']);
               }
             }
-          );
+          });
         }),
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire('Error', error.error?.message, 'error');
+          Swal.fire({
+            title: 'Error',
+            html: error.error?.message,
+            icon: 'error',
+            width: 400,
+          });
           return of(error);
         })
       );
@@ -136,11 +152,12 @@ export class AuthService {
 
   autoLogout(expirationDuration: number) {
     this.tokenExpirationTimer = setTimeout(() => {
-      Swal.fire(
-        'Session Expiry',
-        'The session will expire in 15 seconds',
-        'warning'
-      );
+      Swal.fire({
+        title: 'Session Expiry',
+        html: 'The session will expire in 15 seconds',
+        icon: 'warning',
+        width: 400,
+      });
       setTimeout(() => {
         this.logout();
       }, 5000);
@@ -177,16 +194,22 @@ export class AuthService {
       .pipe(
         tap((resData) => {
           this.loaderService.hide();
-          Swal.fire(
-            'Success',
-            'Password Updated Successfully!!',
-            'success'
-          ).then();
+          Swal.fire({
+            title: 'Success',
+            html: 'Password Updated Successfully!!',
+            icon: 'success',
+            width: 400,
+          }).then();
         }),
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire('Error', error.error?.message, 'error');
+          Swal.fire({
+            title: 'Error',
+            html: error.error?.message,
+            icon: 'error',
+            width: 400,
+          });
           return of(error);
         })
       );

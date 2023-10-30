@@ -58,7 +58,12 @@ export class ProductService {
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire('Error', error.error?.message, 'error');
+          Swal.fire({
+            title: 'Error',
+            html: error.error?.message,
+            icon: 'error',
+            width: 400,
+          });
           return of(error);
         })
       );
@@ -91,7 +96,12 @@ export class ProductService {
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire('Error', error.error?.message, 'error');
+          Swal.fire({
+            title: 'Error',
+            html: error.error?.message,
+            icon: 'error',
+            width: 400,
+          });
           return of(error);
         })
       );
@@ -108,16 +118,24 @@ export class ProductService {
         tap(() => {
           this.loaderService.hide();
 
-          Swal.fire('Success', 'Product Added Successfully!!', 'success').then(
-            (result) => {
-              if (result.isConfirmed) this.router.navigate(['/']);
-            }
-          );
+          Swal.fire({
+            title: 'Success',
+            html: 'Product Added Successfully!!',
+            icon: 'success',
+            width: 400,
+          }).then((result) => {
+            if (result.isConfirmed) this.router.navigate(['/']);
+          });
         }),
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire('Error', error.error?.message, 'error');
+          Swal.fire({
+            title: 'Error',
+            html: error.error?.message,
+            icon: 'error',
+            width: 400,
+          });
           return of(error);
         })
       );
@@ -133,11 +151,12 @@ export class ProductService {
         tap(() => {
           this.loaderService.hide();
 
-          Swal.fire(
-            'Success',
-            'Product Updated Successfully!!',
-            'success'
-          ).then((result) => {
+          Swal.fire({
+            title: 'Success',
+            html: 'Product Updated Successfully!!',
+            icon: 'success',
+            width: 400,
+          }).then((result) => {
             if (result.isConfirmed) {
               this.router.navigate(['/products', id]);
             }
@@ -146,7 +165,12 @@ export class ProductService {
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire('Error', error.error?.message, 'error');
+          Swal.fire({
+            title: 'Error',
+            html: error.error?.message,
+            icon: 'error',
+            width: 400,
+          });
           return of(error);
         })
       );
@@ -160,11 +184,12 @@ export class ProductService {
       .pipe(
         tap(() => {
           this.loaderService.hide();
-          Swal.fire(
-            'Success',
-            'Product Deleted Successfully!!',
-            'success'
-          ).then((result) => {
+          Swal.fire({
+            title: 'Success',
+            html: 'Product Deleted Successfully!!',
+            icon: 'success',
+            width: 400,
+          }).then((result) => {
             if (result.isConfirmed) {
               this.router.navigate(['/']);
               this.callGetProducts.next(true);
@@ -174,7 +199,12 @@ export class ProductService {
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire('Error', error.error?.message, 'error');
+          Swal.fire({
+            title: 'Error',
+            html: error.error?.message,
+            icon: 'error',
+            width: 400,
+          });
           return of(error);
         })
       );

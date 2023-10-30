@@ -31,16 +31,24 @@ export class UserService {
           this.loaderService.hide();
           const user = resData.body;
           this.userStore.updateUserData({ user });
-          Swal.fire('Success', 'User Updated Successfully!!', 'success').then(
-            (result) => {
-              if (result.isConfirmed) this.router.navigate(['/user']);
-            }
-          );
+          Swal.fire({
+            title: 'Success',
+            html: 'User Updated Successfully!!',
+            icon: 'success',
+            width: 400,
+          }).then((result) => {
+            if (result.isConfirmed) this.router.navigate(['/user']);
+          });
         }),
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire('Error', error.error?.message, 'error');
+          Swal.fire({
+            title: 'Error',
+            html: error.error?.message,
+            icon: 'error',
+            width: 400,
+          });
           return of(error);
         })
       );
@@ -65,7 +73,12 @@ export class UserService {
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire('Error', error.error?.message, 'error');
+          Swal.fire({
+            title: 'Error',
+            html: error.error?.message,
+            icon: 'error',
+            width: 400,
+          });
           return of(error);
         })
       );
@@ -81,7 +94,12 @@ export class UserService {
       catchError((error) => {
         this.loaderService.hide();
         console.log(error);
-        Swal.fire('Error', error.error?.message, 'error');
+        Swal.fire({
+          title: 'Error',
+          html: error.error?.message,
+          icon: 'error',
+          width: 400,
+        });
         return of(error);
       })
     );
@@ -108,7 +126,12 @@ export class UserService {
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire('Error', error.error?.message, 'error');
+          Swal.fire({
+            title: 'Error',
+            html: error.error?.message,
+            icon: 'error',
+            width: 400,
+          });
           return of(error);
         })
       );
@@ -124,7 +147,12 @@ export class UserService {
         }),
         catchError((error) => {
           console.log(error);
-          Swal.fire('Error', error.error?.message, 'error');
+          Swal.fire({
+            title: 'Error',
+            html: error.error?.message,
+            icon: 'error',
+            width: 400,
+          });
           return of(error);
         })
       );
@@ -140,7 +168,12 @@ export class UserService {
         }),
         catchError((error) => {
           console.log(error);
-          Swal.fire('Error', error.error?.message, 'error');
+          Swal.fire({
+            title: 'Error',
+            html: error.error?.message,
+            icon: 'error',
+            width: 400,
+          });
           return of(error);
         })
       );

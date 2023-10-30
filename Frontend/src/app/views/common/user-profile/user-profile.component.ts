@@ -143,11 +143,12 @@ export class UserProfileComponent implements AfterViewInit, OnInit {
     }
 
     this.userService.sellerRegistration(this.textInput).subscribe((resData) => {
-      Swal.fire(
-        'Success',
-        'Registered as Seller Successfully!!',
-        'success'
-      ).then((result) => {
+      Swal.fire({
+        title: 'Success',
+        html: 'Registered as Seller Successfully!!',
+        icon: 'success',
+        width: 400,
+      }).then((result) => {
         if (result.isConfirmed) {
           this.modalService.dismissAll('Close click');
           this.saveSellerCheck();
@@ -174,12 +175,22 @@ export class UserProfileComponent implements AfterViewInit, OnInit {
     if (this.userObject?.role === 'customer') {
       this.showCompany = true;
       this.userService.toggleRole('seller').subscribe(() => {
-        Swal.fire('Success', 'Shifted to seller!!', 'success');
+        Swal.fire({
+          title: 'Success',
+          html: 'Shifted to seller!!',
+          icon: 'success',
+          width: 400,
+        });
       });
     } else if (this.userObject?.role === 'seller') {
       this.showCompany = false;
       this.userService.toggleRole('customer').subscribe(() => {
-        Swal.fire('Success', 'Shifted to customer!!', 'success');
+        Swal.fire({
+          title: 'Success',
+          html: 'Shifted to customer!!',
+          icon: 'success',
+          width: 400,
+        });
       });
     }
   }

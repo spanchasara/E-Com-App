@@ -31,11 +31,12 @@ export class ChangePasswordComponent {
           this.cancelForm();
         });
     else {
-      Swal.fire(
-        'Error',
-        'The new Password should be same as confirm password',
-        'error'
-      );
+      Swal.fire({
+        title: 'Error',
+        html: 'The new Password should be same as confirm password',
+        icon: 'error',
+        width: 400,
+      });
     }
   }
   cancelForm() {

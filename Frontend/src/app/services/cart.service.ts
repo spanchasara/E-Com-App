@@ -35,7 +35,12 @@ export class CartService {
       catchError((error) => {
         this.loaderService.hide();
         console.log(error);
-        Swal.fire('Error', error.error?.message, 'error');
+        Swal.fire({
+          title: 'Error',
+          html: error.error?.message,
+          icon: 'error',
+          width: 400,
+        });
         return of(error);
       })
     );
@@ -59,7 +64,12 @@ export class CartService {
         if (showLoader) this.loaderService.hide();
         this.callGetCart.next(true);
         console.log(error);
-        Swal.fire('Error', error.error?.message, 'error');
+        Swal.fire({
+          title: 'Error',
+          html: error.error?.message,
+          icon: 'error',
+          width: 400,
+        });
         return of(error);
       })
     );
@@ -129,13 +139,14 @@ export class CartService {
     }
 
     if (product.stock < qty) {
-      Swal.fire(
-        'Warning',
-        `Only ${product.stock} ${
+      Swal.fire({
+        title: 'Warning',
+        html: `Only ${product.stock} ${
           product.stock > 1 ? 'are' : 'is'
         } available in stock`,
-        'warning'
-      );
+        icon: 'warning',
+        width: 400,
+      });
     }
 
     return cart;

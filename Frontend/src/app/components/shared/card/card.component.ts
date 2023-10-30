@@ -56,6 +56,7 @@ export class CardComponent implements OnInit, AfterViewInit {
       icon: 'warning',
       html: 'Want to Delete Product ?',
       confirmButtonText: 'Yes',
+      width: 400,
     }).then((result) => {
       if (result.isConfirmed) {
         this.productService.deleteProduct(this.product._id).subscribe();
