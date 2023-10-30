@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/utils/auth/auth.service';
-import { Cart, emptyCart } from 'src/app/utils/cart/cart.model';
+import { Cart } from 'src/app/utils/cart/cart.model';
 import { CartService } from 'src/app/utils/cart/cart.service';
 
 @Component({

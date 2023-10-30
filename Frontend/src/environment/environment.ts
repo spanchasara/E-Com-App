@@ -1,9 +1,6 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:3000/api/v1/',
-  stateListUserName: 'ldhingra',
-  geonameIdIndia: '1269750',
-  getStateListApiUrl: 'http://api.geonames.org/childrenJSON',
   states: [
     'Andhra Pradesh',
     'Arunachal Pradesh',
