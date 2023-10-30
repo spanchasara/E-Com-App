@@ -40,6 +40,7 @@ import { AddressFormComponent } from './components/customer/address/address-form
 import { AddAddressComponent } from './components/customer/address/add-address/add-address.component';
 import { EditAddressComponent } from './components/customer/address/edit-address/edit-address.component';
 import { AddressListComponent } from './components/customer/address/address-list/address-list.component';
+import { CartListComponent } from './components/cart/cart-list/cart-list.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { AddressListComponent } from './components/customer/address/address-list
     AddAddressComponent,
     EditAddressComponent,
     AddressListComponent,
+    CartListComponent,
   ],
   imports: [
     BrowserModule,

@@ -22,6 +22,8 @@ export class NavbarComponent implements OnInit {
         this.loginRole = user.role;
       });
     });
+
+    console.log(this.isLoggedIn, this.loginRole)
   }
 
   logout() {

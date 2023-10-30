@@ -34,14 +34,10 @@
         class="navbar-nav ml-auto my-2 my-lg-0 navbar-nav-scroll"
         style="--bs-scroll-height: 100px"
       >
-        <li class="nav-item">
-          <button class="nav-link text-white" routerLink="/products">
-            Products
-          </button>
-        </li>
+       
         <li
           class="nav-item"
-          *ngIf="!isLoggedIn || (loginRole && loginRole === 'customer')"
+          *ngIf="!isLoggedIn || isCustomer"
         >
           <button class="nav-link text-white" routerLink="/cart">Cart</button>
         </li>

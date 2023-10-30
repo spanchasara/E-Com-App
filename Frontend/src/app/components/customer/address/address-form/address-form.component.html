@@ -75,6 +75,7 @@
             #state="ngModel"
             id="stateSelect"
             [(ngModel)]="address.state"
+            required
           >
             <option value="" disabled>Select a State</option>
             <option *ngFor="let state of states" [ngValue]="state">
