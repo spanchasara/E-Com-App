@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ProductStore } from 'src/app/store/products/product.store';
+import { ProductStore } from 'src/app/store/product.store';
 
 @Component({
   selector: 'app-searchbar',

@@ -54,9 +54,9 @@ const updateCustomerCart = catchAsync(async (req, res) => {
       cart.products.push({ productId, qty });
     }
   } else if (isAdd) {
-    if (product.stock < 1) {
-      throw new ApiError(httpStatus.BAD_REQUEST, "Product is out of stock!!");
-    }
+    // if (product.stock < 1) {
+    //   throw new ApiError(httpStatus.BAD_REQUEST, "Product is out of stock!!");
+    // }
 
     if (existingProductIndex !== -1) {
       if (product.stock <= cart.products[existingProductIndex].qty) {

@@ -26,7 +26,7 @@
           <h6 style="color: red">Out of stock</h6>
         </ng-template>
         <button
-          *ngIf="!isSellerByRole && !isAdmin && product.stock > 0"
+          *ngIf="!isSellerByRole && !isCurrentSeller && !isAdmin"
           class="btn btn-class"
           [disabled]=""
           (click)="
@@ -41,10 +41,7 @@
         </button>
       </div>
       <div class="col-md-2" *ngIf="isSellerByRole && isCurrentSeller">
-        <button
-          class="custom-button mx-3"
-          [routerLink]="['/editProduct', product._id]"
-        >
+        <button class="custom-button mx-3" [routerLink]="['/seller/products/edit', product._id]">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="32"

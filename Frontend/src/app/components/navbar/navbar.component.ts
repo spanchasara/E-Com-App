@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UserStore } from 'src/app/store/auth/user-store';
-import { AuthService } from 'src/app/utils/auth/auth.service';
+
+import { AuthService } from 'src/app/services/auth.service';
+import { UserService } from 'src/app/services/user.service';
+import { UserStore } from 'src/app/store/user-store';
 
 @Component({
   selector: 'app-navbar',
@@ -10,17 +12,19 @@ import { AuthService } from 'src/app/utils/auth/auth.service';
 export class NavbarComponent implements OnInit {
   isLoggedIn: boolean = false;
   loginRole: string | null = null;
-  isCustomer: boolean = false
-  constructor(private authService: AuthService, private userStore : UserStore) {}
+  isCustomer: boolean = false;
+  constructor(private authService: AuthService,
+    private userStore: UserStore) {}
   ngOnInit() {
     this.isLoggedIn = localStorage.getItem('userToken') ? true : false;
-    this.isCustomer = this.userStore.getValue().user?.role === 'customer';
+
+    this.userStore.user$.subscribe((user) => {
+      this.isCustomer = user.role === 'customer'
+    })
+
+
     this.authService.isAuthenticated.subscribe((loginStatus) => {
       this.isLoggedIn = loginStatus;
-
-      this.userStore.user$.subscribe((user) => {
-        this.loginRole = user.role;
-      });
     });
   }
 

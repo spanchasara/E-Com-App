@@ -1,0 +1,14 @@
+.custom-button {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 20px;
+}
+.bi-pencil-square:hover {
+  fill: green;
+}
+
+.bi-trash:hover {
+  fill: red;
+}

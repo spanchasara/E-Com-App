@@ -1,9 +1,10 @@
 import catchAsync from "../utils/catch-async.js";
 import * as addressService from "../services/address.service.js";
 
-const getAddress = catchAsync(async (req, res) => {
-  const address = await addressService.getAddress();
-  res.send(address);
+const getUsersAddress = catchAsync(async (req, res) => {
+  const userId = req.user._id;
+  const addresses = await addressService.getUsersAddress(userId);
+  res.send(addresses);
 });
 
 const getSingleAddress = catchAsync(async (req, res) => {
@@ -35,12 +36,6 @@ const deleteAddress = catchAsync(async (req, res) => {
   res.send(response);
 });
 
-const getUsersAddress = catchAsync(async (req, res) => {
-  const userId = req.user._id;
-  const addresses = await addressService.getUsersAddress(userId);
-  res.send(addresses);
-});
-
 const toggleDefaultAddress = catchAsync(async (req, res) => {
   const userId = req.user._id;
   const {oldAddressId, newAddressId} = req.body;
@@ -49,11 +44,10 @@ const toggleDefaultAddress = catchAsync(async (req, res) => {
 });
 
 export {
-  getAddress,
+  getUsersAddress,
   getSingleAddress,
   addAddress,
   deleteAddress,
   editAddress,
-  getUsersAddress,
   toggleDefaultAddress
 };

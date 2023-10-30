@@ -2,9 +2,11 @@ import httpStatus from "http-status";
 import Address from "../models/address.model.js";
 import ApiError from "../utils/api-error.js";
 
-const getAddress = async () => {
-  const addresses = await Address.find({});
-  if (!addresses) throw new ApiError(httpStatus.NOT_FOUND, "No Address found");
+const getUsersAddress = async (userId) => {
+  const addresses = await Address.find({ userId });
+  if (!addresses)
+    throw new ApiError(httpStatus.NOT_FOUND, "No Address Found for the user!");
+
   return addresses;
 };
 
@@ -55,13 +57,6 @@ const deleteAddress = async (userId, addressId) => {
   return { message: "Address Deleted Successfully!" };
 };
 
-const getUsersAddress = async (userId) => {
-  const addresses = await Address.find({ userId });
-  if (!addresses)
-    throw new ApiError(httpStatus.NOT_FOUND, "No Address Found for the user!");
-
-  return addresses;
-};
 
 const toggleDefaultAddress = async (userId, oldAddressId, newAddressId) => {
   const oldAddress = await Address.findOne({ userId, _id: oldAddressId });
@@ -77,11 +72,10 @@ const toggleDefaultAddress = async (userId, oldAddressId, newAddressId) => {
 };
 
 export {
-  getAddress,
+  getUsersAddress,
   getSingleAddress,
   addAddress,
   deleteAddress,
   editAddress,
-  getUsersAddress,
   toggleDefaultAddress
 };

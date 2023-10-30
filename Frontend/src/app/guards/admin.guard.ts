@@ -7,7 +7,7 @@ import {
   Router,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService } from '../utils/auth/auth.service';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -24,12 +24,9 @@ export class AdminGuard implements CanActivate {
     | boolean
     | UrlTree {
     if (this.authService.checkRole('admin')) {
-      this.router.navigate(['admin/dashboard']);
-      return false;
-    } else if (this.authService.checkRole('seller')) {
-      this.router.navigate(['seller/dashboard']);
-      return false;
+      return true;
+    } else {
+      return this.router.navigate(['/']);
     }
-    return true;
   }
 }

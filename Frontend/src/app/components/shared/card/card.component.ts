@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { UserStore } from 'src/app/store/auth/user-store';
-import { CartStore } from 'src/app/store/cart/cart.store';
-import { CartService } from 'src/app/utils/cart/cart.service';
-import { Product } from 'src/app/utils/product/product.model';
-import { ProductService } from 'src/app/utils/product/product.service';
 import Swal from 'sweetalert2';
+
+import { Product } from 'src/app/models/product.model';
+import { CartService } from 'src/app/services/cart.service';
+import { ProductService } from 'src/app/services/product.service';
+import { CartStore } from 'src/app/store/cart.store';
+import { UserStore } from 'src/app/store/user-store';
 
 @Component({
   selector: 'app-card',
@@ -20,7 +21,6 @@ export class CardComponent implements OnInit, AfterViewInit {
     stock: 0,
     sellerId: '',
     specifications: {},
-    // defaultImage: 'https://picsum.photos/200'
   };
   isSellerByRole: boolean = false;
   isCurrentSeller: boolean = false;
@@ -56,6 +56,7 @@ export class CardComponent implements OnInit, AfterViewInit {
       icon: 'warning',
       html: 'Want to Delete Product ?',
       confirmButtonText: 'Yes',
+      width: 400,
     }).then((result) => {
       if (result.isConfirmed) {
         this.productService.deleteProduct(this.product._id).subscribe();

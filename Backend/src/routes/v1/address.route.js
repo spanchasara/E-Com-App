@@ -6,9 +6,6 @@ import auth from "../../middlewares/auth.js";
 
 const router = express.Router();
 
-// get all address for development only
-router.route("/all-addresses").get(addressController.getAddress);
-
 router
   .route("/user")
   .get(
