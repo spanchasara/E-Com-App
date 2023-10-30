@@ -15,6 +15,9 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { UserStore } from '../../store/auth/user-store';
 import { LoaderService } from '../shared/loader.service';
+import { CartStore } from 'src/app/store/cart/cart.store';
+import { ProductStore } from 'src/app/store/products/product.store';
+import { CartService } from '../cart/cart.service';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +27,10 @@ export class AuthService {
     private httpClient: HttpClient,
     private router: Router,
     private userStore: UserStore,
-    private loaderService: LoaderService
+    private productStore: ProductStore,
+    private cartStore: CartStore,
+    private loaderService: LoaderService,
+    private cartService: CartService
   ) {}
   isAuthenticated = new Subject<boolean>();
 
@@ -78,8 +84,23 @@ export class AuthService {
           this.userStore.updateUserData({ user });
 
           this.autoLogout(expiresInDuration * 1000);
-
           this.isAuthenticated.next(true);
+
+          if (user?.role === 'customer') {
+            const localCart = this.cartService.getLocalCart();
+            localCart.products.forEach((product) => {
+              this.cartService
+                .updateCart(
+                  {
+                    productId: product.productId._id,
+                    qty: product.qty,
+                  },
+                  false
+                )
+                .subscribe();
+            });
+          }
+          localStorage.removeItem('cart');
 
           Swal.fire('Success', 'LoggedIn Successfully!!', 'success').then(
             (result) => {
@@ -108,6 +129,8 @@ export class AuthService {
     this.loaderService.show();
     localStorage.removeItem('userToken');
     this.userStore.clearUserData();
+    this.productStore.clearProductData();
+    // this.cartStore.clearCartData();
     this.isAuthenticated.next(false);
     this.loaderService.hide();
     this.router.navigate(['/']);
@@ -141,7 +164,7 @@ export class AuthService {
   checkUserExists() {
     return {
       isAuthenticated:
-        localStorage.getItem('userToken') && !!this.userStore.getValue().user,
+        !!localStorage.getItem('userToken') && !!this.userStore.getValue().user,
       role: this.userStore.getValue().user?.role,
     };
   }

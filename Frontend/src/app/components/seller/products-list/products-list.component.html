@@ -1,8 +1,18 @@
 <div class="container mt-4">
-  <div *ngIf="sellerProducts?.totalDocs; else noProducts">
+  <div>
     <div class="row">
       <div class="col-md-10">
         <h2>Your Products</h2>
+        <div class="mb-3">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="outOfStock"
+            (change)="toggleOutOfStock($event)"
+            aria-label="Checkbox for outOfStock"
+          />
+          <label for="outOfStock">Out of stock</label>
+        </div>
       </div>
       <div class="col-md-2 ml-auto">
         <button class="btn btn-class" routerLink="/addProduct">
@@ -14,13 +24,13 @@
       <app-card [product]="prod"></app-card>
     </div>
     <app-pagination
-      [totalItems]="sellerProducts?.totalDocs || 0"
-      [page]="sellerProducts?.page || 1"
-      (pageChange)="this.getSellerProducts({ page: $event })"
+      [totalItems]="sellerProducts.totalDocs || 0"
+      [page]="sellerProducts.page || 1"
+      (pageChange)="pageChanged($event)"
     ></app-pagination>
   </div>
 
-  <ng-template #noProducts>
+  <div *ngIf="!sellerProducts?.totalDocs">
     <h1 class="text-center mt-5">No products to display</h1>
-  </ng-template>
+  </div>
 </div>

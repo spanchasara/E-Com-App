@@ -15,6 +15,8 @@
               placeholder="Product Name"
               class="form-control"
               type="text"
+              minlength="3"
+              maxlength="150"
               #title="ngModel"
               required
               [(ngModel)]="product.title"
@@ -23,8 +25,10 @@
               class="help-block"
               style="color: red"
               *ngIf="!title.valid && title.touched"
-              >Please enter a valid product title!</span
             >
+              Product title must be at least 3 characters long and not more than
+              150 characters long!
+            </span>
           </div>
         </div>
 
@@ -41,6 +45,8 @@
               rows="4"
               #description="ngModel"
               cols="30"
+              minlength="10"
+              maxlength="300"
               ngModel
               required
               [(ngModel)]="product.description"
@@ -49,7 +55,8 @@
               class="help-block"
               style="color: red"
               *ngIf="!description.valid && description.touched"
-              >Please enter a valid product description!</span
+              >Product description must be at least 10 characters long and not
+              more than 300 characters long!</span
             >
           </div>
         </div>
@@ -89,7 +96,7 @@
               min="0"
               class="form-control"
               [(ngModel)]="product.stock"
-            />description
+            />
             <span
               class="help-block"
               style="color: red"

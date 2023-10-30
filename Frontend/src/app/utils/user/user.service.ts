@@ -119,7 +119,6 @@ export class UserService {
       .pipe(
         tap((resData) => {
           const user = resData;
-          console.log(user);
           this.userStore.updateUserData({ user });
         }),
         catchError((error) => {

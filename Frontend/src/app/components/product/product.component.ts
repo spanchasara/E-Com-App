@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserStore } from 'src/app/store/auth/user-store';
+import { CartStore } from 'src/app/store/cart/cart.store';
+import { CartService } from 'src/app/utils/cart/cart.service';
 import { Product } from 'src/app/utils/product/product.model';
 import { ProductService } from 'src/app/utils/product/product.service';
 import Swal from 'sweetalert2';
@@ -29,10 +31,15 @@ export class ProductComponent implements OnInit {
     private route: ActivatedRoute,
     private productService: ProductService,
     private router: Router,
-    private userStore: UserStore
+    private userStore: UserStore,
+    private cartService: CartService,
+    private cartStore: CartStore
   ) {}
+
   currentSeller: boolean = false;
   isSellerByRole: boolean = false;
+  isAdmin: boolean = false;
+  addedProducts: { [key: string]: boolean } = {};
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
@@ -45,9 +52,13 @@ export class ProductComponent implements OnInit {
         }
       });
       this.isSellerByRole = this.userStore.getValue().user?.role === 'seller';
+      this.isAdmin = this.userStore.getValue().user?.role === 'admin';
+    });
+
+    this.cartStore.addedProducts$.subscribe((addedProducts) => {
+      this.addedProducts = addedProducts;
     });
   }
-  ngAfterViewInit(): void {}
 
   objectKeys(obj: any) {
     return Object.entries(obj).map(([key, value]) => ({ key, value }));
@@ -56,17 +67,25 @@ export class ProductComponent implements OnInit {
     this.router.navigate(['/editProduct', this.product?._id]);
   }
   deleteProduct() {
-    Swal.fire('Warning', 'Want to Delete Product!!', 'warning').then(
-      (result) => {
-        if (result.isConfirmed) {
-          // console.log(this.product._id);
-          this.productService.deleteProduct(this.product?._id).subscribe();
-        }
+    Swal.fire({
+      title: 'Warning',
+      showCancelButton: true,
+      icon: 'warning',
+      html: 'Want to Delete Product ?',
+      confirmButtonText: 'Yes',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.productService.deleteProduct(this.product?._id).subscribe();
       }
-    );
+    });
   }
 
   checkObj(obj: any) {
     return Object.keys(obj).length !== 0;
+  }
+
+  toggleCart(productId: string, isAdd: boolean = true) {
+    if (!productId) return;
+    this.cartService.updateCart({ productId, isAdd }).subscribe();
   }
 }

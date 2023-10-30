@@ -5,7 +5,6 @@ import catchAsync from "../utils/catch-async.js";
 
 /* getUserProfile - controller */
 const getUserProfile = catchAsync(async (req, res) => {
-  console.log(req.user);
   res.send(req.user);
 });
 

@@ -48,15 +48,16 @@ export class AuthGuard implements CanActivate {
     ) {
       if (role === 'seller') return true;
       return this.router.navigate(['/']);
-    } else if (isAuthenticated && route.url[0]?.path === 'addProduct') {
+    } else if (isAuthenticated && (route.url[0]?.path === 'addProduct' || route.url[0]?.path === 'editProduct')) {
       if(role ==='seller')
         return true;
       return this.router.navigate(['/']);
-    } else if (isAuthenticated && route.url[0]?.path === 'editProduct') {
-      if(role ==='seller')
+    } else if (isAuthenticated && route.url[0]?.path.toLocaleLowerCase().includes('address')) {
+      if(role ==='customer')
         return true;
       return this.router.navigate(['/']);
-    }else {
+    }
+    else {
       return true;
     }
   }
