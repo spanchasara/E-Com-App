@@ -40,6 +40,10 @@ import { EditAddressComponent } from './views/customer/address/edit-address/edit
 import { AddressListComponent } from './views/customer/address/address-list/address-list.component';
 import { CartListComponent } from './views/customer/cart/cart-list/cart-list.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { SellerOrdersComponent } from './views/seller/orders/seller-orders.component';
+import { OrderCardComponent } from './components/shared/order-card/order-card.component';
+import { AdminOrdersComponent } from './views/admin/orders/admin-orders.component';
+import { CustomerOrdersComponent } from './views/customer/orders/customer-orders.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +78,10 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     EditAddressComponent,
     AddressListComponent,
     CartListComponent,
+    SellerOrdersComponent,
+    AdminOrdersComponent,
+    OrderCardComponent,
+    CustomerOrdersComponent,
   ],
   imports: [
     BrowserModule,

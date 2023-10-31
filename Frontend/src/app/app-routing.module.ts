@@ -23,6 +23,9 @@ import { HomeGuard } from './guards/home.guard';
 import { SellerGuard } from './guards/seller.guard';
 import { CustomerGuard } from './guards/customer.guard';
 import { UsersListComponent } from './views/admin/users-list/users-list.component';
+import { SellerOrdersComponent } from './views/seller/orders/seller-orders.component';
+import { AdminOrdersComponent } from './views/admin/orders/admin-orders.component';
+import { CustomerOrdersComponent } from './views/customer/orders/customer-orders.component';
 
 const routes: Routes = [
   {
@@ -76,6 +79,10 @@ const routes: Routes = [
         path: 'users',
         component: UsersListComponent,
       },
+      {
+        path: 'orders',
+        component: AdminOrdersComponent,
+      },
     ],
   },
   {
@@ -100,6 +107,10 @@ const routes: Routes = [
         path: 'products/edit/:id',
         component: EditProductComponent,
       },
+      {
+        path: 'orders',
+        component: SellerOrdersComponent,
+      },
     ],
   },
   {
@@ -115,6 +126,11 @@ const routes: Routes = [
   {
     path: 'address/edit/:id',
     component: EditAddressComponent,
+    canActivate: [AuthGuard, CustomerGuard],
+  },
+  {
+    path: 'orders',
+    component: CustomerOrdersComponent,
     canActivate: [AuthGuard, CustomerGuard],
   },
   { path: '**', component: NotFoundComponent },

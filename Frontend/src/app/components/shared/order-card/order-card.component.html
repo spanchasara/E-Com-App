@@ -1,0 +1,89 @@
+<div class="card my-4 mx-auto" style="width: 80%; font-size: 14px">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-3">ORDER PLACED</div>
+          <div class="col-md-3">TOTAL</div>
+          <div class="col-md-3">SHIP TO</div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">date</div>
+          <div class="col-md-3">total</div>
+          <div
+            class="col-md-6"
+            data-bs-placement="bottom"
+            title="Tooltip on bottom"
+          >
+            address full name
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-md-6 d-flex justify-content-end flex-column align-items-end"
+      >
+        <div class="row">
+          <div class="col-md-12">ORDER # ID</div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <a href="#">View order details</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row mt-3">
+      <div class="col-md-2 d-flex align-items-center">
+        <div class="col-md-5">
+          <img
+            src="https://bootdey.com/img/Content/avatar/avatar1.png"
+            class="d-block ui-w-40 ui-bordered mx-2"
+            alt=""
+            height="100px"
+            width="100px"
+          />
+        </div>
+      </div>
+      <div class="col-md-10 my-3">
+        <a class="d-block text-dark">title</a>
+        <p class="my-1">₹ price</p>
+        <div class="row">
+          <div class="col-md-3">
+            <label for="quantity">Quantity: 3</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-md-2 d-flex align-items-center">
+        <div class="col-md-5">
+          <img
+            src="https://bootdey.com/img/Content/avatar/avatar1.png"
+            class="d-block ui-w-40 ui-bordered mx-2"
+            alt=""
+            height="100px"
+            width="100px"
+          />
+        </div>
+      </div>
+      <div class="col-md-10 my-3">
+        <a class="d-block text-dark">title</a>
+        <p class="my-1">₹ price</p>
+        <div class="row">
+          <div class="col-md-3">
+            <label for="quantity">Quantity: 3</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isCurrentOrder" class="card-footer">
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <button class="btn btn-success me-md-2" type="button">
+        Mark delivered
+      </button>
+    </div>
+  </div>
+</div>

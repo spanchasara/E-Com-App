@@ -2,8 +2,14 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-admin-dashboard',
-  template: '<router-outlet></router-outlet>',
+  templateUrl: './admin-dashboard.component.html',
 })
 export class AdminDashboardComponent {
   constructor() {}
+
+  action: string = 'users';
+
+  toggleAction(action: string) {
+    this.action = action;
+  }
 }

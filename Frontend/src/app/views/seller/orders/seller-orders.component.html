@@ -1,0 +1,52 @@
+<div class="container mt-4">
+  <div>
+    <div class="row">
+      <div class="col-md-10">
+        <h2>Your Orders</h2>
+      </div>
+    </div>
+
+    <div class="nav nav-tabs mt-3">
+      <div class="nav-item">
+        <button
+          [ngClass]="
+            order === 'current'
+              ? 'nav-link active text-black'
+              : 'nav-link text-black'
+          "
+          (click)="toggleOrder('current')"
+          [disabled]="order === 'current'"
+        >
+          Current
+        </button>
+      </div>
+      <div class="nav-item">
+        <button
+          [ngClass]="
+            order === 'completed'
+              ? 'nav-link active text-black'
+              : 'nav-link text-black'
+          "
+          (click)="toggleOrder('completed')"
+          [disabled]="order === 'completed'"
+        >
+          Completed
+        </button>
+      </div>
+    </div>
+
+    <div class="mt-3">
+      <app-order-card [isCurrentOrder]="order === 'current'"></app-order-card>
+      <app-order-card [isCurrentOrder]="order === 'current'"></app-order-card>
+    </div>
+    <!-- <app-pagination
+      [totalItems]="sellerProducts.totalDocs || 0"
+      [page]="sellerProducts.page || 1"
+      (pageChange)="pageChanged($event)"
+    ></app-pagination> -->
+  </div>
+
+  <!-- <div *ngIf="!sellerProducts?.totalDocs">
+    <h1 class="text-center mt-5">No orders to display</h1>
+  </div> -->
+</div>

@@ -1,0 +1,32 @@
+<div class="nav nav-tabs mt-3">
+  <div class="nav-item">
+    <button
+      [ngClass]="
+        action === 'products'
+          ? 'nav-link active text-black'
+          : 'nav-link text-black'
+      "
+      (click)="toggleAction('products')"
+      [routerLink]="['products']"
+      [disabled]="action === 'products'"
+    >
+      Products
+    </button>
+  </div>
+  <div class="nav-item">
+    <button
+      [ngClass]="
+        action === 'orders'
+          ? 'nav-link active text-black'
+          : 'nav-link text-black'
+      "
+      (click)="toggleAction('orders')"
+      [routerLink]="['orders']"
+      [disabled]="action === 'orders'"
+    >
+      Orders
+    </button>
+  </div>
+</div>
+
+<router-outlet></router-outlet>
