@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
 
 import { Address } from 'src/app/models/address.model';
 import { AddressService } from 'src/app/services/address.service';
 import { UserStore } from 'src/app/store/user-store';
+import { SwalService } from 'src/app/services/swal.service';
 
 @Component({
   selector: 'app-address-list',
@@ -20,6 +20,7 @@ export class AddressListComponent implements OnInit {
 
   constructor(
     private addressService: AddressService,
+    private swalService: SwalService,
     private userStore: UserStore,
     private router: Router
   ) {}
@@ -37,17 +38,13 @@ export class AddressListComponent implements OnInit {
   }
 
   deleteAddress(addressId: string) {
-    Swal.fire({
-      title: 'Warning',
-      showCancelButton: true,
-      icon: 'warning',
-      html: 'Want to Delete Product ?',
-      confirmButtonText: 'Yes',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.addressService.deleteAddress(addressId).subscribe();
-      }
-    });
+    this.swalService
+      .confirmWarning('Want to Delete Address ?')
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.addressService.deleteAddress(addressId).subscribe();
+        }
+      });
   }
 
   getAddresses() {

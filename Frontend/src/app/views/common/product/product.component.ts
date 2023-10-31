@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import Swal from 'sweetalert2';
 
 import { Product } from 'src/app/models/product.model';
 import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
 import { CartStore } from 'src/app/store/cart.store';
 import { UserStore } from 'src/app/store/user-store';
+import { SwalService } from 'src/app/services/swal.service';
 
 @Component({
   selector: 'app-product',
@@ -31,6 +31,7 @@ export class ProductComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
+    private swalService: SwalService,
     private router: Router,
     private userStore: UserStore,
     private cartService: CartService,
@@ -53,9 +54,9 @@ export class ProductComponent implements OnInit {
         }
         this.isSellerByRole = this.userStore.getValue().user?.role === 'seller';
         this.isAdmin = this.userStore.getValue().user?.role === 'admin';
-        console.log( " this.currentSeller"+ this.currentSeller)
-        console.log( " this.currentUserId"+ this.currentUserId)
-        console.log( " this.product?.sellerId"+ this.product?.sellerId)
+        console.log(' this.currentSeller' + this.currentSeller);
+        console.log(' this.currentUserId' + this.currentUserId);
+        console.log(' this.product?.sellerId' + this.product?.sellerId);
       });
     });
 
@@ -71,17 +72,13 @@ export class ProductComponent implements OnInit {
     this.router.navigate(['seller/products/edit', this.product?._id]);
   }
   deleteProduct() {
-    Swal.fire({
-      title: 'Warning',
-      showCancelButton: true,
-      icon: 'warning',
-      html: 'Want to Delete Product ?',
-      confirmButtonText: 'Yes',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.productService.deleteProduct(this.product?._id).subscribe();
-      }
-    });
+    this.swalService
+      .confirmWarning('Want to Delete Product ?')
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.productService.deleteProduct(this.product?._id).subscribe();
+        }
+      });
   }
 
   checkObj(obj: any) {

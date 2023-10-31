@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError, of, tap } from 'rxjs';
-import Swal from 'sweetalert2';
 
 import { environment } from 'src/environment/environment';
 import { PaginatedUsers, UpdateUser, User } from '../models/user.model';
 import { LoaderService } from './loader.service';
 import { UserStore } from '../store/user-store';
+import { SwalService } from './swal.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +18,8 @@ export class UserService {
     private httpClient: HttpClient,
     private userStore: UserStore,
     private router: Router,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private swalService: SwalService
   ) {}
   updateUser(updateUserData: UpdateUser) {
     this.loaderService.show();
@@ -31,24 +32,13 @@ export class UserService {
           this.loaderService.hide();
           const user = resData.body;
           this.userStore.updateUserData({ user });
-          Swal.fire({
-            title: 'Success',
-            html: 'User Updated Successfully!!',
-            icon: 'success',
-            width: 400,
-          }).then((result) => {
-            if (result.isConfirmed) this.router.navigate(['/user']);
-          });
+          this.swalService.success('User Updated Successfully!!');
+          this.router.navigate(['/user']);
         }),
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire({
-            title: 'Error',
-            html: error.error?.message,
-            icon: 'error',
-            width: 400,
-          });
+          this.swalService.error(error.error?.message);
           return of(error);
         })
       );
@@ -73,12 +63,7 @@ export class UserService {
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire({
-            title: 'Error',
-            html: error.error?.message,
-            icon: 'error',
-            width: 400,
-          });
+          this.swalService.error(error.error?.message);
           return of(error);
         })
       );
@@ -94,12 +79,7 @@ export class UserService {
       catchError((error) => {
         this.loaderService.hide();
         console.log(error);
-        Swal.fire({
-          title: 'Error',
-          html: error.error?.message,
-          icon: 'error',
-          width: 400,
-        });
+        this.swalService.error(error.error?.message);
         return of(error);
       })
     );
@@ -126,12 +106,7 @@ export class UserService {
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire({
-            title: 'Error',
-            html: error.error?.message,
-            icon: 'error',
-            width: 400,
-          });
+          this.swalService.error(error.error?.message);
           return of(error);
         })
       );
@@ -147,12 +122,7 @@ export class UserService {
         }),
         catchError((error) => {
           console.log(error);
-          Swal.fire({
-            title: 'Error',
-            html: error.error?.message,
-            icon: 'error',
-            width: 400,
-          });
+          this.swalService.error(error.error?.message);
           return of(error);
         })
       );
@@ -168,12 +138,7 @@ export class UserService {
         }),
         catchError((error) => {
           console.log(error);
-          Swal.fire({
-            title: 'Error',
-            html: error.error?.message,
-            icon: 'error',
-            width: 400,
-          });
+          this.swalService.error(error.error?.message);
           return of(error);
         })
       );

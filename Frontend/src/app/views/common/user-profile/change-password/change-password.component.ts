@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import Swal from 'sweetalert2';
 
 import { AuthService } from 'src/app/services/auth.service';
+import { SwalService } from 'src/app/services/swal.service';
 
 @Component({
   selector: 'app-change-password',
@@ -15,7 +15,10 @@ export class ChangePasswordComponent {
 
   @Output() unloadComponent: EventEmitter<void> = new EventEmitter<void>();
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private swalService: SwalService
+  ) {}
 
   changePassword() {
     if (
@@ -31,12 +34,9 @@ export class ChangePasswordComponent {
           this.cancelForm();
         });
     else {
-      Swal.fire({
-        title: 'Error',
-        html: 'The new Password should be same as confirm password',
-        icon: 'error',
-        width: 400,
-      });
+      this.swalService.error(
+        'The new Password should be same as confirm password'
+      );
     }
   }
   cancelForm() {

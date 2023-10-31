@@ -1,11 +1,11 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import Swal from 'sweetalert2';
 
 import { Product } from 'src/app/models/product.model';
 import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
 import { CartStore } from 'src/app/store/cart.store';
 import { UserStore } from 'src/app/store/user-store';
+import { SwalService } from 'src/app/services/swal.service';
 
 @Component({
   selector: 'app-card',
@@ -31,6 +31,7 @@ export class CardComponent implements OnInit, AfterViewInit {
   constructor(
     private productService: ProductService,
     private cartService: CartService,
+    private swalService: SwalService,
     private userStore: UserStore,
     private cartStore: CartStore
   ) {}
@@ -50,18 +51,13 @@ export class CardComponent implements OnInit, AfterViewInit {
   }
 
   deleteProduct() {
-    Swal.fire({
-      title: 'Warning',
-      showCancelButton: true,
-      icon: 'warning',
-      html: 'Want to Delete Product ?',
-      confirmButtonText: 'Yes',
-      width: 400,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.productService.deleteProduct(this.product._id).subscribe();
-      }
-    });
+    this.swalService
+      .confirmWarning('Want to Delete Product ?')
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.productService.deleteProduct(this.product._id).subscribe();
+        }
+      });
   }
 
   toggleCart(productId: string, isAdd: boolean = true) {

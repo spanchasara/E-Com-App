@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import Swal from 'sweetalert2';
+
 import { Router } from '@angular/router';
 
 import { ChangePasswordComponent } from './change-password/change-password.component';
@@ -16,6 +16,7 @@ import { UpdateUser, User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { UserStore } from 'src/app/store/user-store';
+import { SwalService } from 'src/app/services/swal.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -44,6 +45,7 @@ export class UserProfileComponent implements AfterViewInit, OnInit {
     private modalService: NgbModal,
     private router: Router,
     private loaderService: LoaderService,
+    private swalService: SwalService,
     private componentFactoryResolver: ComponentFactoryResolver
   ) {}
 
@@ -143,18 +145,10 @@ export class UserProfileComponent implements AfterViewInit, OnInit {
     }
 
     this.userService.sellerRegistration(this.textInput).subscribe((resData) => {
-      Swal.fire({
-        title: 'Success',
-        html: 'Registered as Seller Successfully!!',
-        icon: 'success',
-        width: 400,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.modalService.dismissAll('Close click');
-          this.saveSellerCheck();
-          this.router.navigate(['/user'], { replaceUrl: true });
-        }
-      });
+      this.swalService.success('Registered as Seller Successfully!!');
+      this.modalService.dismissAll('Close click');
+      this.saveSellerCheck();
+      this.router.navigate(['/user'], { replaceUrl: true });
     });
   }
 
@@ -175,22 +169,12 @@ export class UserProfileComponent implements AfterViewInit, OnInit {
     if (this.userObject?.role === 'customer') {
       this.showCompany = true;
       this.userService.toggleRole('seller').subscribe(() => {
-        Swal.fire({
-          title: 'Success',
-          html: 'Shifted to seller!!',
-          icon: 'success',
-          width: 400,
-        });
+        this.swalService.success('Shifted to seller!!');
       });
     } else if (this.userObject?.role === 'seller') {
       this.showCompany = false;
       this.userService.toggleRole('customer').subscribe(() => {
-        Swal.fire({
-          title: 'Success',
-          html: 'Shifted to customer!!',
-          icon: 'success',
-          width: 400,
-        });
+        this.swalService.success('Shifted to customer!!');
       });
     }
   }

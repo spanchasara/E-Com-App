@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject, catchError, of, tap } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
 
 import { environment } from 'src/environment/environment';
 import { PaginatedProducts, Product } from '../models/product.model';
 import { LoaderService } from './loader.service';
+import { SwalService } from './swal.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +15,7 @@ export class ProductService {
   constructor(
     private httpClient: HttpClient,
     private loaderService: LoaderService,
+    private swalService: SwalService,
     private router: Router
   ) {}
   isAuthenticated = new Subject<boolean>();
@@ -58,12 +59,7 @@ export class ProductService {
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire({
-            title: 'Error',
-            html: error.error?.message,
-            icon: 'error',
-            width: 400,
-          });
+          this.swalService.error(error.error?.message);
           return of(error);
         })
       );
@@ -96,12 +92,7 @@ export class ProductService {
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire({
-            title: 'Error',
-            html: error.error?.message,
-            icon: 'error',
-            width: 400,
-          });
+          this.swalService.error(error.error?.message);
           return of(error);
         })
       );
@@ -117,25 +108,13 @@ export class ProductService {
       .pipe(
         tap(() => {
           this.loaderService.hide();
-
-          Swal.fire({
-            title: 'Success',
-            html: 'Product Added Successfully!!',
-            icon: 'success',
-            width: 400,
-          }).then((result) => {
-            if (result.isConfirmed) this.router.navigate(['/']);
-          });
+          this.swalService.success('Product Added Successfully!!');
+          this.router.navigate(['/']);
         }),
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire({
-            title: 'Error',
-            html: error.error?.message,
-            icon: 'error',
-            width: 400,
-          });
+          this.swalService.error(error.error?.message);
           return of(error);
         })
       );
@@ -150,27 +129,13 @@ export class ProductService {
       .pipe(
         tap(() => {
           this.loaderService.hide();
-
-          Swal.fire({
-            title: 'Success',
-            html: 'Product Updated Successfully!!',
-            icon: 'success',
-            width: 400,
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.router.navigate(['/products', id]);
-            }
-          });
+          this.swalService.success('Product Updated Successfully!!');
+          this.router.navigate(['/products', id]);
         }),
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire({
-            title: 'Error',
-            html: error.error?.message,
-            icon: 'error',
-            width: 400,
-          });
+          this.swalService.error(error.error?.message);
           return of(error);
         })
       );
@@ -184,27 +149,14 @@ export class ProductService {
       .pipe(
         tap(() => {
           this.loaderService.hide();
-          Swal.fire({
-            title: 'Success',
-            html: 'Product Deleted Successfully!!',
-            icon: 'success',
-            width: 400,
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.router.navigate(['/']);
-              this.callGetProducts.next(true);
-            }
-          });
+          this.swalService.success('Product Deleted Successfully!!');
+          this.router.navigate(['/']);
+          this.callGetProducts.next(true);
         }),
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire({
-            title: 'Error',
-            html: error.error?.message,
-            icon: 'error',
-            width: 400,
-          });
+          this.swalService.error(error.error?.message);
           return of(error);
         })
       );

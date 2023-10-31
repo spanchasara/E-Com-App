@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject, catchError, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
-import Swal from 'sweetalert2';
 
 import { Cart, UpdateBody, emptyCart } from '../models/cart.model';
 import { Product } from '../models/product.model';
 import { LoaderService } from './loader.service';
 import { ProductService } from './product.service';
 import { CartStore } from '../store/cart.store';
+import { SwalService } from './swal.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +17,7 @@ export class CartService {
   constructor(
     private httpClient: HttpClient,
     private loaderService: LoaderService,
+    private swalService: SwalService,
     private productService: ProductService,
     private cartStore: CartStore
   ) {}
@@ -35,12 +36,7 @@ export class CartService {
       catchError((error) => {
         this.loaderService.hide();
         console.log(error);
-        Swal.fire({
-          title: 'Error',
-          html: error.error?.message,
-          icon: 'error',
-          width: 400,
-        });
+        this.swalService.error(error.error?.message);
         return of(error);
       })
     );
@@ -64,12 +60,7 @@ export class CartService {
         if (showLoader) this.loaderService.hide();
         this.callGetCart.next(true);
         console.log(error);
-        Swal.fire({
-          title: 'Error',
-          html: error.error?.message,
-          icon: 'error',
-          width: 400,
-        });
+        this.swalService.error(error.error?.message);
         return of(error);
       })
     );
@@ -139,14 +130,11 @@ export class CartService {
     }
 
     if (product.stock < qty) {
-      Swal.fire({
-        title: 'Warning',
-        html: `Only ${product.stock} ${
+      this.swalService.warning(
+        `Only ${product.stock} ${
           product.stock > 1 ? 'are' : 'is'
-        } available in stock`,
-        icon: 'warning',
-        width: 400,
-      });
+        } available in stock`
+      );
     }
 
     return cart;
