@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="mt-3" *ngFor="let order of orders.docs">
-      <app-order-card [order]="order"></app-order-card>
+      <app-order-card [order]="order" role="admin"></app-order-card>
     </div>
     <app-pagination
       [totalItems]="orders.totalDocs || 0"

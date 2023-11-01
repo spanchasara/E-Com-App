@@ -8,7 +8,7 @@ import { Order } from "src/app/models/order.model";
 })
 export class OrderCardComponent {
   @Input() isCurrentOrder: boolean = false;
-
+  @Input() role!: string;
   @Input() order!: Order;
 
   constructor() {}

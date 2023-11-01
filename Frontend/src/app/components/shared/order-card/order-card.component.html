@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-md-3">ORDER PLACED</div>
           <div class="col-md-3">TOTAL</div>
-          <div class="col-md-3">SHIP TO</div>
+          <div class="col-md-3" *ngIf="role !== 'seller'">SHIP TO</div>
         </div>
         <div class="row">
           <div class="col-md-3">
@@ -14,8 +14,14 @@
           <div class="col-md-3">{{ order.totalAmount }}</div>
           <div
             class="col-md-6"
+            *ngIf="role !== 'seller'"
             data-bs-placement="bottom"
-            title="Tooltip on bottom"
+            title="
+            {{ order.address.addressLane1 }} {{ order.address.addressLane2 }},
+            {{ order.address.landmark }}, {{ order.address.city }},
+            {{ order.address.state }}, {{ order.address.country }},
+            {{ order.address.pincode }}.
+            +91 {{ order.address.phoneNo }}"
           >
             {{ order.address.fullName }}
           </div>
@@ -55,23 +61,47 @@
           [routerLink]="['/products', product.productId]"
           >{{ product.title }}</a
         >
-        <p class="my-1">₹ {{ product.price }}</p>
+        <p class="my-1">
+          <strong>₹ {{ product.price }}</strong>
+        </p>
         <div class="row">
           <div class="col-md-2">
-            <label for="quantity">Quantity: {{ product.qty }}</label>
+            <label for="quantity"
+              ><strong>Quantity:</strong> {{ product.qty }}</label
+            >
           </div>
           <div class="col-md-2">
-            <label for="amount">Amount: {{ product.amount }}</label>
+            <label for="amount"
+              ><strong>Amount:</strong> {{ product.amount }}</label
+            >
+          </div>
+          <div
+            *ngIf="isCurrentOrder && !product.deliveredDate"
+            class="d-md-flex justify-content-md-end"
+          >
+            <button class="btn btn-success me-md-2" type="button">
+              Mark delivered
+            </button>
+          </div>
+        </div>
+        <div class="row" *ngIf="role === 'seller'">
+          <div class="col-md-4">
+            <strong>Address:</strong> <br />
+            {{ order.address.fullName }} <br />
+            {{ order.address.addressLane1 }} {{ order.address.addressLane2 }},
+            {{ order.address.landmark }}, {{ order.address.city }},
+            {{ order.address.state }}, {{ order.address.country }},
+            {{ order.address.pincode }}. <br />
+            +91 {{ order.address.phoneNo }}
+          </div>
+        </div>
+        <div class="row mt-3" *ngIf="!isCurrentOrder && product.deliveredDate">
+          <div class="col-md-4">
+            <strong>Delivered on:</strong>
+            {{ product.deliveredDate | date : "mediumDate" }}
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div *ngIf="isCurrentOrder" class="card-footer">
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-      <button class="btn btn-success me-md-2" type="button">
-        Mark delivered
-      </button>
     </div>
   </div>
 </div>
