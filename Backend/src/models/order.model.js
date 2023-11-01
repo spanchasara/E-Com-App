@@ -3,27 +3,19 @@ import paginate from "mongoose-paginate-v2";
 
 const orderSchema = new Schema(
   {
+    product: {
+      type: Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+    },
+    qty: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
     totalAmount: {
       type: Number,
     },
-    totalQty: {
-      type: Number,
-    },
-    products: [
-      {
-        productId: {
-          type: Schema.Types.ObjectId,
-          ref: "Product",
-          required: true,
-        },
-        qty: {
-          type: Number,
-          required: true,
-          default: 0,
-        },
-      },
-    ],
-
     deliveredDate: {
       type: Date,
       default: null,
@@ -37,11 +29,20 @@ const orderSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
+    sellerId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    orderId: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
   }
 );
+
 orderSchema.pre(/^find/, function (next) {
   this.select({
     __v: 0,
@@ -51,17 +52,13 @@ orderSchema.pre(/^find/, function (next) {
 
 orderSchema.pre("save", async function (next) {
   await this.populate({
-    path: "products.productId",
-    select: "price",
+    path: "product",
+    select: "price sellerId",
   });
-  this.totalQty = this.products.reduce(
-    (total, product) => total + product.qty,
-    0
-  );
-  this.totalAmount = this.products.reduce(
-    (total, product) => total + product.qty * product.productId.price,
-    0
-  );
+
+  this.totalAmount = this.product.price * this.qty;
+  this.sellerId = this.product.sellerId;
+
   next();
 });
 

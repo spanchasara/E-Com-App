@@ -7,6 +7,30 @@ import auth from "../../middlewares/auth.js";
 const router = express.Router();
 
 router
+  .route("/:action")
+  .post(
+    auth("create_order"),
+    validate(orderValidation.createOrder),
+    orderController.createOrder
+  );
+
+router
+  .route("/seller")
+  .get(
+    auth("get_seller_orders"),
+    validate(orderValidation.getSellerOrders),
+    orderController.getSellerOrders
+  );
+
+router
+  .route("/admin/get-all")
+  .get(
+    auth("get_all_admin_orders"),
+    validate(orderValidation.getAllAdminOrders),
+    orderController.getAllAdminOrders
+  );
+
+router
   .route("/:orderId?")
   .get(
     auth("get_user_orders"),
@@ -14,11 +38,4 @@ router
     orderController.getUserOrders
   );
 
-router
-  .route("/:action")
-  .post(
-    auth("create_order"),
-    validate(orderValidation.createOrder),
-    orderController.createOrder
-  );
 export default router;

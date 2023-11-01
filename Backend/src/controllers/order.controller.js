@@ -3,6 +3,7 @@ import * as orderService from "../services/order.service.js";
 import * as cartService from "../services/cart.service.js";
 import ApiError from "../utils/api-error.js";
 import httpStatus from "http-status";
+import { v4 as uuidv4 } from "uuid";
 
 const createOrder = catchAsync(async (req, res) => {
   const customerId = req.user._id;
@@ -10,58 +11,84 @@ const createOrder = catchAsync(async (req, res) => {
   const { action } = req.params;
   const { addressId } = orderBody;
 
-  const cartItems = await cartService.getCustomerCart({ customerId });
-  if(action!=='single' && cartItems.products.length === 0){
-    throw new ApiError(httpStatus.BAD_REQUEST,"Items does not exist in cart!!")
+  const cart = await cartService.getCustomerCart({ customerId });
+
+  if (action !== "single" && cart.products.length === 0) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "Items does not exist in cart!!"
+    );
   }
-  let body;
+
+  const orderId = uuidv4();
+  let products = [];
+
   switch (action) {
     case "single":
-      body = { products: [orderBody] };
+      products = [orderBody];
       break;
+
     case "partial":
-      const products = cartItems.products.filter((prod) => {
-        orderBody.selectedProductIds.some((id) => {
-          console.log("prod.productId " + prod.productId);
-          console.log("id " + id);
-          prod.productId === id;
-        });
+      products = cart.products.filter((prod) => {
+        orderBody.selectedProductIds.some((id) => prod.productId === id);
       });
-      console.log(products);
-      body = { products };
-      cartItems.products.filter((prod) => {
+
+      cart.products.filter((prod) => {
         orderBody.selectedProductIds.some((id) => {
           prod.productId !== id;
         });
       });
-
       break;
+
     case "full":
-      body = { products: cartItems.products };
-      cartItems.products = [];
+      products = cart.products;
+      cart.products = [];
       break;
   }
-  console.log(body);
-  const order = await orderService.createOrder({
-    ...body,
-    addressId,
-    customerId,
+
+  products.forEach(async (prod) => {
+    await orderService.createOrder({
+      product: prod.productId,
+      qty: prod.qty,
+      customerId,
+      addressId,
+      orderId,
+    });
   });
 
-  await cartItems.save();
-  res.send(order);
+  await cart.save();
+
+  res.send({
+    message: "Order Placed Successfully",
+  });
 });
 
 const getUserOrders = catchAsync(async (req, res) => {
   const { orderId } = req.params;
-  const userId = req.user._id;
+  const customerId = req.user._id;
+
   if (orderId) {
-    const order = await orderService.getSingleOrders(userId, orderId);
+    const order = await orderService.getSingleOrder(customerId, orderId);
     res.send(order);
   }
 
-  const orders = await orderService.getAllUsersOrders(userId);
+  const options = req.query;
+  const orders = await orderService.getAllUsersOrders(customerId, options);
   res.send(orders);
 });
 
-export { createOrder, getUserOrders };
+const getSellerOrders = catchAsync(async (req, res) => {
+  const sellerId = req.user._id;
+  const options = req.query;
+
+  const orders = await orderService.getAllSellerOrders(sellerId, options);
+  res.send(orders);
+});
+
+const getAllAdminOrders = catchAsync(async (req, res) => {
+  const options = req.query;
+  const orders = await orderService.getAllOrders(options);
+  res.send(orders);
+});
+
+export { createOrder, getUserOrders, getSellerOrders, getAllAdminOrders };

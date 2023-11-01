@@ -10,12 +10,12 @@
       <div class="nav-item">
         <button
           [ngClass]="
-            order === 'current'
+            isCurrentOrder
               ? 'nav-link active text-black'
               : 'nav-link text-black'
           "
-          (click)="toggleOrder('current')"
-          [disabled]="order === 'current'"
+          (click)="toggleOrder(true)"
+          [disabled]="isCurrentOrder"
         >
           Current
         </button>
@@ -23,30 +23,34 @@
       <div class="nav-item">
         <button
           [ngClass]="
-            order === 'completed'
+            !isCurrentOrder
               ? 'nav-link active text-black'
               : 'nav-link text-black'
           "
-          (click)="toggleOrder('completed')"
-          [disabled]="order === 'completed'"
+          (click)="toggleOrder(false)"
+          [disabled]="!isCurrentOrder"
         >
           Completed
         </button>
       </div>
     </div>
 
-    <div class="mt-3">
-      <app-order-card [isCurrentOrder]="order === 'current'"></app-order-card>
-      <app-order-card [isCurrentOrder]="order === 'current'"></app-order-card>
+    <div class="mt-3" *ngFor="let order of orders.docs">
+      <app-order-card
+        [order]="order"
+        [isCurrentOrder]="isCurrentOrder"
+      ></app-order-card>
     </div>
-    <!-- <app-pagination
-      [totalItems]="sellerProducts.totalDocs || 0"
-      [page]="sellerProducts.page || 1"
+
+    <app-pagination
+      [totalItems]="orders.totalDocs || 0"
+      [page]="orders.page || 1"
+      [limit]="orders.limit || 5"
       (pageChange)="pageChanged($event)"
-    ></app-pagination> -->
+    ></app-pagination>
   </div>
 
-  <!-- <div *ngIf="!sellerProducts?.totalDocs">
+  <div *ngIf="!orders?.totalDocs">
     <h1 class="text-center mt-5">No orders to display</h1>
-  </div> -->
+  </div>
 </div>

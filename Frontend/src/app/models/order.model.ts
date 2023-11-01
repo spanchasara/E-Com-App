@@ -1,9 +1,22 @@
-export type Order = {
-  firstName: string;
-  lastName?: string;
-  username: string;
-  email: string;
-  password: string;
+import { Address } from "./address.model";
+
+export type PlaceOrder = {
+  products: ProjectOrder[];
+  addressId: string;
+};
+export type ProjectOrder = {
+  productId: string;
+  qty: number;
+};
+export type PlacedOrder = {
+  _id: string;
+  totalAmount: number;
+  totalQty: number;
+  products: ProjectOrder[];
+  deliveredDate: Date | null;
+  addressId: string;
+  customerId: string;
+  createdAt: Date;
 };
 
 export type PaginatedOrders = {
@@ -11,10 +24,25 @@ export type PaginatedOrders = {
   totalDocs: number;
   limit: number;
   page: number;
-  totalPages: number;
-  pagingCounter: number;
-  hasPrevPage: boolean;
-  hasNextPage: boolean;
-  prevPage: number | null;
-  nextPage: number | null;
+};
+
+export type Order = {
+  orderId: string;
+  totalAmount: number;
+  totalQty: number;
+  products: OrderedProducts[];
+  address: Address;
+  customerId: string;
+  createdAt: Date | string;
+};
+
+export type OrderedProducts = {
+  _id: string;
+  productId: string;
+  title: string;
+  price: number;
+  qty: number;
+  deliveredDate: Date | string | null;
+  amount: number;
+  sellerId: string;
 };

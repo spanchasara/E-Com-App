@@ -8,14 +8,16 @@
           <div class="col-md-3">SHIP TO</div>
         </div>
         <div class="row">
-          <div class="col-md-3">date</div>
-          <div class="col-md-3">total</div>
+          <div class="col-md-3">
+            {{ order.createdAt | date : "mediumDate" }}
+          </div>
+          <div class="col-md-3">{{ order.totalAmount }}</div>
           <div
             class="col-md-6"
             data-bs-placement="bottom"
             title="Tooltip on bottom"
           >
-            address full name
+            {{ order.address.fullName }}
           </div>
         </div>
       </div>
@@ -23,7 +25,7 @@
         class="col-md-6 d-flex justify-content-end flex-column align-items-end"
       >
         <div class="row">
-          <div class="col-md-12">ORDER # ID</div>
+          <div class="col-md-12">ORDER # {{ order.orderId }}</div>
         </div>
         <div class="row">
           <div class="col-md-12">
@@ -34,7 +36,7 @@
     </div>
   </div>
   <div class="card-body">
-    <div class="row mt-3">
+    <div class="row mt-3" *ngFor="let product of order.products">
       <div class="col-md-2 d-flex align-items-center">
         <div class="col-md-5">
           <img
@@ -43,37 +45,23 @@
             alt=""
             height="100px"
             width="100px"
+            [routerLink]="['/products', product.productId]"
           />
         </div>
       </div>
       <div class="col-md-10 my-3">
-        <a class="d-block text-dark">title</a>
-        <p class="my-1">₹ price</p>
+        <a
+          class="d-block text-dark"
+          [routerLink]="['/products', product.productId]"
+          >{{ product.title }}</a
+        >
+        <p class="my-1">₹ {{ product.price }}</p>
         <div class="row">
-          <div class="col-md-3">
-            <label for="quantity">Quantity: 3</label>
+          <div class="col-md-2">
+            <label for="quantity">Quantity: {{ product.qty }}</label>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col-md-2 d-flex align-items-center">
-        <div class="col-md-5">
-          <img
-            src="https://bootdey.com/img/Content/avatar/avatar1.png"
-            class="d-block ui-w-40 ui-bordered mx-2"
-            alt=""
-            height="100px"
-            width="100px"
-          />
-        </div>
-      </div>
-      <div class="col-md-10 my-3">
-        <a class="d-block text-dark">title</a>
-        <p class="my-1">₹ price</p>
-        <div class="row">
-          <div class="col-md-3">
-            <label for="quantity">Quantity: 3</label>
+          <div class="col-md-2">
+            <label for="amount">Amount: {{ product.amount }}</label>
           </div>
         </div>
       </div>
