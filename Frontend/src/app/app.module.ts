@@ -47,6 +47,7 @@ import { PreviewOrderComponent } from './views/customer/orders/place-order/previ
 import { CustomerOrdersComponent } from './views/customer/orders/customer-orders.component';
 import { PlaceOrderComponent } from './views/customer/orders/place-order/place-order.component';
 import { AllOrdersComponent } from './views/customer/orders/all-orders/all-orders.component';
+import { RupeeFormatPipe } from './rupee-format.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -86,7 +87,8 @@ import { AllOrdersComponent } from './views/customer/orders/all-orders/all-order
     PreviewOrderComponent,
     CustomerOrdersComponent,
     PlaceOrderComponent,
-    AllOrdersComponent
+    AllOrdersComponent,
+    RupeeFormatPipe
   ],
   imports: [
     BrowserModule,

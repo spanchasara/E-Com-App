@@ -18,7 +18,7 @@
         <p class="card-text">
           {{ product.description }}
         </p>
-        <h6 class="text-muted">Price: ₹{{ product.price }}</h6>
+        <h6 class="text-muted">{{ product.price | rupeeFormat }}</h6>
         <h6 *ngIf="product.stock > 0; else outOfStock">
           Quantity: {{ product.stock }}
         </h6>
@@ -41,7 +41,10 @@
         </button>
       </div>
       <div class="col-md-2" *ngIf="isSellerByRole && isCurrentSeller">
-        <button class="custom-button mx-3" [routerLink]="['/seller/products/edit', product._id]">
+        <button
+          class="custom-button mx-3"
+          [routerLink]="['/seller/products/edit', product._id]"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="32"

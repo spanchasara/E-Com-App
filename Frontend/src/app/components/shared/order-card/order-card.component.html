@@ -11,7 +11,7 @@
           <div class="col-md-3">
             {{ order.createdAt | date : "mediumDate" }}
           </div>
-          <div class="col-md-3">{{ order.totalAmount }}</div>
+          <div class="col-md-3">{{ order.totalAmount | rupeeFormat }}</div>
           <div
             class="col-md-6"
             *ngIf="role !== 'seller'"
@@ -63,7 +63,7 @@
           >{{ product.title }}</a
         >
         <p class="my-1">
-          <strong>₹ {{ product.price }}</strong>
+          <strong>{{ product.price | rupeeFormat }}</strong>
         </p>
         <div class="row">
           <div class="col-md-2">
@@ -71,9 +71,10 @@
               ><strong>Quantity:</strong> {{ product.qty }}</label
             >
           </div>
-          <div class="col-md-2">
+          <div class="col-md-4">
             <label for="amount"
-              ><strong>Amount:</strong> {{ product.amount }}</label
+              ><strong>Amount:</strong>
+              {{ product.amount | rupeeFormat }}</label
             >
           </div>
           <div

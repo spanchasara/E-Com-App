@@ -8,7 +8,7 @@
         <h3>{{ product?.title }}</h3>
         <p>{{ product?.description }}</p>
         <h4>
-          <strong>current price: </strong><span>{{ product?.price }}</span>
+          <span>{{ product?.price || 0 | rupeeFormat }}</span>
         </h4>
         <p *ngIf="product?.stock !== 0; else outOfStock">
           <strong>Items in Stock:</strong> {{ product?.stock }}
@@ -35,7 +35,9 @@
             class="btn btn-class mt-1"
             *ngIf="!isSellerByRole && !currentSeller && !isAdmin"
             type="button"
-            (click)="buyNow()">Buy Now
+            (click)="buyNow()"
+          >
+            Buy Now
           </button>
           <button
             class="btn btn-class mt-1 mx-2"

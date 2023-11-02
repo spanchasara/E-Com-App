@@ -3,19 +3,23 @@
     <div class="card my-4">
       <div class="card-body">
         <div class="row">
-          <div class="col-md-4 d-flex justify-content-center align-items-center">
-            <div class="col-md-3 d-flex justify-content-center align-items-center">
-              <input type="checkbox" id="">
+          <div
+            class="col-md-4 d-flex justify-content-center align-items-center"
+          >
+            <div
+              class="col-md-3 d-flex justify-content-center align-items-center"
+            >
+              <input type="checkbox" id="" />
             </div>
             <div class="col-md-9">
-            <img
-              src="https://bootdey.com/img/Content/avatar/avatar1.png"
-              class="d-block ui-w-40 ui-bordered"
-              alt=""
-              height="80%"
-              width="80%"
-            />
-          </div>
+              <img
+                src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                class="d-block ui-w-40 ui-bordered"
+                alt=""
+                height="80%"
+                width="80%"
+              />
+            </div>
           </div>
           <div class="col-md-8 my-3">
             <a
@@ -24,7 +28,7 @@
               >{{ product.productId.title }}</a
             >
             <p class="my-1">
-              ₹ {{ product.productId.price }}
+              {{ product.productId.price | rupeeFormat }}
             </p>
             <div class="row">
               <div class="col-md-1">
@@ -87,7 +91,7 @@
     <div class="text-end mt-4">
       <label class="text-muted font-weight-normal m-0">Total price</label>
       <div class="text-large">
-        <strong>₹ {{ cart.totalAmount }}</strong>
+        <strong>{{ cart.totalAmount | rupeeFormat }}</strong>
       </div>
     </div>
   </div>
