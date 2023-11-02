@@ -5,6 +5,7 @@ import * as cartService from "../services/cart.service.js";
 import ApiError from "../utils/api-error.js";
 import httpStatus from "http-status";
 import { v4 as uuidv4 } from "uuid";
+import mongoose from "mongoose";
 
 const createOrder = catchAsync(async (req, res) => {
   const customerId = req.user._id;
@@ -31,12 +32,16 @@ const createOrder = catchAsync(async (req, res) => {
 
     case "partial":
       products = cart.products.filter((prod) => {
-        orderBody.selectedProductIds.some((id) => prod.productId === id);
+        orderBody.selectedProductIds.some((id) => prod.productId === new mongoose.Types.ObjectId(id));
       });
+
+      console.log(products);
+      console.log(cart.products);
+      console.log(orderBody)
 
       cart.products.filter((prod) => {
         orderBody.selectedProductIds.some((id) => {
-          prod.productId !== id;
+          prod.productId.toString() !== new mongoose.Types.ObjectId(id);
         });
       });
       break;

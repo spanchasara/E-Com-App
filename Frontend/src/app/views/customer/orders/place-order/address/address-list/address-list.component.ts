@@ -70,7 +70,6 @@ export class AddressListComponent implements OnInit {
 
   changeCurrentAddress(e: Event) {
     this.currentAddressId = (e.target as HTMLInputElement).value;
-    console.log(this.currentAddressId);
   }
   useThisAddress() {
     this.addressService

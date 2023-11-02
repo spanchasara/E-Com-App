@@ -40,7 +40,6 @@ export class PlaceOrderComponent implements OnInit {
       addressId: this.addressId,
       ...this.orderPreview,
     }).subscribe((data) => {
-      console.log(data);
       this.ordersService.updateOrderStatus(data.orderId, "success").subscribe();
       this.router.navigate(['/orders'])
     });

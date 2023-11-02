@@ -209,7 +209,6 @@ export class OrdersService {
             body = cartItems;
           } else if (action === "partial") {
             const selectedProductIds = data?.selectedProductIds || [];
-            console.log("before ", cartItems, selectedProductIds);
             cartItems.products = cartItems.products.filter((product) =>
               selectedProductIds.includes(product.productId._id)
             );
@@ -224,7 +223,6 @@ export class OrdersService {
               0
             );
 
-            console.log("after ", cartItems);
             body = cartItems;
           }
           observer.next(body);
@@ -241,7 +239,6 @@ export class OrdersService {
 
     params = params.append("orderId", orderId);
     params = params.append("status", status);
-    console.log(params);
     return this.httpClient
       .patch(this.apiUrl + "order", {}, {
         params

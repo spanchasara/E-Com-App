@@ -16,7 +16,6 @@ export class PreviewOrderComponent implements OnInit{
   constructor() {}
 
   ngOnInit(): void {
-    console.log(this.order);
     this.currentAddress = JSON.parse(sessionStorage.getItem('currentAddress') || '');
   }
 }
