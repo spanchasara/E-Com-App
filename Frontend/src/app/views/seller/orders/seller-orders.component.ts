@@ -18,6 +18,14 @@ export class SellerOrdersComponent implements OnInit {
     this.getOrders({
       isCurrent: this.isCurrentOrder,
     });
+
+    this.ordersService.callGetOrders.subscribe((role) => {
+      if (role === "seller") {
+        this.getOrders({
+          isCurrent: this.isCurrentOrder,
+        });
+      }
+    });
   }
 
   getOrders(options: any) {

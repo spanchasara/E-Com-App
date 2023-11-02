@@ -1,5 +1,6 @@
-import { Component, Input } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { Order } from "src/app/models/order.model";
+import { OrdersService } from "src/app/services/orders.service";
 
 @Component({
   selector: "app-order-card",
@@ -11,5 +12,9 @@ export class OrderCardComponent {
   @Input() role!: string;
   @Input() order!: Order;
 
-  constructor() {}
+  constructor(private ordersService: OrdersService) {}
+
+  markAsDelivered(orderId: string) {
+    this.ordersService.markDelivered(orderId).subscribe();
+  }
 }

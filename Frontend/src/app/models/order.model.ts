@@ -4,6 +4,14 @@ export type PlaceOrder = {
   products: ProjectOrder[];
   addressId: string;
 };
+
+export type CreateOrderBody = {
+  addressId: string;
+  productId?: string;
+  qty?: number;
+  selectedProductIds?: string[];
+};
+
 export type ProjectOrder = {
   productId: string;
   qty: number;

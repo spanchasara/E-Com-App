@@ -9,6 +9,7 @@ import { ProductService } from "./product.service";
 import { CartStore } from "../store/cart.store";
 import { SwalService } from "./swal.service";
 import {
+  CreateOrderBody,
   PaginatedOrders,
   PlaceOrder,
   PlacedOrder,
@@ -27,8 +28,7 @@ export class OrdersService {
   ) {}
 
   apiUrl = environment.apiUrl;
-  callGetCart = new Subject<boolean>();
-  callLocalCart = new Subject<boolean>();
+  callGetOrders = new Subject<string>();
 
   getAdminOrders(options: {
     page?: number;
@@ -87,11 +87,40 @@ export class OrdersService {
         })
       );
   }
-  createOrder(action: string, orderBody: PlaceOrder): Observable<any> {
+
+  markDelivered(orderId: string): Observable<any> {
     this.loaderService.show();
 
     return this.httpClient
-      .post<PlacedOrder>(this.apiUrl + `order/${action}`, orderBody)
+      .patch(this.apiUrl + `order/delivered/${orderId}`, {})
+      .pipe(
+        tap(() => {
+          this.loaderService.hide();
+          this.callGetOrders.next("seller");
+          this.swalService.success("Order marked as delivered!!");
+        }),
+        catchError((error) => {
+          this.loaderService.hide();
+          console.log(error);
+          this.swalService.error(error.error?.message);
+          return of(error);
+        })
+      );
+  }
+
+  createOrder(action: string, orderBody: CreateOrderBody): Observable<any> {
+    this.loaderService.show();
+
+    if (action === "full") this.cartStore.clearCartData();
+
+    if (action === "partial") {
+      orderBody.selectedProductIds?.forEach((productId) => {
+        this.cartStore.updateCartData(productId, false);
+      });
+    }
+
+    return this.httpClient
+      .post(this.apiUrl + `order/${action}`, orderBody)
       .pipe(
         tap(() => {
           this.loaderService.hide();
@@ -125,10 +154,11 @@ export class OrdersService {
       params = params.append("sort", order?.sort || "-createdAt");
     }
     let orderId;
-    if(isSingle)
-      orderId = order
+    if (isSingle) orderId = order;
     return this.httpClient
-      .get<PaginatedOrders>(this.apiUrl + `order/${isSingle? orderId: ''}`, { params })
+      .get<PaginatedOrders>(this.apiUrl + `order/${isSingle ? orderId : ""}`, {
+        params,
+      })
       .pipe(
         tap((data) => {
           console.log(data);

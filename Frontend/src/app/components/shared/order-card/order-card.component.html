@@ -15,8 +15,9 @@
           <div
             class="col-md-6"
             *ngIf="role !== 'seller'"
-            data-bs-placement="bottom"
-            title="
+            placement="bottom"
+            container="body"
+            ngbTooltip="
             {{ order.address.addressLane1 }} {{ order.address.addressLane2 }},
             {{ order.address.landmark }}, {{ order.address.city }},
             {{ order.address.state }}, {{ order.address.country }},
@@ -79,7 +80,11 @@
             *ngIf="isCurrentOrder && !product.deliveredDate"
             class="d-md-flex justify-content-md-end"
           >
-            <button class="btn btn-success me-md-2" type="button">
+            <button
+              class="btn btn-success me-md-2"
+              type="button"
+              (click)="markAsDelivered(product._id)"
+            >
               Mark delivered
             </button>
           </div>
@@ -95,7 +100,12 @@
             +91 {{ order.address.phoneNo }}
           </div>
         </div>
-        <div class="row mt-3" *ngIf="!isCurrentOrder && product.deliveredDate">
+        <div
+          class="row mt-3"
+          *ngIf="
+            (role === 'customer' || !isCurrentOrder) && product.deliveredDate
+          "
+        >
           <div class="col-md-4">
             <strong>Delivered on:</strong>
             {{ product.deliveredDate | date : "mediumDate" }}
