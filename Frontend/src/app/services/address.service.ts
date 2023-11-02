@@ -30,7 +30,7 @@ export class AddressService {
         tap(() => {
           this.loaderService.hide();
           this.swalService.success('Address Added Successfully!!');
-          this.router.navigate(['/address']);
+          this.router.navigate(['/orders']);
         }),
         catchError((error) => {
           this.loaderService.hide();
@@ -49,7 +49,6 @@ export class AddressService {
     delete address.createdAt;
     delete address.updatedAt;
     delete address.__v;
-    delete address.isDefault;
     return this.http
       .patch<Address>(this.apiUrl + `address/${addressId}`, address, {
         observe: 'response',
@@ -58,7 +57,7 @@ export class AddressService {
         tap(() => {
           this.loaderService.hide();
           this.swalService.success('Address Updated Successfully!!');
-          this.router.navigate(['/address']);
+          this.router.navigate(['/orders']);
         }),
         catchError((error) => {
           this.loaderService.hide();
@@ -121,29 +120,4 @@ export class AddressService {
       );
   }
 
-  changeDefaultAddress(oldAddressId: string, newAddressId: string) {
-    this.loaderService.show();
-    return this.http
-      .patch<Address>(
-        this.apiUrl + `address/toggle-default`,
-        {
-          oldAddressId,
-          newAddressId,
-        },
-        { observe: 'response' }
-      )
-      .pipe(
-        tap(() => {
-          this.loaderService.hide();
-          this.swalService.success('Default Address Updated Successfully!!');
-          this.callGetUsersAddress.next(true);
-        }),
-        catchError((error) => {
-          this.loaderService.hide();
-          console.log(error);
-          this.swalService.error(error.error?.message);
-          return of(error);
-        })
-      );
-  }
 }

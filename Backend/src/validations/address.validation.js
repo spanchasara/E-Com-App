@@ -43,6 +43,7 @@ const editAddress = {
     pincode: Joi.string()
       .regex(/^\d{6}$/)
       .optional(),
+    isDefault: Joi.boolean().default(false),
   }),
 };
 

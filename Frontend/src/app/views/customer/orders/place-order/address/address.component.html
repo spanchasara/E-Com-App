@@ -1,0 +1,43 @@
+<div *ngIf="currentAddress && !toggleAddressForm">
+  <div class="row">
+    <div class="col-md-2">
+      <h4 class="text-center mt-5">Your Address:</h4>
+    </div>
+    <div class="col-md-8 ml-5">
+      <div class="row">
+        <div class="col-md-4">
+          <p>
+            {{ currentAddress.fullName }} <br />
+            {{ currentAddress.phoneNo }}<br />
+            {{ currentAddress.addressLane1 }} {{ currentAddress.addressLane2
+            }}<br />
+            {{ currentAddress.city }} {{ currentAddress.state }}
+            {{ currentAddress.country }}<br />
+            {{ currentAddress.pincode }}
+          </p>
+        </div>
+        <div class="col-md-4">
+          <button class="btn btn-class" (click)="toggleAddress()">
+            Change
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="toggleAddressForm || !currentAddress ">
+  <div class="row">
+    <div class="col-md-10">
+      <h4 class="text-center">Your Address</h4>
+    </div>
+    <div class="col-2">
+      <button class="btn btn-class" [routerLink]="['/address/add']">
+        Add Address
+      </button>
+    </div>
+  </div>
+  <app-address-list
+    (addressSubject)="loadCurrentAddress($event)"
+    (closeForm)="closeAddressForm($event)"
+  ></app-address-list>
+</div>

@@ -32,6 +32,12 @@
             }}
           </button>
           <button
+            class="btn btn-class mt-1"
+            *ngIf="!isSellerByRole && !currentSeller && !isAdmin"
+            type="button"
+            (click)="buyNow()">Buy Now
+          </button>
+          <button
             class="btn btn-class mt-1 mx-2"
             (click)="editProduct()"
             *ngIf="isSellerByRole && currentSeller"

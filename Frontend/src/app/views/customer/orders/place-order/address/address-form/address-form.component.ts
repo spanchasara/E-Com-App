@@ -44,6 +44,7 @@ export class AddressFormComponent implements AfterViewInit {
     if (this.editMode) {
       this.address.state;
     }
+    console.log(this.address)
   }
 
   onSubmit() {

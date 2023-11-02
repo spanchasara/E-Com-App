@@ -33,18 +33,20 @@ import { AddProductComponent } from './views/seller/add-product/add-product.comp
 import { EditProductComponent } from './views/seller/edit-product/edit-product.component';
 import { ProductFormComponent } from './views/seller/product-form/product-form.component';
 import { CartComponent } from './views/customer/cart/cart.component';
-import { AddressComponent } from './views/customer/address/address.component';
-import { AddressFormComponent } from './views/customer/address/address-form/address-form.component';
-import { AddAddressComponent } from './views/customer/address/add-address/add-address.component';
-import { EditAddressComponent } from './views/customer/address/edit-address/edit-address.component';
-import { AddressListComponent } from './views/customer/address/address-list/address-list.component';
+import { AddressComponent } from './views/customer/orders/place-order/address/address.component';
+import { AddressFormComponent } from './views/customer/orders/place-order/address/address-form/address-form.component';
+import { AddAddressComponent } from './views/customer/orders/place-order/address/add-address/add-address.component';
+import { EditAddressComponent } from './views/customer/orders/place-order/address/edit-address/edit-address.component';
+import { AddressListComponent } from './views/customer/orders/place-order/address/address-list/address-list.component';
 import { CartListComponent } from './views/customer/cart/cart-list/cart-list.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { SellerOrdersComponent } from './views/seller/orders/seller-orders.component';
 import { OrderCardComponent } from './components/shared/order-card/order-card.component';
 import { AdminOrdersComponent } from './views/admin/orders/admin-orders.component';
+import { PreviewOrderComponent } from './views/customer/orders/place-order/preview-order/preview-order.component';
 import { CustomerOrdersComponent } from './views/customer/orders/customer-orders.component';
-
+import { PlaceOrderComponent } from './views/customer/orders/place-order/place-order.component';
+import { AllOrdersComponent } from './views/customer/orders/all-orders/all-orders.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -81,7 +83,10 @@ import { CustomerOrdersComponent } from './views/customer/orders/customer-orders
     SellerOrdersComponent,
     AdminOrdersComponent,
     OrderCardComponent,
+    PreviewOrderComponent,
     CustomerOrdersComponent,
+    PlaceOrderComponent,
+    AllOrdersComponent
   ],
   imports: [
     BrowserModule,

@@ -36,18 +36,10 @@ const deleteAddress = catchAsync(async (req, res) => {
   res.send(response);
 });
 
-const toggleDefaultAddress = catchAsync(async (req, res) => {
-  const userId = req.user._id;
-  const {oldAddressId, newAddressId} = req.body;
-  const response = await addressService.toggleDefaultAddress(userId, oldAddressId, newAddressId);
-  res.send(response);
-});
-
 export {
   getUsersAddress,
   getSingleAddress,
   addAddress,
   deleteAddress,
   editAddress,
-  toggleDefaultAddress
 };

@@ -86,4 +86,8 @@ export class ProductComponent implements OnInit {
     if (!productId) return;
     this.cartService.updateCart({ productId, isAdd }).subscribe();
   }
+  buyNow(){
+    sessionStorage.setItem('currentOrder', this.product?._id || '');
+    this.router.navigate(['/orders']);
+  }
 }

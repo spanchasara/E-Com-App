@@ -3,13 +3,16 @@ import { Observable, Subject, catchError, of, tap } from "rxjs";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { environment } from "src/environment/environment";
 
-import { Cart, UpdateBody, emptyCart } from "../models/cart.model";
-import { Product } from "../models/product.model";
+import { Cart } from "../models/cart.model";
 import { LoaderService } from "./loader.service";
 import { ProductService } from "./product.service";
 import { CartStore } from "../store/cart.store";
 import { SwalService } from "./swal.service";
-import { PaginatedOrders } from "../models/order.model";
+import {
+  PaginatedOrders,
+  PlaceOrder,
+  PlacedOrder,
+} from "../models/order.model";
 
 @Injectable({
   providedIn: "root",
@@ -84,20 +87,59 @@ export class OrdersService {
         })
       );
   }
-
-  getCustomerOrders(): Observable<any> {
+  createOrder(action: string, orderBody: PlaceOrder): Observable<any> {
     this.loaderService.show();
 
-    return this.httpClient.get<Cart>(this.apiUrl + "cart").pipe(
-      tap(() => {
-        this.loaderService.hide();
-      }),
-      catchError((error) => {
-        this.loaderService.hide();
-        console.log(error);
-        this.swalService.error(error.error?.message);
-        return of(error);
-      })
-    );
+    return this.httpClient
+      .post<PlacedOrder>(this.apiUrl + `order/${action}`, orderBody)
+      .pipe(
+        tap(() => {
+          this.loaderService.hide();
+          this.swalService.success("Order Placed Successfully!!");
+        }),
+        catchError((error) => {
+          this.loaderService.hide();
+          console.log(error);
+          this.swalService.error(error.error?.message);
+          return of(error);
+        })
+      );
+  }
+
+  getCustomerOrders(
+    isSingle: boolean = false,
+    order:
+      | string
+      | {
+          page?: number;
+          limit?: number;
+          sort?: string;
+        }
+  ): Observable<any> {
+    this.loaderService.show();
+
+    let params = new HttpParams();
+    if (!isSingle && typeof order === "object") {
+      params = params.append("page", order?.page || 1);
+      params = params.append("limit", order?.limit || 5);
+      params = params.append("sort", order?.sort || "-createdAt");
+    }
+    let orderId;
+    if(isSingle)
+      orderId = order
+    return this.httpClient
+      .get<PaginatedOrders>(this.apiUrl + `order/${isSingle? orderId: ''}`, { params })
+      .pipe(
+        tap((data) => {
+          console.log(data);
+          this.loaderService.hide();
+        }),
+        catchError((error) => {
+          this.loaderService.hide();
+          console.log(error);
+          this.swalService.error(error.error?.message);
+          return of(error);
+        })
+      );
   }
 }

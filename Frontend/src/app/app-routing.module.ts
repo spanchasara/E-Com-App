@@ -15,9 +15,9 @@ import { PublicUserComponent } from './views/admin/public-user/public-user.compo
 import { AddProductComponent } from './views/seller/add-product/add-product.component';
 import { EditProductComponent } from './views/seller/edit-product/edit-product.component';
 import { CartComponent } from './views/customer/cart/cart.component';
-import { AddAddressComponent } from './views/customer/address/add-address/add-address.component';
-import { EditAddressComponent } from './views/customer/address/edit-address/edit-address.component';
-import { AddressComponent } from './views/customer/address/address.component';
+import { AddAddressComponent } from './views/customer/orders/place-order/address/add-address/add-address.component';
+import { EditAddressComponent } from './views/customer/orders/place-order/address/edit-address/edit-address.component';
+import { AddressComponent } from './views/customer/orders/place-order/address/address.component';
 import { ProductsListComponent } from './views/seller/products-list/products-list.component';
 import { HomeGuard } from './guards/home.guard';
 import { SellerGuard } from './guards/seller.guard';
@@ -112,11 +112,6 @@ const routes: Routes = [
         component: SellerOrdersComponent,
       },
     ],
-  },
-  {
-    path: 'address',
-    component: AddressComponent,
-    canActivate: [AuthGuard, CustomerGuard],
   },
   {
     path: 'address/add',
