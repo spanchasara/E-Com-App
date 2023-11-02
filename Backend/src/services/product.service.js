@@ -54,6 +54,30 @@ const updateProduct = async (query, productBody) => {
   return product;
 };
 
+const updateProductStock = async (productBody) => {
+  const { products, isAdd = false } = productBody;
+
+  if (Object.keys(products).length === 0) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "No data provided !!");
+  }
+
+  const productIds = products.map((product) => product.productId);
+
+  for (let i = 0; i < productIds.length; i++) {
+    const productId = productIds[i];
+    const productQty = isAdd ? products[i].qty : -products[i].qty;
+
+    await Product.updateOne(
+      { _id: productId },
+      {
+        $inc: {
+          stock: productQty,
+        },
+      }
+    );
+  }
+};
+
 const deleteProduct = async (query) => {
   const product = await Product.findOneAndDelete(query);
 
@@ -73,4 +97,5 @@ export {
   createProduct,
   updateProduct,
   deleteProduct,
+  updateProductStock,
 };

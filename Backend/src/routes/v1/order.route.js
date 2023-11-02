@@ -38,4 +38,20 @@ router
     orderController.getUserOrders
   );
 
+router
+  .route("/")
+  .patch(
+    auth("update_order_status"),
+    validate(orderValidation.updateOrderStatus),
+    orderController.updateOrderStatus
+  );
+
+router
+  .route("/delivered/:orderId")
+  .patch(
+    auth("mark_delivered"),
+    validate(orderValidation.markDelivered),
+    orderController.markDelivered
+  );
+
 export default router;

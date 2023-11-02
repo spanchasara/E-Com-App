@@ -57,4 +57,24 @@ const getAllAdminOrders = {
   }),
 };
 
-export { getUserOrders, createOrder, getSellerOrders, getAllAdminOrders };
+const updateOrderStatus = {
+  query: Joi.object().keys({
+    orderId: Joi.string().required(),
+    status: Joi.string().valid("success", "failed").required(),
+  }),
+};
+
+const markDelivered = {
+  params: Joi.object().keys({
+    orderId: Joi.string().required(),
+  }),
+};
+
+export {
+  getUserOrders,
+  createOrder,
+  getSellerOrders,
+  getAllAdminOrders,
+  updateOrderStatus,
+  markDelivered,
+};

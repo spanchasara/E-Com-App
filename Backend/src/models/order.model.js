@@ -37,6 +37,10 @@ const orderSchema = new Schema(
       type: String,
       required: true,
     },
+    isPlaced: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

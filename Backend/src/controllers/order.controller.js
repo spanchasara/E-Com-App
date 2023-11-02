@@ -1,5 +1,6 @@
 import catchAsync from "../utils/catch-async.js";
 import * as orderService from "../services/order.service.js";
+import * as productService from "../services/product.service.js";
 import * as cartService from "../services/cart.service.js";
 import ApiError from "../utils/api-error.js";
 import httpStatus from "http-status";
@@ -46,6 +47,11 @@ const createOrder = catchAsync(async (req, res) => {
       break;
   }
 
+  await productService.updateProductStock({
+    products,
+    isAdd: false,
+  });
+
   products.forEach(async (prod) => {
     await orderService.createOrder({
       product: prod.productId,
@@ -58,8 +64,8 @@ const createOrder = catchAsync(async (req, res) => {
 
   await cart.save();
 
-  res.send({
-    message: "Order Placed Successfully",
+  await res.send({
+    message: "Order process started successfully",
   });
 });
 
@@ -91,4 +97,60 @@ const getAllAdminOrders = catchAsync(async (req, res) => {
   res.send(orders);
 });
 
-export { createOrder, getUserOrders, getSellerOrders, getAllAdminOrders };
+const markDelivered = catchAsync(async (req, res) => {
+  const { orderId } = req.params;
+  const sellerId = req.user._id;
+
+  const order = await orderService.updateMany(
+    {
+      _id: orderId,
+      sellerId,
+      isPlaced: true,
+    },
+    {
+      deliveredDate: Date.now(),
+    }
+  );
+
+  res.send(order);
+});
+
+const updateOrderStatus = catchAsync(async (req, res) => {
+  const { orderId, status } = req.query;
+  const customerId = req.user._id;
+
+  let message = "Order placed successfully";
+
+  if (status === "failed") {
+    const order = await orderService.getSingleOrder(customerId, orderId, false);
+
+    await productService.updateProductStock({
+      products: order.products,
+      isAdd: true,
+    });
+
+    await orderService.deleteOrder({ customerId, orderId });
+    message = "Order failed";
+  } else {
+    await orderService.updateMany(
+      {
+        customerId,
+        orderId,
+      },
+      {
+        isPlaced: true,
+      }
+    );
+  }
+
+  res.send({ message });
+});
+
+export {
+  createOrder,
+  getUserOrders,
+  getSellerOrders,
+  getAllAdminOrders,
+  updateOrderStatus,
+  markDelivered,
+};

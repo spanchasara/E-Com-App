@@ -4,9 +4,11 @@ import httpStatus from "http-status";
 
 const createOrder = async (orderBody) => {
   const order = await Order.create(orderBody);
+
   if (!order) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Could Not Place Order");
   }
+
   return order;
 };
 
@@ -20,7 +22,7 @@ const aggregateQuery = async (
 
   const resp = await Order.aggregate([
     {
-      $match: filterQuery,
+      $match: { isPlaced: true, ...filterQuery },
     },
     {
       $lookup: {
@@ -53,7 +55,6 @@ const aggregateQuery = async (
           orderId: "$orderId",
           addressId: "$addressId",
           customerId: "$customerId",
-          createdAt: "$createdAt",
         },
         totalAmount: {
           $sum: {
@@ -78,6 +79,9 @@ const aggregateQuery = async (
         address: {
           $first: "$addressInfo",
         },
+        createdAt: {
+          $first: "$createdAt",
+        },
       },
     },
     {
@@ -96,7 +100,7 @@ const aggregateQuery = async (
         _id: 0,
         orderId: "$_id.orderId",
         customerId: "$_id.customerId",
-        createdAt: "$_id.createdAt",
+        createdAt: 1,
         sellerId: "$_id.sellerId",
         totalAmount: 1,
         totalQty: 1,
@@ -112,7 +116,7 @@ const aggregateQuery = async (
 const totalCountQuery = async (filterQuery, groupQuery) => {
   const resp = await Order.aggregate([
     {
-      $match: filterQuery,
+      $match: { isPlaced: true, ...filterQuery },
     },
     {
       $group: {
@@ -135,11 +139,12 @@ const totalCountQuery = async (filterQuery, groupQuery) => {
   return resp[0]?.count || 0;
 };
 
-const getSingleOrder = async (customerId, orderId) => {
+const getSingleOrder = async (customerId, orderId, isPlaced = true) => {
   const order = await aggregateQuery(
     {
       orderId,
       customerId,
+      isPlaced,
     },
     false
   );
@@ -230,10 +235,32 @@ const getAllOrders = async (options) => {
   return orders;
 };
 
+const updateMany = async (filterQuery, updateBody) => {
+  const order = await Order.updateMany(filterQuery, updateBody);
+
+  if (!order) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Could Not update order");
+  }
+
+  return order;
+};
+
+const deleteOrder = async (deleteBody) => {
+  const order = await Order.deleteMany(deleteBody);
+
+  if (!order) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Could Not delete order");
+  }
+
+  return order;
+};
+
 export {
   createOrder,
   getSingleOrder,
   getAllUsersOrders,
   getAllSellerOrders,
   getAllOrders,
+  deleteOrder,
+  updateMany,
 };
