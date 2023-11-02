@@ -65,6 +65,7 @@ const createOrder = catchAsync(async (req, res) => {
   await cart.save();
 
   await res.send({
+    orderId,
     message: "Order process started successfully",
   });
 });

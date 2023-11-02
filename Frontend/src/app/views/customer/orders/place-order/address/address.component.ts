@@ -14,18 +14,19 @@ export class AddressComponent {
 
   loadCurrentAddress(data: any) {
     this.currentAddress = data;
+
     if (
-      sessionStorage.getItem("currentAddressId") &&
-      sessionStorage.getItem("currentAddressId") === ""
+      sessionStorage.getItem("currentAddress") &&
+      sessionStorage.getItem("currentAddress") === ""
     )
       sessionStorage.setItem(
-        "currentAddressId",
-        this.currentAddress?._id || ""
+        "currentAddress",
+        JSON.stringify(this.currentAddress) || ""
       );
     else
       sessionStorage.setItem(
-        "currentAddressId",
-        this.currentAddress?._id || ""
+        "currentAddress",
+        JSON.stringify(this.currentAddress) || ""
       );
   }
   toggleAddress() {
@@ -35,5 +36,9 @@ export class AddressComponent {
   closeAddressForm(data: any) {
     this.toggleAddressForm = false;
     this.showPreviewOrder.next(true);
+  }
+  useThisAddress(){
+    this.showPreviewOrder.next(true);
+    
   }
 }

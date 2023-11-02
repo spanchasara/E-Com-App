@@ -44,10 +44,10 @@ import { SellerOrdersComponent } from './views/seller/orders/seller-orders.compo
 import { OrderCardComponent } from './components/shared/order-card/order-card.component';
 import { AdminOrdersComponent } from './views/admin/orders/admin-orders.component';
 import { PreviewOrderComponent } from './views/customer/orders/place-order/preview-order/preview-order.component';
-import { CustomerOrdersComponent } from './views/customer/orders/customer-orders.component';
 import { PlaceOrderComponent } from './views/customer/orders/place-order/place-order.component';
 import { AllOrdersComponent } from './views/customer/orders/all-orders/all-orders.component';
 import { RupeeFormatPipe } from './rupee-format.pipe';
+import { PaymentComponent } from './views/customer/orders/place-order/payment/payment.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -85,10 +85,10 @@ import { RupeeFormatPipe } from './rupee-format.pipe';
     AdminOrdersComponent,
     OrderCardComponent,
     PreviewOrderComponent,
-    CustomerOrdersComponent,
     PlaceOrderComponent,
     AllOrdersComponent,
-    RupeeFormatPipe
+    RupeeFormatPipe,
+    PaymentComponent,
   ],
   imports: [
     BrowserModule,

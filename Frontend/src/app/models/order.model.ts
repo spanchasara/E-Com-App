@@ -1,4 +1,5 @@
 import { Address } from "./address.model";
+import { Cart } from "./cart.model";
 
 export type PlaceOrder = {
   products: ProjectOrder[];

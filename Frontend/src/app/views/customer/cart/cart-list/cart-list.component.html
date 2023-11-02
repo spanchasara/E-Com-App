@@ -1,15 +1,14 @@
 <div *ngIf="cart.totalQty > 0">
+  <div>
+    <button class="btn btn-class" (click)="buyNow()">Buy Now</button>
+  </div>
   <div *ngFor="let product of cart?.products">
     <div class="card my-4">
       <div class="card-body">
         <div class="row">
-          <div
-            class="col-md-4 d-flex justify-content-center align-items-center"
-          >
-            <div
-              class="col-md-3 d-flex justify-content-center align-items-center"
-            >
-              <input type="checkbox" id="" />
+          <div class="col-md-4 d-flex justify-content-center align-items-center">
+            <div class="col-md-3 d-flex justify-content-center align-items-center">
+              <input type="checkbox" checked="true" (change)="updateSelectedProducts(product)">
             </div>
             <div class="col-md-9">
               <img
@@ -67,7 +66,6 @@
                 </button>
               </div>
             </div>
-            <button class="btn btn-class mt-4">Buy Now</button>
           </div>
         </div>
       </div>

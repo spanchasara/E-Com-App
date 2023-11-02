@@ -1,24 +1,97 @@
-<div class="card my-4 mx-5" style="max-width: 95%;">
+  <div
+    *ngIf="finalOrderPreview"
+    class="card my-4 mx-auto"
+    style="width: 80%; font-size: 14px"
+  >
     <div class="card-body">
-      <div class="row my-4">
-        <div class="col-md-3 d-flex justify-content-center">
-          <img
-          src="https://bootdey.com/img/Content/avatar/avatar1.png"
-          class="d-block ui-w-40 ui-bordered mx-2"
-          alt=""
-          height="150px"
-          width="150px"
-        />
-        </div>
-        <div class="col-md-9">
+      <div class="row mt-3">
+        <div class="col-md-4">
+          <p><strong>Shipping Address</strong></p>
           <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci, quibusdam! 
-            Exercitationem natus reiciendis, incidunt labore consectetur, consequuntur, repellendus
+            {{ currentAddress.fullName }} <br />
+            {{ currentAddress.phoneNo }} <br />
+            {{ currentAddress.addressLane1 }} {{ currentAddress.addressLane2 }}
+            <br />
+            {{ currentAddress.city }} {{ currentAddress.state }}
+            {{ currentAddress.country }} <br />
+            {{ currentAddress.pincode }}
           </p>
-          <p>510000</p>
         </div>
-       
-      </div>
+        <div class="col-md-4">
+          <!-- <p><strong>Shipping Address</strong></p>
+          <p>
+            {{ currentAddress.fullName }} <br />
+            {{ currentAddress.phoneNo }} <br />
+            {{ currentAddress.addressLane1 }} {{ currentAddress.addressLane2 }}
+            <br />
+            {{ currentAddress.city }} {{ currentAddress.state }}
+            {{ currentAddress.country }} <br />
+            {{ currentAddress.pincode }}
+          </p> -->
+        </div>
+        <div class="col-md-4">
+          <p><strong>Order Summary</strong></p>
 
+          <p>
+            Total Quantity: {{ order.totalQty }} <br />
+            Total Amount: {{ order.totalAmount }} <br />
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card my-4 mx-auto" style="width: 80%; font-size: 14px">
+    <div class="card-body">
+      <div class="card-header" *ngIf="!finalOrderPreview" style="text-align: right;">
+        <p><strong>Order Summary</strong></p>
+        <p >
+          Total Quantity: {{ order.totalQty }} <br />
+          Total Amount: {{ order.totalAmount }} <br />
+        </p>
+      </div>
+      <div class="row mt-3" *ngFor="let product of order.products">
+        <div class="col-md-2 d-flex align-items-center">
+          <div class="col-md-5">
+            <img
+              src="https://bootdey.com/img/Content/avatar/avatar1.png"
+              class="d-block ui-w-40 ui-bordered mx-2"
+              alt=""
+              height="100px"
+              width="100px"
+              [routerLink]="['/products', product.productId._id]"
+            />
+          </div>
+        </div>
+        <div class="col-md-10 my-3">
+          <a
+            class="d-block text-dark"
+            [routerLink]="['/products', product.productId._id]"
+            >{{ product.productId.title }}</a
+          >
+          <p class="my-1">
+            <strong>₹ {{ product.productId.price }}</strong>
+          </p>
+          <div class="row">
+            <div class="col-md-2">
+              <label for="quantity"
+                ><strong>Quantity:</strong> {{ product.qty }}</label
+              >
+            </div>
+            <div class="col-md-2">
+              <label for="amount"
+                ><strong>Amount:</strong>
+                {{ product.productId.price * product.qty }}</label
+              >
+            </div>
+          </div>
+          <!-- <div class="row mt-3" *ngIf="!isCurrentOrder && product.deliveredDate">
+          <div class="col-md-4">
+            <strong>Delivered on:</strong>
+            {{ product.deliveredDate | date : "mediumDate" }}
+          </div> 
+        </div> -->
+        </div>
+      </div>
     </div>
   </div>

@@ -14,6 +14,8 @@ import {
   PlaceOrder,
   PlacedOrder,
 } from "../models/order.model";
+import { Product } from "../models/product.model";
+import { CartService } from "./cart.service";
 
 @Injectable({
   providedIn: "root",
@@ -24,6 +26,7 @@ export class OrdersService {
     private loaderService: LoaderService,
     private swalService: SwalService,
     private productService: ProductService,
+    private cartService: CartService,
     private cartStore: CartStore
   ) {}
 
@@ -124,7 +127,7 @@ export class OrdersService {
       .pipe(
         tap(() => {
           this.loaderService.hide();
-          this.swalService.success("Order Placed Successfully!!");
+          // this.swalService.success("Order Placed Successfully!!");
         }),
         catchError((error) => {
           this.loaderService.hide();
@@ -163,6 +166,90 @@ export class OrdersService {
         tap((data) => {
           console.log(data);
           this.loaderService.hide();
+        }),
+        catchError((error) => {
+          this.loaderService.hide();
+          console.log(error);
+          this.swalService.error(error.error?.message);
+          return of(error);
+        })
+      );
+  }
+
+  refineOrder(action: string, data: CreateOrderBody | null): Observable<any> {
+    return new Observable((observer) => {
+      let body = {};
+
+      if (action === "single") {
+        const productId = data?.productId || "";
+        const qty = data?.qty || 1;
+        this.productService
+          .getProducts(true, productId)
+          .subscribe((data: Product) => {
+            body = {
+              totalAmount: data.price * qty,
+              totalQty: qty,
+              products: [
+                {
+                  productId: {
+                    _id: data._id || "",
+                    title: data.title,
+                    price: data.price,
+                  },
+                  qty,
+                },
+              ],
+            };
+            observer.next(body);
+            observer.complete();
+          });
+      } else {
+        this.cartService.getCart().subscribe((cartItems: Cart) => {
+          if (action === "full") {
+            body = cartItems;
+          } else if (action === "partial") {
+            const selectedProductIds = data?.selectedProductIds || [];
+            console.log("before ", cartItems, selectedProductIds);
+            cartItems.products = cartItems.products.filter((product) =>
+              selectedProductIds.includes(product.productId._id)
+            );
+
+            cartItems.totalQty = cartItems.products.reduce(
+              (total, product) => total + product.qty,
+              0
+            );
+
+            cartItems.totalAmount = cartItems.products.reduce(
+              (total, product) => total + product.qty * product.productId.price,
+              0
+            );
+
+            console.log("after ", cartItems);
+            body = cartItems;
+          }
+          observer.next(body);
+          observer.complete();
+        });
+      }
+    });
+  }
+
+  updateOrderStatus(orderId: string, status: string): Observable<any> {
+    this.loaderService.show();
+
+    let params = new HttpParams();
+
+    params = params.append("orderId", orderId);
+    params = params.append("status", status);
+    console.log(params);
+    return this.httpClient
+      .patch(this.apiUrl + "order", {}, {
+        params
+      })
+      .pipe(
+        tap(() => {
+          this.loaderService.hide();
+          this.swalService.success("Order Placed Successfully!!");
         }),
         catchError((error) => {
           this.loaderService.hide();

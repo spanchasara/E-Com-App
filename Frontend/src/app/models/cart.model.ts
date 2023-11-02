@@ -18,7 +18,6 @@ export type CartProduct = {
   _id: string;
   productId: Product;
   qty: number;
-  // isChecked?: boolean;
 };
 
 type Product = {

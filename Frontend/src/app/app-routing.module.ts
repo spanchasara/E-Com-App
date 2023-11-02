@@ -17,7 +17,6 @@ import { EditProductComponent } from './views/seller/edit-product/edit-product.c
 import { CartComponent } from './views/customer/cart/cart.component';
 import { AddAddressComponent } from './views/customer/orders/place-order/address/add-address/add-address.component';
 import { EditAddressComponent } from './views/customer/orders/place-order/address/edit-address/edit-address.component';
-import { AddressComponent } from './views/customer/orders/place-order/address/address.component';
 import { ProductsListComponent } from './views/seller/products-list/products-list.component';
 import { HomeGuard } from './guards/home.guard';
 import { SellerGuard } from './guards/seller.guard';
@@ -25,7 +24,8 @@ import { CustomerGuard } from './guards/customer.guard';
 import { UsersListComponent } from './views/admin/users-list/users-list.component';
 import { SellerOrdersComponent } from './views/seller/orders/seller-orders.component';
 import { AdminOrdersComponent } from './views/admin/orders/admin-orders.component';
-import { CustomerOrdersComponent } from './views/customer/orders/customer-orders.component';
+import { AllOrdersComponent } from './views/customer/orders/all-orders/all-orders.component';
+import { PlaceOrderComponent } from './views/customer/orders/place-order/place-order.component';
 
 const routes: Routes = [
   {
@@ -125,8 +125,14 @@ const routes: Routes = [
   },
   {
     path: 'orders',
-    component: CustomerOrdersComponent,
+    component: AllOrdersComponent,
     canActivate: [AuthGuard, CustomerGuard],
+  },
+  {
+    path: 'place-order',
+    component: PlaceOrderComponent,
+    canActivate: [AuthGuard, CustomerGuard],
+
   },
   { path: '**', component: NotFoundComponent },
 ];
