@@ -23,11 +23,12 @@ export class CustomerGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-      const currentPath = route.url[0]?.path.toLowerCase();
+    const currentPath = route.url[0]?.path.toLowerCase();
     if (this.authService.checkRole("customer")) {
-      if ( ['place-order'].includes(currentPath) &&(
-        !sessionStorage.getItem("currentOrder") ||
-        sessionStorage.getItem("currentOrder") === "")
+      if (
+        ["place-order"].includes(currentPath) &&
+        (!sessionStorage.getItem("currentOrder") ||
+          sessionStorage.getItem("currentOrder") === "")
       ) {
         return this.router.navigate(["/orders"]);
       }

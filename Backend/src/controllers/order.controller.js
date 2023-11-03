@@ -5,7 +5,6 @@ import * as cartService from "../services/cart.service.js";
 import ApiError from "../utils/api-error.js";
 import httpStatus from "http-status";
 import { v4 as uuidv4 } from "uuid";
-import mongoose from "mongoose";
 
 const createOrder = catchAsync(async (req, res) => {
   const customerId = req.user._id;
@@ -39,7 +38,7 @@ const createOrder = catchAsync(async (req, res) => {
         return orderBody.selectedProductIds.some((id) => prod.productId != id);
       });
       break;
-    
+
     case "full":
       products = cart.products;
       cart.products = [];
@@ -50,6 +49,25 @@ const createOrder = catchAsync(async (req, res) => {
     products,
     isAdd: false,
   });
+
+  setTimeout(async () => {
+    try {
+      const order = await orderService.getSingleOrder(
+        customerId,
+        orderId,
+        false
+      );
+
+      if (order) {
+        await productService.updateProductStock({
+          products,
+          isAdd: true,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, 30 * 60 * 1000);
 
   products.forEach(async (prod) => {
     await orderService.createOrder({
@@ -121,9 +139,9 @@ const updateOrderStatus = catchAsync(async (req, res) => {
 
   let message = "Order placed successfully";
 
-  if (status === "failed") {
-    const order = await orderService.getSingleOrder(customerId, orderId, false);
+  const order = await orderService.getSingleOrder(customerId, orderId, false);
 
+  if (status === "failed") {
     await productService.updateProductStock({
       products: order.products,
       isAdd: true,

@@ -3,9 +3,11 @@ import Stripe from "stripe";
 const handlePayment = async (body) => {
   const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
 
-  const { products } = body;
+  const { products, orderId } = body;
+
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
+    expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
     shipping_options: [
       {
         shipping_rate_data: {
@@ -40,11 +42,19 @@ const handlePayment = async (body) => {
       quantity: prod.qty,
     })),
     mode: "payment",
-    success_url: "http://localhost:4242/success.html",
-    cancel_url: "http://localhost:4242/cancel.html",
+    success_url: `http://localhost:4200/status/?status=success&order_id=${orderId}`,
+    cancel_url: `http://localhost:4200/status/?status=failed&order_id=${orderId}`,
   });
 
   return session;
 };
 
-export { handlePayment };
+const check = async (id) => {
+  const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
+
+  const resp = await stripe.checkout.sessions.retrieve(id);
+  const { status, payment_status } = resp;
+  return { status, payment_status };
+};
+
+export { handlePayment, check };

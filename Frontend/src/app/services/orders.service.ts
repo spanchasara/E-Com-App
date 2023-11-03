@@ -240,13 +240,21 @@ export class OrdersService {
     params = params.append("orderId", orderId);
     params = params.append("status", status);
     return this.httpClient
-      .patch(this.apiUrl + "order", {}, {
-        params
-      })
+      .patch(
+        this.apiUrl + "order",
+        {},
+        {
+          params,
+        }
+      )
       .pipe(
-        tap(() => {
+        tap((data: any) => {
           this.loaderService.hide();
-          this.swalService.success("Order Placed Successfully!!");
+
+          if (data?.message === "Order placed successfully") {
+            this.swalService.success(data?.message);
+          } else if (data?.message === "Order failed")
+            this.swalService.error(data?.message);
         }),
         catchError((error) => {
           this.loaderService.hide();
@@ -255,5 +263,27 @@ export class OrdersService {
           return of(error);
         })
       );
+  }
+
+  makePayment(data: any): Observable<any> {
+    this.loaderService.show();
+
+    return this.httpClient.post(this.apiUrl + "payment", data).pipe(
+      tap(() => {
+        this.loaderService.hide();
+      }),
+      catchError((error) => {
+        this.loaderService.hide();
+        console.log(error);
+        this.swalService.error(error.error?.message);
+        return of(error);
+      })
+    );
+  }
+
+  checkPayment(id: string): Observable<any> {
+    this.loaderService.show();
+
+    return this.httpClient.get(this.apiUrl + `payment/${id}`);
   }
 }

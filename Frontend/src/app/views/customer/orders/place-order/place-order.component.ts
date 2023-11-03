@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { loadStripe } from "@stripe/stripe-js";
 import { CreateOrderBody } from "src/app/models/order.model";
 import { OrdersService } from "src/app/services/orders.service";
+import { environment } from "src/environment/environment";
 
 @Component({
   selector: "app-place-order",
@@ -15,7 +16,7 @@ export class PlaceOrderComponent implements OnInit {
   toggleOrderPreview: boolean = false;
   addressId!: string;
 
-  constructor(private ordersService: OrdersService, private router: Router) {}
+  constructor(private ordersService: OrdersService) {}
 
   ngOnInit(): void {
     const order = JSON.parse(sessionStorage.getItem("currentOrder") || "");
@@ -36,12 +37,22 @@ export class PlaceOrderComponent implements OnInit {
   }
 
   placeOrder() {
-    this.ordersService.createOrder(this.action, {
-      addressId: this.addressId,
-      ...this.orderPreview,
-    }).subscribe((data) => {
-      this.ordersService.updateOrderStatus(data.orderId, "success").subscribe();
-      this.router.navigate(['/orders'])
-    });
+    this.ordersService
+      .createOrder(this.action, {
+        addressId: "",
+        ...this.orderPreview,
+      })
+      .subscribe((data) => {
+        if (!data?.orderId) return;
+
+        this.ordersService
+          .makePayment({ ...this.order, orderId: data.orderId })
+          .subscribe(async (res: any) => {
+            let stripe = await loadStripe(environment.stripePublicKey);
+            stripe?.redirectToCheckout({
+              sessionId: res.id,
+            });
+          });
+      });
   }
 }

@@ -1,140 +1,145 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './views/common/login/login.component';
-import { RegisterComponent } from './views/common/register/register.component';
-import { WelcomePageComponent } from './views/customer/welcome-page/welcome-page.component';
-import { AuthGuard } from './guards/auth.guard';
-import { UserProfileComponent } from './views/common/user-profile/user-profile.component';
-import { ProductsComponent } from './views/common/products/products.component';
-import { ProductComponent } from './views/common/product/product.component';
-import { AdminDashboardComponent } from './views/admin/admin-dashboard.component';
-import { NotFoundComponent } from './views/common/not-found/not-found.component';
-import { AdminGuard } from './guards/admin.guard';
-import { SellerDashboardComponent } from './views/seller/seller-dashboard.component';
-import { PublicUserComponent } from './views/admin/public-user/public-user.component';
-import { AddProductComponent } from './views/seller/add-product/add-product.component';
-import { EditProductComponent } from './views/seller/edit-product/edit-product.component';
-import { CartComponent } from './views/customer/cart/cart.component';
-import { AddAddressComponent } from './views/customer/orders/place-order/address/add-address/add-address.component';
-import { EditAddressComponent } from './views/customer/orders/place-order/address/edit-address/edit-address.component';
-import { ProductsListComponent } from './views/seller/products-list/products-list.component';
-import { HomeGuard } from './guards/home.guard';
-import { SellerGuard } from './guards/seller.guard';
-import { CustomerGuard } from './guards/customer.guard';
-import { UsersListComponent } from './views/admin/users-list/users-list.component';
-import { SellerOrdersComponent } from './views/seller/orders/seller-orders.component';
-import { AdminOrdersComponent } from './views/admin/orders/admin-orders.component';
-import { AllOrdersComponent } from './views/customer/orders/all-orders/all-orders.component';
-import { PlaceOrderComponent } from './views/customer/orders/place-order/place-order.component';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { LoginComponent } from "./views/common/login/login.component";
+import { RegisterComponent } from "./views/common/register/register.component";
+import { WelcomePageComponent } from "./views/customer/welcome-page/welcome-page.component";
+import { AuthGuard } from "./guards/auth.guard";
+import { UserProfileComponent } from "./views/common/user-profile/user-profile.component";
+import { ProductsComponent } from "./views/common/products/products.component";
+import { ProductComponent } from "./views/common/product/product.component";
+import { AdminDashboardComponent } from "./views/admin/admin-dashboard.component";
+import { NotFoundComponent } from "./views/common/not-found/not-found.component";
+import { AdminGuard } from "./guards/admin.guard";
+import { SellerDashboardComponent } from "./views/seller/seller-dashboard.component";
+import { PublicUserComponent } from "./views/admin/public-user/public-user.component";
+import { AddProductComponent } from "./views/seller/add-product/add-product.component";
+import { EditProductComponent } from "./views/seller/edit-product/edit-product.component";
+import { CartComponent } from "./views/customer/cart/cart.component";
+import { AddAddressComponent } from "./views/customer/orders/place-order/address/add-address/add-address.component";
+import { EditAddressComponent } from "./views/customer/orders/place-order/address/edit-address/edit-address.component";
+import { ProductsListComponent } from "./views/seller/products-list/products-list.component";
+import { HomeGuard } from "./guards/home.guard";
+import { SellerGuard } from "./guards/seller.guard";
+import { CustomerGuard } from "./guards/customer.guard";
+import { UsersListComponent } from "./views/admin/users-list/users-list.component";
+import { SellerOrdersComponent } from "./views/seller/orders/seller-orders.component";
+import { AdminOrdersComponent } from "./views/admin/orders/admin-orders.component";
+import { AllOrdersComponent } from "./views/customer/orders/all-orders/all-orders.component";
+import { PlaceOrderComponent } from "./views/customer/orders/place-order/place-order.component";
+import { StatusComponent } from "./components/status/status.component";
 
 const routes: Routes = [
   {
-    path: '',
+    path: "",
     component: WelcomePageComponent,
     canActivate: [HomeGuard],
   },
   {
-    path: 'cart',
+    path: "cart",
     component: CartComponent,
   },
   {
-    path: 'login',
+    path: "login",
     component: LoginComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'register',
+    path: "register",
     component: RegisterComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'user',
+    path: "user",
     component: UserProfileComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'user/:id',
+    path: "user/:id",
     component: PublicUserComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'products',
+    path: "products",
     component: ProductsComponent,
   },
   {
-    path: 'products/:id',
+    path: "products/:id",
     component: ProductComponent,
   },
   {
-    path: 'admin',
+    path: "status",
+    component: StatusComponent,
+    canActivate: [AuthGuard, CustomerGuard],
+  },
+  {
+    path: "admin",
     component: AdminDashboardComponent,
     canActivate: [AuthGuard, AdminGuard],
     children: [
       {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'users',
+        path: "",
+        pathMatch: "full",
+        redirectTo: "users",
       },
       {
-        path: 'users',
+        path: "users",
         component: UsersListComponent,
       },
       {
-        path: 'orders',
+        path: "orders",
         component: AdminOrdersComponent,
       },
     ],
   },
   {
-    path: 'seller',
+    path: "seller",
     component: SellerDashboardComponent,
     canActivate: [AuthGuard, SellerGuard],
     children: [
       {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'products',
+        path: "",
+        pathMatch: "full",
+        redirectTo: "products",
       },
       {
-        path: 'products',
+        path: "products",
         component: ProductsListComponent,
       },
       {
-        path: 'products/add',
+        path: "products/add",
         component: AddProductComponent,
       },
       {
-        path: 'products/edit/:id',
+        path: "products/edit/:id",
         component: EditProductComponent,
       },
       {
-        path: 'orders',
+        path: "orders",
         component: SellerOrdersComponent,
       },
     ],
   },
   {
-    path: 'address/add',
+    path: "address/add",
     component: AddAddressComponent,
     canActivate: [AuthGuard, CustomerGuard],
   },
   {
-    path: 'address/edit/:id',
+    path: "address/edit/:id",
     component: EditAddressComponent,
     canActivate: [AuthGuard, CustomerGuard],
   },
   {
-    path: 'orders',
+    path: "orders",
     component: AllOrdersComponent,
     canActivate: [AuthGuard, CustomerGuard],
   },
   {
-    path: 'place-order',
+    path: "place-order",
     component: PlaceOrderComponent,
     canActivate: [AuthGuard, CustomerGuard],
-
   },
-  { path: '**', component: NotFoundComponent },
+  { path: "**", component: NotFoundComponent },
 ];
 
 @NgModule({
