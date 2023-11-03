@@ -7,6 +7,7 @@ import roleRoute from "./role.route.js";
 import docsRoute from "./docs.route.js";
 import addressRoute from "./address.route.js";
 import orderRoute from "./order.route.js";
+import paymentRoute from "./stripe.route.js";
 
 const router = express.Router();
 
@@ -18,5 +19,6 @@ router.use("/role", roleRoute);
 router.use("/docs", docsRoute);
 router.use("/address", addressRoute);
 router.use("/order", orderRoute);
+router.use("/payment", paymentRoute);
 
 export default router;
