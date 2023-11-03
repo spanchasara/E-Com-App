@@ -32,20 +32,14 @@ const createOrder = catchAsync(async (req, res) => {
 
     case "partial":
       products = cart.products.filter((prod) => {
-        orderBody.selectedProductIds.some((id) => prod.productId === new mongoose.Types.ObjectId(id));
+        return orderBody.selectedProductIds.some((id) => prod.productId == id);
       });
 
-      console.log(products);
-      console.log(cart.products);
-      console.log(orderBody)
-
-      cart.products.filter((prod) => {
-        orderBody.selectedProductIds.some((id) => {
-          prod.productId.toString() !== new mongoose.Types.ObjectId(id);
-        });
+      cart.products = cart.products.filter((prod) => {
+        return orderBody.selectedProductIds.some((id) => prod.productId != id);
       });
       break;
-
+    
     case "full":
       products = cart.products;
       cart.products = [];
