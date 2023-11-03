@@ -24,3 +24,8 @@ a {
   height: 30px; 
   padding: 5px; 
 }
+.cart-content {
+  margin-bottom: 8%;
+  background-color: #fff;
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.05);
+}

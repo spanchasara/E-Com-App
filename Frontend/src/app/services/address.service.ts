@@ -30,7 +30,7 @@ export class AddressService {
         tap(() => {
           this.loaderService.hide();
           this.swalService.success('Address Added Successfully!!');
-          this.router.navigate(['/orders']);
+          this.router.navigate(['/place-order']);
         }),
         catchError((error) => {
           this.loaderService.hide();
@@ -57,7 +57,7 @@ export class AddressService {
         tap(() => {
           this.loaderService.hide();
           this.swalService.success('Address Updated Successfully!!');
-          this.router.navigate(['/orders']);
+          this.router.navigate(['/place-order']);
         }),
         catchError((error) => {
           this.loaderService.hide();

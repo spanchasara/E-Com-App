@@ -16,6 +16,7 @@ import {
 } from "../models/order.model";
 import { Product } from "../models/product.model";
 import { CartService } from "./cart.service";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: "root",
@@ -27,7 +28,8 @@ export class OrdersService {
     private swalService: SwalService,
     private productService: ProductService,
     private cartService: CartService,
-    private cartStore: CartStore
+    private cartStore: CartStore,
+    private router: Router
   ) {}
 
   apiUrl = environment.apiUrl;
@@ -260,6 +262,7 @@ export class OrdersService {
           this.loaderService.hide();
           console.log(error);
           this.swalService.error(error.error?.message);
+          this.router.navigate(["/"]);
           return of(error);
         })
       );
@@ -279,11 +282,5 @@ export class OrdersService {
         return of(error);
       })
     );
-  }
-
-  checkPayment(id: string): Observable<any> {
-    this.loaderService.show();
-
-    return this.httpClient.get(this.apiUrl + `payment/${id}`);
   }
 }

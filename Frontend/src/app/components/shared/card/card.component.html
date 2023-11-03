@@ -41,7 +41,7 @@
         </button>
         <button
           class="btn btn-class mt-1 mx-3"
-          *ngIf="!isSellerByRole && !isCurrentSeller && !isAdmin"
+          *ngIf="!isSellerByRole && !isCurrentSeller && !isAdmin && product && product.stock > 0"
           type="button"
           (click)="buyNow()"
         >

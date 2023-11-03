@@ -28,7 +28,9 @@ export class StatusComponent {
 
       this.ordersService
         .updateOrderStatus(this.orderId, this.status)
-        .subscribe();
+        .subscribe((data) => {
+          
+        });
     });
   }
 }

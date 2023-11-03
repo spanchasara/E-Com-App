@@ -70,7 +70,7 @@
             >{{ product.productId.title }}</a
           >
           <p class="my-1">
-            <strong>₹ {{ product.productId.price }}</strong>
+            <strong>{{ product.productId.price | rupeeFormat }}</strong>
           </p>
           <div class="row">
             <div class="col-md-2">
@@ -78,10 +78,10 @@
                 ><strong>Quantity:</strong> {{ product.qty }}</label
               >
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
               <label for="amount"
                 ><strong>Amount:</strong>
-                {{ product.productId.price * product.qty }}</label
+                {{ product.productId.price * product.qty | rupeeFormat}}</label
               >
             </div>
           </div>

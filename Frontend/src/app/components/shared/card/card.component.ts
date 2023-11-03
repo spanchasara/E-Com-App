@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from "@angular/core";
+import { AfterViewInit, Component, Input, OnDestroy, OnInit } from "@angular/core";
 
 import { Product } from "src/app/models/product.model";
 import { CartService } from "src/app/services/cart.service";

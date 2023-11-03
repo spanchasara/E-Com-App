@@ -6,6 +6,4 @@ const router = express.Router();
 
 router.route("/").post(auth("make_payment"), stripeController.makePayment);
 
-router.route("/:id").get(auth("make_payment"), stripeController.check);
-
 export default router;

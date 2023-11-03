@@ -49,12 +49,4 @@ const handlePayment = async (body) => {
   return session;
 };
 
-const check = async (id) => {
-  const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
-
-  const resp = await stripe.checkout.sessions.retrieve(id);
-  const { status, payment_status } = resp;
-  return { status, payment_status };
-};
-
-export { handlePayment, check };
+export { handlePayment };

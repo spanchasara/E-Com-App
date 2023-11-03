@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { loadStripe } from "@stripe/stripe-js";
 import { CreateOrderBody } from "src/app/models/order.model";
 import { OrdersService } from "src/app/services/orders.service";
@@ -9,7 +9,7 @@ import { environment } from "src/environment/environment";
   templateUrl: "./place-order.component.html",
   styleUrls: ["./place-order.component.css"],
 })
-export class PlaceOrderComponent implements OnInit {
+export class PlaceOrderComponent implements OnInit, OnDestroy {
   orderPreview!: CreateOrderBody | null;
   action!: string;
   order: any;
@@ -39,7 +39,7 @@ export class PlaceOrderComponent implements OnInit {
   placeOrder() {
     this.ordersService
       .createOrder(this.action, {
-        addressId: "",
+        addressId: this.addressId,
         ...this.orderPreview,
       })
       .subscribe((data) => {
@@ -54,5 +54,9 @@ export class PlaceOrderComponent implements OnInit {
             });
           });
       });
+  }
+
+  ngOnDestroy(): void {
+    sessionStorage.clear();
   }
 }

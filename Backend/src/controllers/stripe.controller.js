@@ -7,9 +7,4 @@ const makePayment = catchAsync(async (req, res) => {
   res.send(paymentResponse);
 });
 
-const check = catchAsync(async (req, res) => {
-  const paymentResponse = await stripeService.check(req.params.id);
-  res.send(paymentResponse);
-});
-
-export { makePayment, check };
+export { makePayment };
