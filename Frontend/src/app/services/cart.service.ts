@@ -1,17 +1,17 @@
-import { Injectable } from '@angular/core';
-import { Observable, Subject, catchError, of, tap } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environment/environment';
+import { Injectable } from "@angular/core";
+import { Observable, Subject, catchError, of, tap } from "rxjs";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "src/environment/environment";
 
-import { Cart, UpdateBody, emptyCart } from '../models/cart.model';
-import { Product } from '../models/product.model';
-import { LoaderService } from './loader.service';
-import { ProductService } from './product.service';
-import { CartStore } from '../store/cart.store';
-import { SwalService } from './swal.service';
+import { Cart, UpdateBody, emptyCart } from "../models/cart.model";
+import { Product } from "../models/product.model";
+import { LoaderService } from "./loader.service";
+import { ProductService } from "./product.service";
+import { CartStore } from "../store/cart.store";
+import { SwalService } from "./swal.service";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class CartService {
   constructor(
@@ -29,9 +29,14 @@ export class CartService {
   getCart(): Observable<any> {
     this.loaderService.show();
 
-    return this.httpClient.get<Cart>(this.apiUrl + 'cart').pipe(
-      tap(() => {
+    return this.httpClient.get<Cart>(this.apiUrl + "cart").pipe(
+      tap((data) => {
         this.loaderService.hide();
+        this.cartStore.clearCartData();
+
+        data.products.forEach((product) => {
+          this.cartStore.updateCartData(product.productId._id, true);
+        });
       }),
       catchError((error) => {
         this.loaderService.hide();
@@ -45,7 +50,7 @@ export class CartService {
   updateCart(updateBody: UpdateBody, showLoader = true): Observable<any> {
     if (showLoader) this.loaderService.show();
 
-    return this.httpClient.patch<Cart>(this.apiUrl + 'cart', updateBody).pipe(
+    return this.httpClient.patch<Cart>(this.apiUrl + "cart", updateBody).pipe(
       tap(() => {
         if (showLoader) this.loaderService.hide();
 
@@ -67,8 +72,21 @@ export class CartService {
   }
 
   getLocalCart(): Cart {
-    const cart = localStorage.getItem('cart');
-    return cart ? JSON.parse(cart) : emptyCart;
+    const cartString = localStorage.getItem("cart");
+
+    if (cartString) {
+      const cart = JSON.parse(cartString);
+      this.cartStore.clearCartData();
+
+      cart.products.forEach((product: any) => {
+        this.cartStore.updateCartData(product.productId._id, true);
+      });
+
+      return cart;
+    } else {
+      this.cartStore.clearCartData();
+      return emptyCart;
+    }
   }
 
   updateLocalCart(updateBody: UpdateBody) {
@@ -88,7 +106,7 @@ export class CartService {
         0
       );
 
-      localStorage.setItem('cart', JSON.stringify(cart));
+      localStorage.setItem("cart", JSON.stringify(cart));
       this.cartStore.updateCartData(productId, isAdd);
       this.callLocalCart.next(true);
     });
@@ -101,7 +119,7 @@ export class CartService {
   ) {
     if (isAdd) {
       cart.products.push({
-        _id: '',
+        _id: "",
         qty: 1,
         productId: {
           _id: product._id as string,
@@ -132,7 +150,7 @@ export class CartService {
     if (product.stock < qty) {
       this.swalService.warning(
         `Only ${product.stock} ${
-          product.stock > 1 ? 'are' : 'is'
+          product.stock > 1 ? "are" : "is"
         } available in stock`
       );
     }

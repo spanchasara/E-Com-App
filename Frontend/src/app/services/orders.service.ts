@@ -8,12 +8,7 @@ import { LoaderService } from "./loader.service";
 import { ProductService } from "./product.service";
 import { CartStore } from "../store/cart.store";
 import { SwalService } from "./swal.service";
-import {
-  CreateOrderBody,
-  PaginatedOrders,
-  PlaceOrder,
-  PlacedOrder,
-} from "../models/order.model";
+import { CreateOrderBody, PaginatedOrders } from "../models/order.model";
 import { Product } from "../models/product.model";
 import { CartService } from "./cart.service";
 import { Router } from "@angular/router";
@@ -116,13 +111,13 @@ export class OrdersService {
   createOrder(action: string, orderBody: CreateOrderBody): Observable<any> {
     this.loaderService.show();
 
-    if (action === "full") this.cartStore.clearCartData();
+    // if (action === "full") this.cartStore.clearCartData();
 
-    if (action === "partial") {
-      orderBody.selectedProductIds?.forEach((productId) => {
-        this.cartStore.updateCartData(productId, false);
-      });
-    }
+    // if (action === "partial") {
+    //   orderBody.selectedProductIds?.forEach((productId) => {
+    //     this.cartStore.updateCartData(productId, false);
+    //   });
+    // }
 
     return this.httpClient
       .post(this.apiUrl + `order/${action}`, orderBody)
@@ -252,6 +247,8 @@ export class OrdersService {
       .pipe(
         tap((data: any) => {
           this.loaderService.hide();
+
+          this.cartService.getCart().subscribe();
 
           if (data?.message === "Order placed successfully") {
             this.swalService.success(data?.message);

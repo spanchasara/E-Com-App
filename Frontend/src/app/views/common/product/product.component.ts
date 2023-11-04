@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 
 import { Product } from "src/app/models/product.model";
@@ -13,7 +13,7 @@ import { SwalService } from "src/app/services/swal.service";
   templateUrl: "./product.component.html",
   styleUrls: ["./product.component.css"],
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent implements OnInit, AfterViewInit {
   id: string | null = null;
   product: Product | null = null;
   slides = [
@@ -41,6 +41,8 @@ export class ProductComponent implements OnInit {
   currentSeller: boolean = false;
   isSellerByRole: boolean = false;
   isAdmin: boolean = false;
+  isAuthenticated: boolean = false;
+
   addedProducts: { [key: string]: boolean } = {};
 
   ngOnInit() {
@@ -54,12 +56,17 @@ export class ProductComponent implements OnInit {
         }
         this.isSellerByRole = this.userStore.getValue().user?.role === "seller";
         this.isAdmin = this.userStore.getValue().user?.role === "admin";
+        this.isAuthenticated = !!this.userStore.getValue().user;
       });
     });
 
     this.cartStore.addedProducts$.subscribe((addedProducts) => {
       this.addedProducts = addedProducts;
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.isAuthenticated = !!this.userStore.getValue().user;
   }
 
   objectKeys(obj: any) {
@@ -84,8 +91,14 @@ export class ProductComponent implements OnInit {
 
   toggleCart(productId: string, isAdd: boolean = true) {
     if (!productId) return;
-    this.cartService.updateCart({ productId, isAdd }).subscribe();
+
+    if (this.isAuthenticated) {
+      this.cartService.updateCart({ productId, isAdd }).subscribe();
+    } else {
+      this.cartService.updateLocalCart({ productId, isAdd });
+    }
   }
+
   buyNow() {
     const currentOrder = {
       action: "single",
