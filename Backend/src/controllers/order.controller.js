@@ -33,15 +33,10 @@ const createOrder = catchAsync(async (req, res) => {
       products = cart.products.filter((prod) => {
         return orderBody.selectedProductIds.some((id) => prod.productId == id);
       });
-
-      cart.products = cart.products.filter((prod) => {
-        return orderBody.selectedProductIds.some((id) => prod.productId != id);
-      });
       break;
 
     case "full":
       products = cart.products;
-      cart.products = [];
       break;
   }
 
@@ -78,8 +73,6 @@ const createOrder = catchAsync(async (req, res) => {
       orderId,
     });
   });
-
-  await cart.save();
 
   await res.send({
     orderId,
@@ -159,6 +152,14 @@ const updateOrderStatus = catchAsync(async (req, res) => {
         isPlaced: true,
       }
     );
+
+    const cart = await cartService.getCustomerCart({ customerId });
+
+    cart.products = cart.products.filter((prod) => {
+      return !order.products.some((p) => p.productId.equals(prod.productId));
+    });
+
+    await cart.save();
   }
 
   res.send({ message });

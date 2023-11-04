@@ -15,21 +15,22 @@ export class StatusComponent {
   ) {}
 
   status!: string;
-  orderId!: string;
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      this.status = params["status"];
-      this.orderId = params["order_id"];
+      const status = params["status"];
+      const orderId = params["order_id"];
 
-      if (!this.orderId || !this.status) {
-        this.router.navigate(["/"]);
+      console.log(status, orderId);
+
+      if (!orderId || !status) {
+        return this.router.navigate(["/"]);
       }
 
-      this.ordersService
-        .updateOrderStatus(this.orderId, this.status)
+      return this.ordersService
+        .updateOrderStatus(orderId, status)
         .subscribe((data) => {
-          
+          this.status = status;
         });
     });
   }

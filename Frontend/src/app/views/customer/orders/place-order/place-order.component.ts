@@ -37,6 +37,10 @@ export class PlaceOrderComponent implements OnInit, OnDestroy {
   }
 
   placeOrder() {
+    this.addressId =
+      this.addressId ||
+      JSON.parse(sessionStorage.getItem("currentAddress") || "")._id;
+
     this.ordersService
       .createOrder(this.action, {
         addressId: this.addressId,

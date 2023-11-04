@@ -37,7 +37,7 @@ const handlePayment = async (body) => {
         product_data: {
           name: prod.productId.title,
         },
-        unit_amount: prod.productId.price,
+        unit_amount: prod.productId.price * 100,
       },
       quantity: prod.qty,
     })),
