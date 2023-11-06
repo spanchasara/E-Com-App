@@ -14,11 +14,16 @@
             {{ currentAddress.pincode }}
           </p>
         </div>
-        <div class="col-md-4">
-          <button class="btn btn-class mt-5" (click)="toggleAddress()">
+        <div class="col-md-4 mt-4">
+          <button class="btn btn-class mx-2" (click)="toggleAddress()">
             Change
           </button>
-          <button class="btn btn-class mt-5 mx-3" (click)="useThisAddress()">
+
+          <button
+            *ngIf="showChangeAddress"
+            class="btn btn-class mx-2"
+            (click)="useThisAddress()"
+          >
             Use this Address
           </button>
         </div>

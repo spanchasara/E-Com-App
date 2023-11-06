@@ -10,6 +10,7 @@ import { Address } from "src/app/models/address.model";
 export class AddressComponent {
   currentAddress: Address | null = null;
   toggleAddressForm: boolean = false;
+  showChangeAddress : boolean = true;
   @Output() showPreviewOrder: Subject<any> = new Subject<any>();
 
   loadCurrentAddress(data: any) {
@@ -36,9 +37,10 @@ export class AddressComponent {
   closeAddressForm(data: any) {
     this.toggleAddressForm = false;
     this.showPreviewOrder.next(true);
+    this.showChangeAddress = false;
   }
   useThisAddress(){
     this.showPreviewOrder.next(true);
-    
+    this.showChangeAddress = false;
   }
 }

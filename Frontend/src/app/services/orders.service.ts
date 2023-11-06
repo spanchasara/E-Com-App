@@ -110,21 +110,11 @@ export class OrdersService {
 
   createOrder(action: string, orderBody: CreateOrderBody): Observable<any> {
     this.loaderService.show();
-
-    // if (action === "full") this.cartStore.clearCartData();
-
-    // if (action === "partial") {
-    //   orderBody.selectedProductIds?.forEach((productId) => {
-    //     this.cartStore.updateCartData(productId, false);
-    //   });
-    // }
-
     return this.httpClient
       .post(this.apiUrl + `order/${action}`, orderBody)
       .pipe(
         tap(() => {
           this.loaderService.hide();
-          // this.swalService.success("Order Placed Successfully!!");
         }),
         catchError((error) => {
           this.loaderService.hide();

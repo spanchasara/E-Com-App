@@ -31,8 +31,9 @@
           >
             <input
               type="checkbox"
-              checked="true"
+              [checked]="product.productId.stock > 0"
               (change)="updateSelectedProducts(product)"
+              [disabled]="product.productId.stock === 0"
             />
           </div>
           <div class="col-md-9">
@@ -55,6 +56,9 @@
             {{ product.productId.price | rupeeFormat }}
           </p>
           <div class="row">
+            <div *ngIf="product.productId.stock === 0">
+              <h6 style="color: red">Out Of Stock</h6>
+            </div>
             <div class="col-md-1">
               <label for="quantity">Quantity:</label>
             </div>
