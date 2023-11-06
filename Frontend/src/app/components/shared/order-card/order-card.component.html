@@ -3,26 +3,30 @@
     <div class="row">
       <div class="col-md-6">
         <div class="row">
-          <div class="col-md-3">ORDER PLACED</div>
-          <div class="col-md-3">TOTAL</div>
-          <div class="col-md-3" *ngIf="role !== 'seller'">SHIP TO</div>
+          <div class="col-md-3 text-center">ORDER PLACED</div>
+          <div class="col-md-3 text-center">TOTAL</div>
+          <div class="col-md-3 text-center" *ngIf="role !== 'seller'">SHIP TO</div>
         </div>
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-md-3 text-center">
             {{ order.createdAt | date : "mediumDate" }}
           </div>
-          <div class="col-md-3">{{ order.totalAmount | rupeeFormat }}</div>
+          <div class="col-md-3 text-center">{{ order.totalAmount | rupeeFormat }}</div>
           <div
-            class="col-md-6"
+            class="col-md-3 text-center"
             *ngIf="role !== 'seller'"
             placement="bottom"
             container="body"
             ngbTooltip="
-            {{ order.address.addressLane1 }} {{ order.address.addressLane2 }},
-            {{ order.address.landmark }}, {{ order.address.city }},
-            {{ order.address.state }}, {{ order.address.country }},
-            {{ order.address.pincode }}.
-            +91 {{ order.address.phoneNo }}"
+            {{ role === 'customer' ? order.address.addressLane1 : '' }} {{
+              role === 'customer' ? order.address.addressLane2 : ''
+            }}
+            {{ role === 'customer' ? order.address.landmark : '' }} {{
+              order.address.city
+            }}
+            {{ order.address.state }}, {{ order.address.country }}
+            {{ role === 'customer' ? order.address.pincode : '' }}
+            {{ role === 'customer' ? '+91' + order.address.phoneNo : '' }}"
           >
             {{ order.address.fullName }}
           </div>
@@ -33,11 +37,6 @@
       >
         <div class="row">
           <div class="col-md-12">ORDER # {{ order.orderId }}</div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <a href="#">View order details</a>
-          </div>
         </div>
       </div>
     </div>
