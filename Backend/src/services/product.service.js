@@ -2,6 +2,8 @@ import Product from "../models/product.model.js";
 import ApiError from "../utils/api-error.js";
 import httpStatus from "http-status";
 
+import { uploadImage, deleteImage } from "../utils/cloudinary.js";
+
 const getProductById = async (productId) => {
   const product = await Product.findById(productId);
 
@@ -54,6 +56,54 @@ const updateProduct = async (query, productBody) => {
   return product;
 };
 
+const uploadProductImages = async (productId, images) => {
+  const product = await getProductById(productId);
+
+  if (product.images.length + images.length > 5) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "You can upload maximum 5 images !!"
+    );
+  }
+
+  const productLinks = [];
+
+  for (let i = 0; i < images.length; i++) {
+    const { path } = images[i];
+    const obj = await uploadImage(productId, path);
+    productLinks.push(obj);
+  }
+
+  product.images = product.images.concat(productLinks);
+
+  await product.save();
+
+  return product;
+};
+
+const deleteProductImages = async (productId, publicIds) => {
+  const product = await getProductById(productId);
+
+  if (product.images.length === 0) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "No images to delete !!");
+  }
+
+  const images = product.images.filter(
+    (image) => !publicIds.includes(image.publicId)
+  );
+
+  for (let i = 0; i < publicIds.length; i++) {
+    const publicId = publicIds[i];
+    await deleteImage(publicId);
+  }
+
+  product.images = images;
+
+  await product.save();
+
+  return product;
+};
+
 const updateProductStock = async (productBody) => {
   const { products, isAdd = false } = productBody;
 
@@ -98,4 +148,6 @@ export {
   updateProduct,
   deleteProduct,
   updateProductStock,
+  uploadProductImages,
+  deleteProductImages,
 };

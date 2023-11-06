@@ -73,6 +73,26 @@ const updateProduct = catchAsync(async (req, res) => {
   res.send(product);
 });
 
+/* uploadProductImages - controller */
+const uploadProductImages = catchAsync(async (req, res) => {
+  const product = await productService.uploadProductImages(
+    req.params.productId,
+    req.files
+  );
+
+  res.send(product);
+});
+
+/* deleteProductImages - controller */
+const deleteProductImages = catchAsync(async (req, res) => {
+  const product = await productService.deleteProductImages(
+    req.params.productId,
+    req.body.publicIds
+  );
+
+  res.send(product);
+});
+
 /* deleteProduct - controller */
 const deleteProduct = catchAsync(async (req, res) => {
   const { productId } = req.params;
@@ -94,6 +114,8 @@ export {
   createProduct,
   updateProduct,
   deleteProduct,
+  uploadProductImages,
+  deleteProductImages,
 };
 
 /**
