@@ -17,7 +17,7 @@
           <strong>{{ cart.totalAmount | rupeeFormat }}</strong>
         </div>
       </div>
-      <div *ngIf="selectedProductIds.length>0"  class="col-md-4 text-end">
+      <div *ngIf="selectedProductIds.length > 0" class="col-md-4 text-end">
         <button class="btn btn-class" (click)="buyNow()">Buy Now</button>
       </div>
     </div>
@@ -111,9 +111,7 @@
     />
     <p class="lead mt-4">Your cart is empty.</p>
     <p>
-      <a [routerLink]="['/products']" class="btn btn-outline-primary"
-        >Start shopping</a
-      >
+      <a [routerLink]="['/products']" class="btn btn-class">Start shopping</a>
     </p>
   </div>
 </div>

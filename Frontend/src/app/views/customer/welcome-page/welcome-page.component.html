@@ -31,10 +31,13 @@
 
 <section class="featured-products">
   <div class="container">
-    <h2 class="text-center">Featured Products</h2>
+    <h2 class="text-center">New arrivals</h2>
 
-    <div *ngFor="let product of products?.docs" class="mt-3">
-      <app-card [product]="product"></app-card>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+      <app-card
+        *ngFor="let product of products?.docs"
+        [product]="product"
+      ></app-card>
     </div>
   </div>
 </section>

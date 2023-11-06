@@ -71,10 +71,14 @@ const checkPassword = async (userPassword, inputPassword) => {
 const getAllUsers = async (role, options) => {
   let query = role ? { role } : {};
 
-  if (role && role === "seller") {
-    query = {
-      $or: [{ role }, { role: "customer", companyName: { $ne: null } }],
-    };
+  if (role) {
+    if (role === "seller") {
+      query = {
+        $or: [{ role }, { role: "customer", companyName: { $ne: null } }],
+      };
+    } else if (role === "customer") {
+      query = { role: "customer", companyName: null };
+    }
   }
 
   const users = await User.paginate(query, options);

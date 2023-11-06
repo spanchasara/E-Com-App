@@ -14,26 +14,38 @@
           <strong>Items in Stock:</strong> {{ product?.stock }}
         </p>
         <ng-template #outOfStock>
-          <h4 style="color: red">Out Of Stock</h4>
+          <h6 style="color: red">This product is currently out of stock</h6>
         </ng-template>
         <div class="action">
           <button
             class="btn btn-class mt-1"
-            *ngIf="!isSellerByRole && !currentSeller && !isAdmin"
+            *ngIf="
+              !isSellerByRole &&
+              !currentSeller &&
+              !isAdmin &&
+              product &&
+              product.stock > 0
+            "
             type="button"
             (click)="
-              toggleCart(product?._id || '', !addedProducts[product?._id || ''])
+              toggleCart(product._id || '', !addedProducts[product._id || ''])
             "
           >
             {{
-              !addedProducts[product?._id || ""]
+              !addedProducts[product._id || ""]
                 ? "Add to cart"
                 : "Remove from cart"
             }}
           </button>
           <button
             class="btn btn-class mt-1 mx-3"
-            *ngIf="!isSellerByRole && !currentSeller && !isAdmin && product && product.stock > 0"
+            *ngIf="
+              !isSellerByRole &&
+              !currentSeller &&
+              !isAdmin &&
+              product &&
+              product.stock > 0
+            "
             type="button"
             (click)="buyNow()"
           >
@@ -45,7 +57,7 @@
             *ngIf="isSellerByRole && currentSeller"
             type="button"
           >
-            Edit Product
+            Edit
           </button>
           <button
             class="btn btn-class mt-1 mx-2"
@@ -53,7 +65,7 @@
             *ngIf="isSellerByRole && currentSeller"
             type="button"
           >
-            Delete Product
+            Delete
           </button>
         </div>
         <br />

@@ -5,13 +5,17 @@
         <div class="row">
           <div class="col-md-3 text-center">ORDER PLACED</div>
           <div class="col-md-3 text-center">TOTAL</div>
-          <div class="col-md-3 text-center" *ngIf="role !== 'seller'">SHIP TO</div>
+          <div class="col-md-3 text-center" *ngIf="role !== 'seller'">
+            SHIP TO
+          </div>
         </div>
         <div class="row">
           <div class="col-md-3 text-center">
             {{ order.createdAt | date : "mediumDate" }}
           </div>
-          <div class="col-md-3 text-center">{{ order.totalAmount | rupeeFormat }}</div>
+          <div class="col-md-3 text-center">
+            {{ order.totalAmount | rupeeFormat }}
+          </div>
           <div
             class="col-md-3 text-center"
             *ngIf="role !== 'seller'"
@@ -23,7 +27,7 @@
             }}
             {{ role === 'customer' ? order.address.landmark : '' }} {{
               order.address.city
-            }}
+            }}, 
             {{ order.address.state }}, {{ order.address.country }}
             {{ role === 'customer' ? order.address.pincode : '' }}
             {{ role === 'customer' ? '+91' + order.address.phoneNo : '' }}"
@@ -81,7 +85,7 @@
             class="d-md-flex justify-content-md-end"
           >
             <button
-              class="btn btn-success me-md-2"
+              class="btn btn-class me-md-2"
               type="button"
               (click)="markAsDelivered(product._id)"
             >

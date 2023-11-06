@@ -139,6 +139,8 @@ export class CartService {
   }
 
   updateLocalCartQty(cart: Cart, product: Product, qty: number) {
+    if (qty === 0) return this.updateLocalCartAddOrRemove(cart, product, false);
+
     const index = cart.products.findIndex(
       (prod) => prod.productId._id === product._id
     );

@@ -79,14 +79,18 @@
           <ng-template #buttonTemplate>
             <button
               type="button"
-              class="btn btn-primary mx-2"
+              class="btn btn-class mx-2"
               [routerLink]="['/user', data._id]"
             >
               View
             </button>
             <button
               type="button"
-              [ngClass]="data.isActive ? 'btn btn-danger' : 'btn btn-success'"
+              [ngClass]="
+                data.isActive
+                  ? 'btn btn-outline-danger'
+                  : 'btn btn-outline-success'
+              "
               (click)="toggleUserStatus(data, data.isActive)"
             >
               {{ data.isActive ? "Disable" : "Enable" }}

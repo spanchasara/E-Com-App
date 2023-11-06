@@ -19,3 +19,9 @@
 .bi-trash:hover {
   fill: red;
 }
+
+.cart-content {
+  margin-bottom: 1%;
+  background-color: #fff;
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.05);
+}

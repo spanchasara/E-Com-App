@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { Cart, CartProduct } from "src/app/models/cart.model";
-import { Product } from "src/app/models/product.model";
 import { AuthService } from "src/app/services/auth.service";
 import { CartService } from "src/app/services/cart.service";
 
@@ -34,9 +33,16 @@ export class CartListComponent implements OnInit {
       });
     } else {
       this.cart = this.cartService.getLocalCart();
+      this.selectedProductIds = this.cart.products.map(
+        (product) => product.productId._id
+      );
+
       this.cartService.callLocalCart.subscribe((call) => {
         if (call) {
           this.cart = this.cartService.getLocalCart();
+          this.selectedProductIds = this.cart.products.map(
+            (product) => product.productId._id
+          );
         }
       });
     }
@@ -66,6 +72,7 @@ export class CartListComponent implements OnInit {
       this.cartService.updateLocalCart({ productId, isAdd: false });
     }
   }
+
   buyNow() {
     if (this.selectedProductIds.length === this.cart.products.length) {
       sessionStorage.setItem(
@@ -85,7 +92,9 @@ export class CartListComponent implements OnInit {
   }
 
   updateSelectedProducts(product: CartProduct) {
-    const index = this.selectedProductIds.indexOf(product?.productId?._id || "");
+    const index = this.selectedProductIds.indexOf(
+      product?.productId?._id || ""
+    );
 
     if (index === -1) {
       this.cart.totalAmount += product.qty * product.productId.price;
