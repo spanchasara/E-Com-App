@@ -256,6 +256,7 @@ export {
  *               $ref: '#/components/schemas/User'
  */
 
+// toggle account role of user
 /**
  * @swagger
  * /user/toggle-role/{userId}:

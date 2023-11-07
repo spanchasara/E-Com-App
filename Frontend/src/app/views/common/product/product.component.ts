@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 
-import { Product } from "src/app/models/product.model";
+import { Product, ProductImage } from "src/app/models/product.model";
 import { CartService } from "src/app/services/cart.service";
 import { ProductService } from "src/app/services/product.service";
 import { CartStore } from "src/app/store/cart.store";
@@ -16,15 +16,18 @@ import { SwalService } from "src/app/services/swal.service";
 export class ProductComponent implements OnInit, AfterViewInit {
   id: string | null = null;
   product: Product | null = null;
-  slides = [
+  slides: ProductImage[] = [
     {
-      src: "https://picsum.photos/id/944/900/500",
+      url: "https://picsum.photos/id/944/900/500",
+      publicId: "https://picsum.photos/id/944/900/500",
     },
     {
-      src: "https://picsum.photos/id/1011/900/500",
+      url: "https://picsum.photos/id/944/900/500",
+      publicId: "https://picsum.photos/id/944/900/500",
     },
     {
-      src: "https://picsum.photos/id/984/900/500",
+      url: "https://picsum.photos/id/944/900/500",
+      publicId: "https://picsum.photos/id/944/900/500",
     },
   ];
   currentUserId: string = "";
@@ -57,6 +60,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.isSellerByRole = this.userStore.getValue().user?.role === "seller";
         this.isAdmin = this.userStore.getValue().user?.role === "admin";
         this.isAuthenticated = !!this.userStore.getValue().user;
+        console.log(this.product);
       });
     });
 

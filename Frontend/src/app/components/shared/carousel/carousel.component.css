@@ -1,0 +1,6 @@
+::ng-deep .carousel-control-prev-icon{
+    color: black;
+  }
+  ::ng-deep .carousel-control-next-icon{
+    color: black;
+  }

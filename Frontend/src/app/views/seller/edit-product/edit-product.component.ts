@@ -35,7 +35,8 @@ export class EditProductComponent implements OnInit {
                 stock: data.stock,
                 price: data.price,
                 specifications: data.specifications,
-                sellerId : data.sellerId
+                sellerId : data.sellerId,
+                images: data.images
               };
             });
           });

@@ -54,7 +54,7 @@ router
 
 router
   .route("/images/:productId")
-  .delete(
+  .patch(
     auth("delete_product_images"),
     validate(productValidation.deleteProductImages),
     productController.deleteProductImages

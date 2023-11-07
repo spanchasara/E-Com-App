@@ -29,6 +29,7 @@ const changePassword = catchAsync(async (req, res) => {
 
 export { register, login, changePassword };
 
+// Register
 /**
  * @swagger
  * tags:
@@ -80,6 +81,7 @@ export { register, login, changePassword };
  *         description: Internal server error. There was an error registering the user.
  */
 
+// login
 /**
  * @swagger
  * /auth/login:

@@ -1,12 +1,14 @@
 <div class="card h-100 cart-content">
   <img
     class="card-img-top link"
-    src="https://picsum.photos/200"
+    [src]="product.images?.[0]?.url || 'https://picsum.photos/200'"
     alt="Product Image"
     height="200"
     width="200"
     [routerLink]="['/products', product._id]"
   />
+  <div>
+  </div>
   <div class="card-body">
     <h6
       class="card-title link text-truncate"
