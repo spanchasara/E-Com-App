@@ -54,7 +54,7 @@ const auth = (action) =>
     }
 
     // 5) Check if user changed password after the token was issued
-    if (currentUser.passwordChngaedAt.getTime() / 1000 > decoded.iat) {
+    if (currentUser.passwordChangedAt.getTime() / 1000 > decoded.iat) {
       return next(
         new ApiError(
           httpStatus.UNAUTHORIZED,

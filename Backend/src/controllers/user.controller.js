@@ -2,6 +2,7 @@ import httpStatus from "http-status";
 import * as userService from "../services/user.service.js";
 import ApiError from "../utils/api-error.js";
 import catchAsync from "../utils/catch-async.js";
+import { sendTemplateEmail, templates } from "../utils/brevo.js";
 
 /* getUserProfile - controller */
 const getUserProfile = catchAsync(async (req, res) => {
@@ -57,6 +58,16 @@ const toggleRole = catchAsync(async (req, res) => {
   }
 
   const response = await userService.updateUser(userId, { role });
+
+  sendTemplateEmail({
+    to: req.user.email,
+    subject: "Successfully registered as seller !!",
+    params: {
+      name: req.user.username,
+    },
+    templateId: templates.sellerRegistration,
+  });
+
   res.send(response);
 });
 

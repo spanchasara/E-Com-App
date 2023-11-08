@@ -12,6 +12,7 @@
   "type": "module",
   "license": "ISC",
   "dependencies": {
+    "@getbrevo/brevo": "^1.0.1",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.41.0",
     "cors": "^2.8.5",
@@ -20,6 +21,7 @@
     "http-status": "^1.7.0",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
+    "mailgun-js": "^0.22.0",
     "mongoose": "^7.6.0",
     "mongoose-paginate-v2": "^1.7.4",
     "multer": "^1.4.5-lts.1",
