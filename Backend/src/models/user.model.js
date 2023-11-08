@@ -57,6 +57,17 @@ const userSchema = new Schema(
     companyName: {
       type: String,
       default: null
+    },
+    resetToken: {
+      token: {
+        type: String
+      },
+      createdAt : {
+        type : Date,
+      },
+      expiry: {
+        type: Date,
+      }
     }
   },
   {

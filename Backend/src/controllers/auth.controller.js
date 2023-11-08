@@ -27,7 +27,19 @@ const changePassword = catchAsync(async (req, res) => {
   res.send(response);
 });
 
-export { register, login, changePassword };
+const resetPasswordRequest = catchAsync(async(req, res) => {
+  const {email} = req.body;
+  const response = await authService.resetPasswordRequest(email);
+  res.send(response);
+});
+
+const resetPassword = catchAsync(async(req, res) => {
+  const reqBody = req.body;
+  const response = await authService.resetPassword(reqBody);
+  res.send(response);
+});
+
+export { register, login, changePassword, resetPasswordRequest, resetPassword };
 
 // Register
 /**
