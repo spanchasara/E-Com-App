@@ -3,13 +3,13 @@ import { RouterModule, Routes } from "@angular/router";
 import { LoginComponent } from "./views/common/login/login.component";
 import { RegisterComponent } from "./views/common/register/register.component";
 import { WelcomePageComponent } from "./views/customer/welcome-page/welcome-page.component";
-import { AuthGuard } from "./guards/auth.guard";
+import { authGuard } from "./guards/auth.guard";
 import { UserProfileComponent } from "./views/common/user-profile/user-profile.component";
 import { ProductsComponent } from "./views/common/products/products.component";
 import { ProductComponent } from "./views/common/product/product.component";
 import { AdminDashboardComponent } from "./views/admin/admin-dashboard.component";
 import { NotFoundComponent } from "./views/common/not-found/not-found.component";
-import { AdminGuard } from "./guards/admin.guard";
+import { adminGuard } from "./guards/admin.guard";
 import { SellerDashboardComponent } from "./views/seller/seller-dashboard.component";
 import { PublicUserComponent } from "./views/admin/public-user/public-user.component";
 import { AddProductComponent } from "./views/seller/add-product/add-product.component";
@@ -18,21 +18,22 @@ import { CartComponent } from "./views/customer/cart/cart.component";
 import { AddAddressComponent } from "./views/customer/orders/place-order/address/add-address/add-address.component";
 import { EditAddressComponent } from "./views/customer/orders/place-order/address/edit-address/edit-address.component";
 import { ProductsListComponent } from "./views/seller/products-list/products-list.component";
-import { HomeGuard } from "./guards/home.guard";
-import { SellerGuard } from "./guards/seller.guard";
-import { CustomerGuard } from "./guards/customer.guard";
+import { homeGuard } from "./guards/home.guard";
+import { sellerGuard } from "./guards/seller.guard";
+import { customerGuard } from "./guards/customer.guard";
 import { UsersListComponent } from "./views/admin/users-list/users-list.component";
 import { SellerOrdersComponent } from "./views/seller/orders/seller-orders.component";
 import { AdminOrdersComponent } from "./views/admin/orders/admin-orders.component";
 import { AllOrdersComponent } from "./views/customer/orders/all-orders/all-orders.component";
 import { PlaceOrderComponent } from "./views/customer/orders/place-order/place-order.component";
 import { StatusComponent } from "./components/status/status.component";
+import { ResetPasswordComponent } from "./views/common/reset-password/reset-password.component";
 
 const routes: Routes = [
   {
     path: "",
     component: WelcomePageComponent,
-    canActivate: [HomeGuard],
+    canActivate: [homeGuard],
   },
   {
     path: "cart",
@@ -41,22 +42,27 @@ const routes: Routes = [
   {
     path: "login",
     component: LoginComponent,
-    canActivate: [AuthGuard],
+    canActivate: [authGuard],
   },
   {
     path: "register",
     component: RegisterComponent,
-    canActivate: [AuthGuard],
+    canActivate: [authGuard],
+  },
+  {
+    path: "reset-password",
+    component: ResetPasswordComponent,
+    canActivate: [authGuard],
   },
   {
     path: "user",
     component: UserProfileComponent,
-    canActivate: [AuthGuard],
+    canActivate: [authGuard],
   },
   {
     path: "user/:id",
     component: PublicUserComponent,
-    canActivate: [AuthGuard],
+    canActivate: [authGuard],
   },
   {
     path: "products",
@@ -69,12 +75,12 @@ const routes: Routes = [
   {
     path: "status",
     component: StatusComponent,
-    canActivate: [AuthGuard, CustomerGuard],
+    canActivate: [authGuard, customerGuard],
   },
   {
     path: "admin",
     component: AdminDashboardComponent,
-    canActivate: [AuthGuard, AdminGuard],
+    canActivate: [authGuard, adminGuard],
     children: [
       {
         path: "",
@@ -94,7 +100,7 @@ const routes: Routes = [
   {
     path: "seller",
     component: SellerDashboardComponent,
-    canActivate: [AuthGuard, SellerGuard],
+    canActivate: [authGuard, sellerGuard],
     children: [
       {
         path: "",
@@ -122,22 +128,22 @@ const routes: Routes = [
   {
     path: "address/add",
     component: AddAddressComponent,
-    canActivate: [AuthGuard, CustomerGuard],
+    canActivate: [authGuard, customerGuard],
   },
   {
     path: "address/edit/:id",
     component: EditAddressComponent,
-    canActivate: [AuthGuard, CustomerGuard],
+    canActivate: [authGuard, customerGuard],
   },
   {
     path: "orders",
     component: AllOrdersComponent,
-    canActivate: [AuthGuard, CustomerGuard],
+    canActivate: [authGuard, customerGuard],
   },
   {
     path: "place-order",
     component: PlaceOrderComponent,
-    canActivate: [AuthGuard, CustomerGuard],
+    canActivate: [authGuard, customerGuard],
   },
   { path: "**", component: NotFoundComponent },
 ];

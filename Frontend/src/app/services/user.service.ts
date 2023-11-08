@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { catchError, of, tap } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { catchError, of, tap } from "rxjs";
 
-import { environment } from 'src/environment/environment';
-import { PaginatedUsers, UpdateUser, User } from '../models/user.model';
-import { LoaderService } from './loader.service';
-import { UserStore } from '../store/user-store';
-import { SwalService } from './swal.service';
+import { environment } from "src/environment/environment";
+import { PaginatedUsers, UpdateUser, User } from "../models/user.model";
+import { LoaderService } from "./loader.service";
+import { UserStore } from "../store/user-store";
+import { SwalService } from "./swal.service";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class UserService {
   apiUrl = environment.apiUrl;
@@ -21,19 +21,20 @@ export class UserService {
     private loaderService: LoaderService,
     private swalService: SwalService
   ) {}
+
   updateUser(updateUserData: UpdateUser) {
     this.loaderService.show();
     return this.httpClient
-      .patch<User>(this.apiUrl + 'user/update-me', updateUserData, {
-        observe: 'response',
+      .patch<User>(this.apiUrl + "user/update-me", updateUserData, {
+        observe: "response",
       })
       .pipe(
         tap((resData) => {
           this.loaderService.hide();
           const user = resData.body;
           this.userStore.updateUserData({ user });
-          this.swalService.success('User Updated Successfully!!');
-          this.router.navigate(['/user']);
+          this.swalService.success("User Updated Successfully!!");
+          this.router.navigate(["/user"]);
         }),
         catchError((error) => {
           this.loaderService.hide();
@@ -44,11 +45,11 @@ export class UserService {
       );
   }
 
-  getAllUsers(role: string = '', options: any = {}) {
+  getAllUsers(role: string = "", options: any = {}) {
     let params = new HttpParams();
     this.loaderService.show();
-    params = params.append('limit', options?.limit || 10);
-    params = params.append('page', options?.page || 1);
+    params = params.append("limit", options?.limit || 10);
+    params = params.append("page", options?.page || 1);
 
     return this.httpClient
       .get<PaginatedUsers>(this.apiUrl + `user/${role}`, {
@@ -67,6 +68,23 @@ export class UserService {
           return of(error);
         })
       );
+  }
+
+  getMe() {
+    this.loaderService.show();
+    return this.httpClient.get<User>(this.apiUrl + "user/get-me").pipe(
+      tap((resData) => {
+        this.loaderService.hide();
+        const user = resData;
+        this.userStore.updateUserData({ user });
+      }),
+      catchError((error) => {
+        this.loaderService.hide();
+        console.log(error);
+        this.swalService.error(error.error?.message);
+        return of(error);
+      })
+    );
   }
 
   getPublicUser(id: string) {
@@ -89,7 +107,7 @@ export class UserService {
     let params = new HttpParams();
     this.loaderService.show();
 
-    params = params.append('isSuspended', isSuspended);
+    params = params.append("isSuspended", isSuspended);
 
     return this.httpClient
       .patch<PaginatedUsers>(
@@ -114,7 +132,7 @@ export class UserService {
 
   sellerRegistration(companyName: string) {
     return this.httpClient
-      .post<User>(this.apiUrl + 'user/seller-register', { companyName })
+      .post<User>(this.apiUrl + "user/seller-register", { companyName })
       .pipe(
         tap((resData) => {
           const user = resData;

@@ -1,35 +1,17 @@
-import { Injectable } from '@angular/core';
-import {
-  CanActivate,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  UrlTree,
-  Router,
-} from '@angular/router';
-import { Observable } from 'rxjs';
-import { AuthService } from '../services/auth.service';
+import { inject } from "@angular/core";
+import { CanActivateFn, Router } from "@angular/router";
+import { AuthService } from "../services/auth.service";
 
-@Injectable({
-  providedIn: 'root',
-})
-export class HomeGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+export const homeGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
 
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ):
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree>
-    | boolean
-    | UrlTree {
-    if (this.authService.checkRole('admin')) {
-      this.router.navigate(['admin']);
-      return false;
-    } else if (this.authService.checkRole('seller')) {
-      this.router.navigate(['seller']);
-      return false;
-    }
-    return true;
+  if (authService.checkRole("admin")) {
+    router.navigate(["admin"]);
+    return false;
+  } else if (authService.checkRole("seller")) {
+    router.navigate(["seller"]);
+    return false;
   }
-}
+  return true;
+};
