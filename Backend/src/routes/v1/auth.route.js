@@ -22,4 +22,18 @@ router
     authController.changePassword
   );
 
+router
+  .route("/reset-password/request")
+  .post(
+    validate(authValidation.resetPasswordRequest),
+    authController.resetPasswordRequest
+  );
+
+router
+  .route("/reset-password")
+  .post(
+    authController.resetPassword
+    );
+    
+    // validate(authValidation.resetPassword),
 export default router;
