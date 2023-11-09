@@ -2,10 +2,10 @@ import Cart from "../models/cart.model.js";
 import ApiError from "../utils/api-error.js";
 import httpStatus from "http-status";
 
-const getCustomerCart = async (filterQuery, populate = '') => {
+const getCustomerCart = async (filterQuery, populate = "") => {
   const cart1 = await Cart.findOne(filterQuery).populate(populate);
 
- const cart2 = cart1 || await createCustomerCart(filterQuery)
+  const cart2 = cart1 || (await createCustomerCart(filterQuery));
 
   return cart2;
 };

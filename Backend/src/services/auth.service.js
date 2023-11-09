@@ -67,7 +67,9 @@ const changePassword = async (userId, oldPassword, newPassword) => {
 
 const resetPasswordRequest = async (email) => {
   const user = await userService.getUser({ email });
-  console.log(user);
+  if(!user.isActive){
+    throw new ApiError(httpStatus.BAD_REQUEST, "Account Disabled!");
+  }
   if (user.passwordChangedAt.getTime() + 30 * 60 * 1000 > Date.now()) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Password Recently Changed!");
   }

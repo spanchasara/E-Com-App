@@ -9,7 +9,7 @@ import { environment } from "src/environment/environment";
   templateUrl: "./place-order.component.html",
   styleUrls: ["./place-order.component.css"],
 })
-export class PlaceOrderComponent implements OnInit, OnDestroy {
+export class PlaceOrderComponent implements OnInit {
   orderPreview!: CreateOrderBody | null;
   action!: string;
   order: any;
@@ -58,9 +58,5 @@ export class PlaceOrderComponent implements OnInit, OnDestroy {
             });
           });
       });
-  }
-
-  ngOnDestroy(): void {
-    sessionStorage.clear();
   }
 }

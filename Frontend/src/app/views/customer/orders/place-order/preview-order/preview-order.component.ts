@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { Address } from "src/app/models/address.model";
 import { Cart } from "src/app/models/cart.model";
 
@@ -7,7 +7,7 @@ import { Cart } from "src/app/models/cart.model";
   templateUrl: "./preview-order.component.html",
   styleUrls: ["./preview-order.component.css"],
 })
-export class PreviewOrderComponent implements OnInit, OnDestroy {
+export class PreviewOrderComponent implements OnInit {
   @Input() order!: Cart;
   @Input() finalOrderPreview: boolean = false;
 
@@ -21,7 +21,4 @@ export class PreviewOrderComponent implements OnInit, OnDestroy {
     );
   }
   
-  ngOnDestroy(): void {
-    sessionStorage.clear();
-  }
 }
