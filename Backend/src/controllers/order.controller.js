@@ -5,6 +5,8 @@ import * as cartService from "../services/cart.service.js";
 import ApiError from "../utils/api-error.js";
 import httpStatus from "http-status";
 import { v4 as uuidv4 } from "uuid";
+import { sendTemplateEmail, templates } from "../utils/brevo.js";
+import { formatDate, rupeeFormat } from "../utils/converters.js";
 
 const createOrder = catchAsync(async (req, res) => {
   const customerId = req.user._id;
@@ -112,16 +114,48 @@ const markDelivered = catchAsync(async (req, res) => {
   const { orderId } = req.params;
   const sellerId = req.user._id;
 
-  const order = await orderService.updateMany(
+  const order = await orderService.getOrder(
     {
       _id: orderId,
       sellerId,
       isPlaced: true,
     },
-    {
-      deliveredDate: Date.now(),
-    }
+    [
+      {
+        path: "customerId",
+        select: "_id email username",
+      },
+      {
+        path: "product",
+        select: "_id title price",
+      },
+      {
+        path: "addressId",
+      },
+    ]
   );
+
+  order.deliveredDate = Date.now();
+  await order.save();
+
+  order.product.price = rupeeFormat(order.product.price);
+
+  sendTemplateEmail({
+    to: order.customerId.email,
+    subject: "Order Delivered Successfully",
+    params: {
+      name: order.customerId.username,
+      products: order.product,
+      orderId: order.orderId,
+      orderDate: formatDate(order.createdAt),
+      totalAmount: rupeeFormat(order.totalAmount),
+      totalQty: order.qty,
+      deliveryAddress: order.addressId,
+      homeUrl: process.env.HOST_URL + "/products",
+      orderUrl: process.env.HOST_URL + "/orders",
+    },
+    templateId: templates.customerOrderDelivered,
+  });
 
   res.send(order);
 });
@@ -160,6 +194,76 @@ const updateOrderStatus = catchAsync(async (req, res) => {
     });
 
     await cart.save();
+
+    const temp = JSON.parse(JSON.stringify(order.products));
+
+    temp.forEach((prod) => {
+      prod.price = rupeeFormat(prod.price);
+      prod.amount = rupeeFormat(prod.amount);
+    });
+
+    // send mail to customer
+    sendTemplateEmail({
+      to: req.user.email,
+      subject: "Order Placed Successfully",
+      params: {
+        name: req.user.username,
+        products: temp,
+        orderId,
+        orderDate: formatDate(order.createdAt),
+        totalAmount: rupeeFormat(order.totalAmount),
+        totalQty: order.totalQty,
+        deliveryAddress: order.address,
+        homeUrl: process.env.HOST_URL + "/products",
+        orderUrl: process.env.HOST_URL + "/orders",
+      },
+      templateId: templates.customerOrderPlaced,
+    });
+
+    // send mail to seller
+    const sellerObj = order.products.reduce((acc, prod) => {
+      if (!acc[prod.sellerId._id]) {
+        acc[prod.sellerId._id] = {
+          products: [prod],
+          details: prod.sellerId,
+        };
+      } else {
+        acc[prod.sellerId._id].products.push(prod);
+      }
+      return acc;
+    }, {});
+
+    for (let seller in sellerObj) {
+      const totalAmount = sellerObj[seller].products.reduce((acc, prod) => {
+        return acc + prod.amount;
+      }, 0);
+
+      const totalQty = sellerObj[seller].products.reduce((acc, prod) => {
+        return acc + prod.qty;
+      }, 0);
+
+      sellerObj[seller].products.forEach((prod) => {
+        prod.price = rupeeFormat(prod.price);
+        prod.amount = rupeeFormat(prod.amount);
+      });
+
+      sendTemplateEmail({
+        to: sellerObj[seller].details.email,
+        subject: "Congratulations! New Order Received for Your Product",
+        params: {
+          name: sellerObj[seller].details.username,
+          products: sellerObj[seller].products,
+          orderId,
+          orderDate: formatDate(order.createdAt),
+          totalAmount: rupeeFormat(totalAmount),
+          totalQty,
+          deliveryAddress: order.address,
+          orderUrl: process.env.HOST_URL + "/seller/orders",
+          productsUrl: process.env.HOST_URL + "/seller/products",
+        },
+        templateId: templates.sellerOrderReceived,
+      });
+    }
   }
 
   res.send({ message });

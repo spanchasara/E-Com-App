@@ -50,6 +50,19 @@ const aggregateQuery = async (
       },
     },
     {
+      $lookup: {
+        from: "users",
+        localField: "sellerId",
+        foreignField: "_id",
+        as: "sellerInfo",
+      },
+    },
+    {
+      $unwind: {
+        path: "$sellerInfo",
+      },
+    },
+    {
       $group: {
         _id: {
           orderId: "$orderId",
@@ -73,7 +86,12 @@ const aggregateQuery = async (
             qty: "$qty",
             deliveredDate: "$deliveredDate",
             amount: "$totalAmount",
-            sellerId: "$productInfo.sellerId",
+            sellerId: {
+              _id: "$sellerInfo._id",
+              username: "$sellerInfo.username",
+              email: "$sellerInfo.email",
+              companyName: "$sellerInfo.companyName",
+            },
           },
         },
         address: {
@@ -144,6 +162,23 @@ const getSingleOrder = async (customerId, orderId, isPlaced = true) => {
     {
       orderId,
       customerId,
+      isPlaced,
+    },
+    false
+  );
+
+  if (!order.length) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Order Not Found");
+  }
+
+  return order[0];
+};
+
+const getSellerSingleOrder = async (sellerId, orderId, isPlaced = true) => {
+  const order = await aggregateQuery(
+    {
+      orderId,
+      sellerId,
       isPlaced,
     },
     false
@@ -245,6 +280,16 @@ const updateMany = async (filterQuery, updateBody) => {
   return order;
 };
 
+const getOrder = async (filterQuery, populate = "") => {
+  const order = await Order.findOne(filterQuery).populate(populate);
+
+  if (!order) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Order Not Found");
+  }
+
+  return order;
+};
+
 const deleteOrder = async (deleteBody) => {
   const order = await Order.deleteMany(deleteBody);
 
@@ -263,4 +308,6 @@ export {
   getAllOrders,
   deleteOrder,
   updateMany,
+  getSellerSingleOrder,
+  getOrder,
 };

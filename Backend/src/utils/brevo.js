@@ -4,6 +4,9 @@ const templates = {
   welcome: 6,
   sellerRegistration: 7,
   resetPassword: 8,
+  customerOrderDelivered: 9,
+  customerOrderPlaced: 10,
+  sellerOrderReceived: 11,
 };
 
 const brevoConfig = () => {
