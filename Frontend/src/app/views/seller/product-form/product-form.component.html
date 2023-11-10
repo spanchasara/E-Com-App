@@ -1,159 +1,169 @@
 <div class="container my-5">
   <div class="row my-3 content">
     <h2 style="text-align: center">{{ !editMode ? "Add" : "Edit" }} Product</h2>
-    <div class="col-md-6">
+    <div
+      [ngClass]="{
+        'col-md-12': !editMode,
+        'col-md-6': editMode
+      }"
+    >
       <form #f="ngForm" (ngSubmit)="onSubmit()">
-        <!-- product name -->
-        <div class="form-group mt-3">
-          <label class="control-label" for="productName">Product Name</label>
-          <div class="col-md-8">
-            <input
-              name="productName"
-              placeholder="Product Name"
-              class="form-control"
-              type="text"
-              minlength="3"
-              maxlength="150"
-              #title="ngModel"
-              required
-              [(ngModel)]="product.title"
-            />
-            <span
-              class="help-block"
-              style="color: red"
-              *ngIf="!title.valid && title.touched"
-            >
-              Product title must be at least 3 characters long and not more than
-              150 characters long!
-            </span>
-          </div>
-        </div>
-
-        <!-- product descrpition-->
-        <div class="form-group mt-3">
-          <label class="control-label" for="productDescrption"
-            >Description</label
-          >
-          <div class="col-md-8">
-            <textarea
-              name="productDescription"
-              placeholder="Product Description"
-              class="form-control"
-              rows="4"
-              #description="ngModel"
-              cols="30"
-              minlength="10"
-              maxlength="300"
-              ngModel
-              required
-              [(ngModel)]="product.description"
-            ></textarea>
-            <span
-              class="help-block"
-              style="color: red"
-              *ngIf="!description.valid && description.touched"
-              >Product description must be at least 10 characters long and not
-              more than 300 characters long!</span
-            >
-          </div>
-        </div>
-
-        <!-- product price -->
-        <div class="form-group mt-3">
-          <label class="control-label" for="price">Price</label>
-          <div class="col-md-8">
-            <input
-              type="text"
-              placeholder="Product Price"
-              name="productPrice"
-              #price="ngModel"
-              required
-              class="form-control"
-              [(ngModel)]="product.price"
-            />
-            <span
-              class="help-block"
-              style="color: red"
-              *ngIf="!price.valid && price.touched"
-              >Please enter a valid product price!</span
-            >
-          </div>
-        </div>
-
-        <!-- product stock -->
-        <div class="form-group mt-3">
-          <label class="control-label" for="price">Stock</label>
-          <div class="col-md-8">
-            <input
-              type="number"
-              placeholder="Number of Products Available"
-              name="productStock"
-              #stock="ngModel"
-              required
-              min="0"
-              class="form-control"
-              [(ngModel)]="product.stock"
-            />
-            <span
-              class="help-block"
-              style="color: red"
-              *ngIf="!stock.valid && stock.touched"
-              >Please enter a valid product stock!</span
-            >
-          </div>
-        </div>
-        <div class="mt-3">
-          <!-- product specifications -->
-          <div
-            class="form-group"
-            *ngFor="let spec of specifications; let i = index"
-          >
-            <div class="row">
-              <div class="col-md-4">
-                <label class="control-label" for="specKey{{ i }}"
-                  >Property</label
-                >
-                <input
-                  *ngIf="spec['key'] !== undefined"
-                  type="text"
-                  placeholder="Property"
-                  name="specKey{{ i }}"
-                  class="form-control"
-                  #stock="ngModel"
-                  [(ngModel)]="spec['key']"
-                />
-              </div>
-              <div class="col-md-4">
-                <label class="control-label" for="specValue{{ i }}"
-                  >Value</label
-                >
-                <input
-                  *ngIf="spec['value'] !== undefined"
-                  type="text"
-                  placeholder="Value"
-                  name="specValue{{ i }}"
-                  class="form-control"
-                  [(ngModel)]="spec['value']"
-                />
-              </div>
-              <div class="col-md-4">
-                <label for=""></label>
-                <br />
-                <button class="btn btn-class" (click)="deleteSpecification(i)">
-                  Delete
-                </button>
-              </div>
+        <div [ngClass]="{ 'add-product': !editMode }">
+          <!-- product name -->
+          <div class="form-group mt-3">
+            <label class="control-label" for="productName">Product Name</label>
+            <div class="col-md-8">
+              <input
+                name="productName"
+                placeholder="Product Name"
+                class="form-control"
+                type="text"
+                minlength="3"
+                maxlength="150"
+                #title="ngModel"
+                required
+                [(ngModel)]="product.title"
+              />
+              <span
+                class="help-block"
+                style="color: red"
+                *ngIf="!title.valid && title.touched"
+              >
+                Product title must be at least 3 characters long and not more
+                than 150 characters long!
+              </span>
             </div>
           </div>
 
-          <!-- Add Specification Button -->
-          <button
-            class="btn btn-class mt-3"
-            type="button"
-            (click)="addSpecification()"
-          >
-            Add Specification
-          </button>
+          <!-- product descrpition-->
+          <div class="form-group mt-3">
+            <label class="control-label" for="productDescrption"
+              >Description</label
+            >
+            <div class="col-md-8">
+              <textarea
+                name="productDescription"
+                placeholder="Product Description"
+                class="form-control"
+                rows="4"
+                #description="ngModel"
+                cols="30"
+                minlength="10"
+                maxlength="300"
+                ngModel
+                required
+                [(ngModel)]="product.description"
+              ></textarea>
+              <span
+                class="help-block"
+                style="color: red"
+                *ngIf="!description.valid && description.touched"
+                >Product description must be at least 10 characters long and not
+                more than 300 characters long!</span
+              >
+            </div>
+          </div>
+
+          <!-- product price -->
+          <div class="form-group mt-3">
+            <label class="control-label" for="price">Price</label>
+            <div class="col-md-8">
+              <input
+                type="text"
+                placeholder="Product Price"
+                name="productPrice"
+                #price="ngModel"
+                required
+                class="form-control"
+                [(ngModel)]="product.price"
+              />
+              <span
+                class="help-block"
+                style="color: red"
+                *ngIf="!price.valid && price.touched"
+                >Please enter a valid product price!</span
+              >
+            </div>
+          </div>
+
+          <!-- product stock -->
+          <div class="form-group mt-3">
+            <label class="control-label" for="price">Stock</label>
+            <div class="col-md-8">
+              <input
+                type="number"
+                placeholder="Number of Products Available"
+                name="productStock"
+                #stock="ngModel"
+                required
+                min="0"
+                class="form-control"
+                [(ngModel)]="product.stock"
+              />
+              <span
+                class="help-block"
+                style="color: red"
+                *ngIf="!stock.valid && stock.touched"
+                >Please enter a valid product stock!</span
+              >
+            </div>
+          </div>
+          <div class="mt-3">
+            <!-- product specifications -->
+            <div
+              class="form-group"
+              *ngFor="let spec of specifications; let i = index"
+            >
+              <div class="row">
+                <div class="col-md-4">
+                  <label class="control-label" for="specKey{{ i }}"
+                    >Property</label
+                  >
+                  <input
+                    *ngIf="spec['key'] !== undefined"
+                    type="text"
+                    placeholder="Property"
+                    name="specKey{{ i }}"
+                    class="form-control"
+                    #stock="ngModel"
+                    [(ngModel)]="spec['key']"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label class="control-label" for="specValue{{ i }}"
+                    >Value</label
+                  >
+                  <input
+                    *ngIf="spec['value'] !== undefined"
+                    type="text"
+                    placeholder="Value"
+                    name="specValue{{ i }}"
+                    class="form-control"
+                    [(ngModel)]="spec['value']"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for=""></label>
+                  <br />
+                  <button
+                    class="btn btn-class"
+                    (click)="deleteSpecification(i)"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Add Specification Button -->
+            <button
+              class="btn btn-class mt-3"
+              type="button"
+              (click)="addSpecification()"
+            >
+              Add Specification
+            </button>
+          </div>
         </div>
         <div class="form-group text-center">
           <button
@@ -167,127 +177,10 @@
       </form>
     </div>
     <div *ngIf="editMode" class="col-md-6">
-      <div>
-        <p>
-          Currently Stored Images :
-          {{ product.images?.length === 0 ? "none" : product.images?.length }}
-        </p>
-        <div *ngIf="product.images!.length > 0 || deletedImages.length === imagesArrayLength">
-          <div class="row">
-            <div
-              class="col-4"
-              *ngFor="let image of product.images; let i = index"
-            >
-              <div class="image-preview">
-                <a [href]="image.url" target="_blank">
-                  <img
-                    [src]="image.url"
-                    alt="Selected Image"
-                    class="img-thumbnail"
-                  />
-                </a>
-                <button
-                  class="delete-button"
-                  (click)="removeProductImage(i, $event)"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    fill="currentColor"
-                    class="bi bi-trash"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"
-                    />
-                    <path
-                      d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-          <button
-            *ngIf="deletedImages.length > 0"
-            (click)="saveBackendImages()"
-            class="btn btn-class mt-2"
-          >
-            Save Images
-          </button>
-        </div>
-        <div class="mt-5" *ngIf="product.images!.length === 0 || product.images!.length < 5">
-          <p>Add More Images</p>
-          <form #f="ngForm" (ngSubmit)="onSubmitImageForm()">
-            <div class="container mt-4">
-              <div class="row">
-                <div class="col-12">
-                  <input
-                    type="file"
-                    id="imageInput"
-                    accept="image/*"
-                    class="form-control"
-                    (change)="onFileSelected($event)"
-                    multiple
-                  />
-                </div>
-              </div>
-              <div class="row mt-2">
-                <div class="col-12">
-                  <button
-                    class="btn btn-class mx-2 my-2"
-                    type="submit"
-                    [disabled]="!imageFiles.length || imageFiles.length > 5"
-                  >
-                    Save Images
-                  </button>
-                </div>
-              </div>
-              <div class="row mt-2" *ngIf="showGrid">
-                <div class="col-12">
-                  <div class="row">
-                    <div
-                      class="col-4"
-                      *ngFor="let image of imageFiles; let i = index"
-                    >
-                      <div class="image-preview">
-                        <a [href]="getPreviewURL(image)" target="_blank">
-                          <img
-                            [src]="getPreviewURL(image)"
-                            alt="Selected Image"
-                            class="img-thumbnail"
-                          />
-                        </a>
-                        <button
-                          class="delete-button"
-                          (click)="removeImage(i, $event)"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                            fill="currentColor"
-                            class="bi bi-trash"
-                            viewBox="0 0 16 16"
-                          >
-                            <path
-                              d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"
-                            />
-                            <path
-                              d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
+      <app-product-images
+        [imagesArray]="product.images || []"
+        [productId]="productId"
+      ></app-product-images>
     </div>
   </div>
 </div>

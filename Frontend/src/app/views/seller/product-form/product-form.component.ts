@@ -1,11 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  Input,
-  Renderer2,
-  OnInit,
-  ViewChild,
-} from "@angular/core";
+import { AfterViewInit, Component, Input, ViewChild } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Product } from "src/app/models/product.model";
@@ -36,11 +29,6 @@ export class ProductFormComponent implements AfterViewInit {
   };
   currentUserId: string = "";
   specifications: Specification[] = [];
-  showGrid: boolean = false;
-  imageFiles: File[] = [];
-  deleteVisible: boolean[] = [];
-  deletedImages: any[] = [];
-  imagesArrayLength = 0;
 
   constructor(
     private productService: ProductService,
@@ -60,8 +48,6 @@ export class ProductFormComponent implements AfterViewInit {
     if (this.editMode && this.product.specifications) {
       this.revertToSpecifications(this.product.specifications as Specification);
     }
-    this.imagesArrayLength = this.product.images?.length || 0;
-    console.log(this.product.images)
   }
 
   deleteSpecification(index: number) {
@@ -123,44 +109,5 @@ export class ProductFormComponent implements AfterViewInit {
       revspecifications.push({ key, value: specifications[key] });
     }
     this.specifications = revspecifications;
-  }
-
-  onSubmitImageForm() {
-    const formData = new FormData();
-    for (const file of this.imageFiles) {
-      formData.append("images", file);
-    }
-    this.productService.saveImages(formData, this.productId).subscribe();
-  }
-
-  onFileSelected(event: any): void {
-    const files = event.target.files;
-    if (files) {
-      for (let i = 0; i < files.length; i++) {
-        this.imageFiles.push(files[i]);
-      }
-    }
-    this.showGrid = true;
-  }
-  getPreviewURL(file: File): string {
-    return URL.createObjectURL(file);
-  }
-
-  toggleDelete(index: number, show: boolean): void {
-    this.deleteVisible[index] = show;
-  }
-  removeProductImage(index: number, event: Event): void {
-    if (this.product.images?.[index]){
-      this.deletedImages.push(this.product.images[index].publicId);    
-    }
-    this.product.images?.splice(index, 1);
-  }
-  removeImage(index: number, event: Event): void {
-    this.imageFiles.splice(index, 1);
-    this.deleteVisible.splice(index, 1);
-  }
-  saveBackendImages(){
-    this.productService.deleteImages(this.deletedImages, this.productId).subscribe();
-    console.log(this.deletedImages)
   }
 }

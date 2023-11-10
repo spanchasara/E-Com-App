@@ -1,0 +1,37 @@
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.image-preview {
+  position: relative;
+  max-width: 150px;
+  margin: 0 auto;
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  max-height: 150px;
+}
+
+.image-preview img:hover {
+  filter: blur(1px); /* Apply blur effect on hover */
+}
+
+.delete-button {
+  fill: red;
+  color: red;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background-color: transparent;
+  z-index: 1;
+  display: none; /* Initially hide the delete button */
+}
+
+.image-preview:hover .delete-button {
+  display: block; /* Show delete button on hover */
+}

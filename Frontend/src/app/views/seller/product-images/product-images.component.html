@@ -1,0 +1,122 @@
+<div>
+  <p>
+    Currently Stored Images :
+    {{ imagesArray.length === 0 ? "none" : imagesArray.length }}
+  </p>
+  <div
+    *ngIf="
+      imagesArray!.length > 0 || deletedImages.length === imagesArray!.length
+    "
+  >
+    <div class="row">
+      <div class="col-4" *ngFor="let image of imagesArray; let i = index">
+        <div class="image-preview">
+          <a [href]="image.url" target="_blank">
+            <img [src]="image.url" alt="Selected Image" class="img-thumbnail" />
+          </a>
+          <button
+            class="delete-button"
+            (click)="removeProductImage(i, $event)"
+            *ngIf="imagesArray.length > 1"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="currentColor"
+              class="bi bi-trash"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"
+              />
+              <path
+                d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <button
+      *ngIf="deletedImages.length > 0"
+      (click)="saveBackendImages()"
+      class="btn btn-class mt-2"
+    >
+      Save Images
+    </button>
+  </div>
+  <div
+    class="mt-5"
+    *ngIf="imagesArray!.length === 0 || imagesArray!.length < 5"
+  >
+    <p>Add More Images</p>
+    <form #f="ngForm" (ngSubmit)="onSubmitImageForm()">
+      <div class="container mt-4">
+        <div class="row">
+          <div class="col-12">
+            <input
+              type="file"
+              id="imageInput"
+              accept="image/*"
+              class="form-control"
+              (change)="onFileSelected($event)"
+              multiple
+            />
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-12">
+            <button
+              class="btn btn-class mx-2 my-2"
+              type="submit"
+              [disabled]="!imageFiles.length || imageFiles.length > 5"
+            >
+              Save Images
+            </button>
+          </div>
+        </div>
+        <div class="row mt-2" *ngIf="showGrid">
+          <div class="col-12">
+            <div class="row">
+              <div
+                class="col-4"
+                *ngFor="let image of imageFiles; let i = index"
+              >
+                <div class="image-preview">
+                  <a [href]="getPreviewURL(image)" target="_blank">
+                    <img
+                      [src]="getPreviewURL(image)"
+                      alt="Selected Image"
+                      class="img-thumbnail"
+                    />
+                  </a>
+                  <button
+                    class="delete-button"
+                    (click)="removeImage(i, $event)"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      fill="currentColor"
+                      class="bi bi-trash"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"
+                      />
+                      <path
+                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

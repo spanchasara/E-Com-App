@@ -50,6 +50,7 @@ import { RupeeFormatPipe } from "./rupee-format.pipe";
 import { PaymentComponent } from "./views/customer/orders/place-order/payment/payment.component";
 import { StatusComponent } from "./components/status/status.component";
 import { ResetPasswordComponent } from './views/common/reset-password/reset-password.component';
+import { ProductImagesComponent } from './views/seller/product-images/product-images.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -93,6 +94,7 @@ import { ResetPasswordComponent } from './views/common/reset-password/reset-pass
     PaymentComponent,
     StatusComponent,
     ResetPasswordComponent,
+    ProductImagesComponent,
   ],
   imports: [
     BrowserModule,
