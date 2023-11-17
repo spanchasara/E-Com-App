@@ -182,6 +182,7 @@ export class OrdersService {
                     _id: data._id || "",
                     title: data.title,
                     price: data.price,
+                    images: data.images,
                   },
                   qty,
                 },

@@ -40,6 +40,18 @@
             </tr>
           </tbody>
         </table>
+        <button
+          *ngIf="(user?.role === 'customer' && !user?.companyName) || isAdmin"
+          class="btn btn-success mt-3"
+          [ngClass]="{
+            'btn-danger': isAdmin,
+            'btn-success': !isAdmin
+          }"
+          type="button"
+          (click)="toggleAdmin(user?._id || '')"
+        >
+          {{ isAdmin ? "Unmark" : "Mark" }} as Admin
+        </button>
       </div>
     </div>
   </div>

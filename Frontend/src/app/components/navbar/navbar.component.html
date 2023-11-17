@@ -3,7 +3,15 @@
   class="navbar navbar-expand-lg sticky-top"
 >
   <div class="container-fluid">
-    <a class="navbar-brand text-white" routerLink="/">E-Commerce Website</a>
+    <a class="navbar-brand text-white" routerLink="/">
+      <svg width="150" height="40">
+        <image
+          *ngIf="true"
+          xlink:href="/assets/logo.svg"
+          width="150"
+          height="40"
+        /></svg
+    ></a>
     <button
       class="navbar-toggler"
       type="button"
@@ -39,8 +47,26 @@
             Products
           </button>
         </li>
-        <li class="nav-item" *ngIf="!isLoggedIn || isCustomer">
-          <button class="nav-link text-white" routerLink="/cart">Cart</button>
+        <li
+          class="nav-item"
+          [ngClass]="{
+            'me-3': totalQty > 0
+          }"
+          *ngIf="!isLoggedIn || isCustomer"
+        >
+          <button
+            class="nav-link text-white position-relative"
+            routerLink="/cart"
+          >
+            Cart
+            <span
+              *ngIf="totalQty > 0"
+              class="position-absolute translate-middle badge rounded-pill bg-danger"
+            >
+              {{ totalQty > 99 ? "99+" : totalQty }}
+              <span class="visually-hidden">unread messages</span>
+            </span>
+          </button>
         </li>
         <li class="nav-item" *ngIf="!isLoggedIn; else loggedIn">
           <button class="nav-link text-white" routerLink="/login">Login</button>

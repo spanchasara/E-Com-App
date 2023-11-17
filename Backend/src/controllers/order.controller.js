@@ -127,7 +127,7 @@ const markDelivered = catchAsync(async (req, res) => {
       },
       {
         path: "product",
-        select: "_id title price",
+        select: "_id title price images",
       },
       {
         path: "addressId",
@@ -146,6 +146,10 @@ const markDelivered = catchAsync(async (req, res) => {
     params: {
       name: order.customerId.username,
       products: order.product,
+      image:
+        order.product.images && order.product.images.length > 0
+          ? order.product.images[0].url
+          : process.env.DEFAULT_PRODUCT_IMAGE,
       orderId: order.orderId,
       orderDate: formatDate(order.createdAt),
       totalAmount: rupeeFormat(order.totalAmount),
@@ -200,6 +204,10 @@ const updateOrderStatus = catchAsync(async (req, res) => {
     temp.forEach((prod) => {
       prod.price = rupeeFormat(prod.price);
       prod.amount = rupeeFormat(prod.amount);
+      prod.image =
+        prod.images && prod.images.length > 0
+          ? prod.images[0].url
+          : process.env.DEFAULT_PRODUCT_IMAGE;
     });
 
     // send mail to customer
@@ -245,6 +253,10 @@ const updateOrderStatus = catchAsync(async (req, res) => {
       sellerObj[seller].products.forEach((prod) => {
         prod.price = rupeeFormat(prod.price);
         prod.amount = rupeeFormat(prod.amount);
+        prod.image =
+          prod.images && prod.images.length > 0
+            ? prod.images[0].url
+            : process.env.DEFAULT_PRODUCT_IMAGE;
       });
 
       sendTemplateEmail({

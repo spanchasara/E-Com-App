@@ -161,4 +161,23 @@ export class UserService {
         })
       );
   }
+
+  toggleAdmin(userId: string, isAdmin: boolean = true) {
+    const role = isAdmin ? "admin" : "customer";
+
+    return this.httpClient
+      .post<User>(this.apiUrl + `user/mark-admin/${userId}/${role}`, {})
+      .pipe(
+        tap((resData) => {
+          this.swalService.success(
+            `User ${isAdmin ? "Marked" : "Unmarked"} as Admin Successfully!!`
+          );
+        }),
+        catchError((error) => {
+          console.log(error);
+          this.swalService.error(error.error?.message);
+          return of(error);
+        })
+      );
+  }
 }

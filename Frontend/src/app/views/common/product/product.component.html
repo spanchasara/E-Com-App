@@ -1,26 +1,36 @@
 <div class="container my-4">
   <div class="card">
     <div class="row no-gutters m-5">
-      <div class="col-md-6" style="margin-top: 10%;">
-        <div *ngIf="product?.images!.length > 0">
-        <app-carousel [slides]="product?.images || []"></app-carousel>
+      <div class="col-md-6" style="margin-top: 10%">
+        <div *ngIf="(product?.images)!.length > 0">
+          <app-carousel [slides]="product?.images || []"></app-carousel>
         </div>
-        <div *ngIf="product?.images!.length === 0">
+        <div *ngIf="(product?.images)!.length === 0">
           <app-carousel [slides]="slides"></app-carousel>
-          </div>
         </div>
+      </div>
       <div class="col-md-6 my-5 mt-5">
         <h3>{{ product?.title }}</h3>
         <p>{{ product?.description }}</p>
         <h4>
           <span>{{ product?.price || 0 | rupeeFormat }}</span>
         </h4>
-        <p *ngIf="product?.stock !== 0; else outOfStock">
-          <strong>Items in Stock:</strong> {{ product?.stock }}
-        </p>
-        <ng-template #outOfStock>
-          <h6 style="color: red">This product is currently out of stock</h6>
+        <h6 *ngIf="product?.stock === 0; else NotOutOfStock" style="color: red">
+          This product is currently out of stock
+        </h6>
+        <ng-template #NotOutOfStock>
+          <p
+            style="color: red"
+            *ngIf="!isSellerByRole && !isAdmin && product!.stock < 6"
+          >
+            Hurry, only {{ product!.stock }}
+            {{ product!.stock === 1 ? "item" : "items" }} left !!
+          </p>
+          <p *ngIf="isSellerByRole || isAdmin">
+            <strong>Items in Stock:</strong> {{ product?.stock }}
+          </p>
         </ng-template>
+
         <div class="action">
           <button
             class="btn btn-class mt-1"

@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 
 import { AuthService } from "src/app/services/auth.service";
+import { CartService } from "src/app/services/cart.service";
 import { UserStore } from "src/app/store/user-store";
 
 @Component({
@@ -11,7 +12,13 @@ import { UserStore } from "src/app/store/user-store";
 export class NavbarComponent implements OnInit {
   isLoggedIn: boolean = false;
   isCustomer: boolean = false;
-  constructor(private authService: AuthService, private userStore: UserStore) {}
+  totalQty: number = 0;
+
+  constructor(
+    private authService: AuthService,
+    private cartService: CartService,
+    private userStore: UserStore
+  ) {}
   ngOnInit() {
     this.isLoggedIn = localStorage.getItem("userToken") ? true : false;
 
@@ -21,10 +28,29 @@ export class NavbarComponent implements OnInit {
 
     this.authService.isAuthenticated.subscribe((loginStatus) => {
       this.isLoggedIn = loginStatus;
+
+      this.callCart();
     });
+
+    this.cartService.totalQty.subscribe((totalQty) => {
+      this.totalQty = totalQty;
+    });
+
+    this.callCart();
+  }
+
+  callCart() {
+    if (this.isCustomer) {
+      if (this.isLoggedIn) {
+        this.cartService.getCart().subscribe();
+      } else {
+        this.cartService.getLocalCart();
+      }
+    }
   }
 
   logout() {
+    this.totalQty = 0;
     this.authService.logout();
   }
 }

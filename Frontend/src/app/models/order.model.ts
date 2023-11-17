@@ -1,5 +1,6 @@
 import { Address } from "./address.model";
 import { Cart } from "./cart.model";
+import { ProductImage } from "./product.model";
 
 export type PlaceOrder = {
   products: ProjectOrder[];
@@ -53,5 +54,6 @@ export type OrderedProducts = {
   qty: number;
   deliveredDate: Date | string | null;
   amount: number;
+  images: ProductImage[];
   sellerId: string;
 };

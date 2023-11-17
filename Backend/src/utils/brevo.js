@@ -7,6 +7,8 @@ const templates = {
   customerOrderDelivered: 9,
   customerOrderPlaced: 10,
   sellerOrderReceived: 11,
+  markUserAsAdmin: 12,
+  unmarkUserAsAdmin: 13,
 };
 
 const brevoConfig = () => {
@@ -29,7 +31,7 @@ const addToContactList = (email, username) => {
       console.log("Added to contact list successfully.");
       sendTemplateEmail({
         to: email,
-        subject: "Welcome to E-Com App !!",
+        subject: "Welcome to GadgetGrove !!",
         params: {
           name: username,
           loginUrl: process.env.HOST_URL + "/login",

@@ -85,6 +85,7 @@ const aggregateQuery = async (
             price: "$productInfo.price",
             qty: "$qty",
             deliveredDate: "$deliveredDate",
+            images: "$productInfo.images",
             amount: "$totalAmount",
             sellerId: {
               _id: "$sellerInfo._id",

@@ -1,14 +1,13 @@
 <div class="card h-100 cart-content">
   <img
     class="card-img-top link"
-    [src]="product.images?.[0]?.url || 'https://picsum.photos/200'"
+    [src]="product.images?.[0]?.url || 'assets/laptop.jpg'"
     alt="Product Image"
     height="200"
     width="200"
     [routerLink]="['/products', product._id]"
   />
-  <div>
-  </div>
+  <div></div>
   <div class="card-body">
     <h6
       class="card-title link text-truncate"
@@ -18,11 +17,20 @@
     </h6>
     <div class="mt-2 d-flex justify-content-between">
       <h6 class="text-muted">{{ product.price | rupeeFormat }}</h6>
-      <h6 class="text-muted" *ngIf="product.stock > 0; else outOfStock">
-        {{ product.stock }} in stock
+      <h6 *ngIf="product.stock < 1; else NotOutOfStock" style="color: red">
+        Out of stock
       </h6>
-      <ng-template #outOfStock>
-        <h6 style="color: red">Out of stock</h6>
+      <ng-template #NotOutOfStock>
+        <span
+          style="color: red"
+          *ngIf="!isSellerByRole && !isAdmin && product.stock < 6"
+        >
+          Hurry, only {{ product.stock }}
+          {{ product.stock === 1 ? "item" : "items" }} left !
+        </span>
+        <h6 class="text-muted" *ngIf="isSellerByRole || isAdmin">
+          {{ product.stock }} in stock
+        </h6>
       </ng-template>
     </div>
 

@@ -9,10 +9,7 @@
     </h4>
     <div class="d-flex justify-content-center align-items-center"></div>
     <!-- preview order -->
-    <app-preview-order
-      [finalOrderPreview]="false"
-      [order]="order"
-    ></app-preview-order>
+    <app-preview-order [order]="order"></app-preview-order>
     <div class="text-center">
       <button class="btn btn-class" (click)="placeOrder()">Place Order</button>
     </div>

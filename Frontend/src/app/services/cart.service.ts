@@ -25,6 +25,7 @@ export class CartService {
   apiUrl = environment.apiUrl;
   callGetCart = new Subject<boolean>();
   callLocalCart = new Subject<boolean>();
+  totalQty = new Subject<number>();
 
   getCart(): Observable<any> {
     this.loaderService.show();
@@ -37,6 +38,8 @@ export class CartService {
         data.products.forEach((product) => {
           this.cartStore.updateCartData(product.productId._id, true);
         });
+
+        this.totalQty.next(data.totalQty);
       }),
       catchError((error) => {
         this.loaderService.hide();
@@ -51,7 +54,7 @@ export class CartService {
     if (showLoader) this.loaderService.show();
 
     return this.httpClient.patch<Cart>(this.apiUrl + "cart", updateBody).pipe(
-      tap(() => {
+      tap((data) => {
         if (showLoader) this.loaderService.hide();
 
         if (updateBody?.qty === undefined) {
@@ -59,6 +62,7 @@ export class CartService {
           this.cartStore.updateCartData(productId, isAdd);
         }
 
+        this.totalQty.next(data.totalQty);
         this.callGetCart.next(true);
       }),
       catchError((error) => {
@@ -81,6 +85,8 @@ export class CartService {
       cart.products.forEach((product: any) => {
         this.cartStore.updateCartData(product.productId._id, true);
       });
+
+      this.totalQty.next(cart.totalQty);
 
       return cart;
     } else {
@@ -106,6 +112,8 @@ export class CartService {
         0
       );
 
+      this.totalQty.next(cart.totalQty);
+
       localStorage.setItem("cart", JSON.stringify(cart));
       this.cartStore.updateCartData(productId, isAdd);
       this.callLocalCart.next(true);
@@ -126,6 +134,7 @@ export class CartService {
           title: product.title,
           price: product.price,
           stock: product.stock,
+          images: product.images || [],
         },
       });
     } else {

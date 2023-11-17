@@ -71,7 +71,41 @@ const toggleRole = catchAsync(async (req, res) => {
   res.send(response);
 });
 
-/* toggleUserRole - controller*/
+/* markAdmin - controller*/
+const markAdmin = catchAsync(async (req, res) => {
+  const { userId, role } = req.params;
+
+  const user = await userService.getPublicUser(userId);
+
+  if (user.role === role) {
+    throw new ApiError(httpStatus.BAD_REQUEST, `User is already a ${role}`);
+  }
+
+  user.role = role;
+  await user.save();
+
+  const emailBody = {
+    to: user.email,
+    subject:
+      role === "admin"
+        ? "You are now an admin !!"
+        : "You are no longer an admin !!",
+    params: {
+      name: user.username,
+      admin: req.user.username,
+    },
+    templateId:
+      role === "admin"
+        ? templates.markUserAsAdmin
+        : templates.unmarkUserAsAdmin,
+  };
+
+  sendTemplateEmail(emailBody);
+
+  res.send(user);
+});
+
+/* sellerRegistration - controller*/
 const sellerRegistration = catchAsync(async (req, res) => {
   const userId = req.user._id;
   const { companyName } = req.body;
@@ -99,6 +133,7 @@ export {
   updateUser,
   toggleAccountStatus,
   sellerRegistration,
+  markAdmin,
 };
 
 // get profile of logged in user

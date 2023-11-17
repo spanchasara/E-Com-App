@@ -12,13 +12,6 @@
   cursor: pointer;
   font-size: 20px;
 }
-.bi-pencil-square:hover {
-  fill: green;
-}
-
-.bi-trash:hover {
-  fill: red;
-}
 
 .cart-content {
   margin-bottom: 1%;

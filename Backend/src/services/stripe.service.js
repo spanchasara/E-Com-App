@@ -4,6 +4,7 @@ const handlePayment = async (body) => {
   const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
 
   const { products, orderId } = body;
+  console.log(products);
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
@@ -36,6 +37,10 @@ const handlePayment = async (body) => {
         currency: "inr",
         product_data: {
           name: prod.productId.title,
+          images:
+            prod.productId.images.length > 0
+              ? prod.productId.images.map((img) => img.url)
+              : ["https://m.media-amazon.com/images/I/91oF9q-jE5L.jpg"],
         },
         unit_amount: prod.productId.price * 100,
       },

@@ -18,16 +18,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
   product: Product | null = null;
   slides: ProductImage[] = [
     {
-      url: "https://picsum.photos/id/944/900/500",
-      publicId: "https://picsum.photos/id/944/900/500",
-    },
-    {
-      url: "https://picsum.photos/id/944/900/500",
-      publicId: "https://picsum.photos/id/944/900/500",
-    },
-    {
-      url: "https://picsum.photos/id/944/900/500",
-      publicId: "https://picsum.photos/id/944/900/500",
+      url: "assets/laptop.jpg",
+      publicId: "assets/laptop.jpg",
     },
   ];
   currentUserId: string = "";

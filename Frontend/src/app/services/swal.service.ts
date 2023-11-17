@@ -1,20 +1,24 @@
-import { Injectable } from '@angular/core';
-import Swal from 'sweetalert2';
+import { Injectable } from "@angular/core";
+import Swal from "sweetalert2";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class SwalService {
   constructor() {}
 
   error(message: string) {
+    if (message === "jwt expired") {
+      message = "Session Expired !! Please Login Again !!";
+    }
+
     Swal.fire({
-      title: 'Error',
-      html: message || 'Something went wrong !!',
-      icon: 'error',
+      title: "Error",
+      html: message || "Something went wrong !!",
+      icon: "error",
       toast: true,
       showConfirmButton: false,
-      position: 'top-end',
+      position: "top-end",
       timer: 3000,
       timerProgressBar: true,
     });
@@ -22,12 +26,12 @@ export class SwalService {
 
   success(message: string) {
     Swal.fire({
-      title: 'Success',
+      title: "Success",
       html: message,
-      icon: 'success',
+      icon: "success",
       toast: true,
       showConfirmButton: false,
-      position: 'top-end',
+      position: "top-end",
       timer: 3000,
       timerProgressBar: true,
     });
@@ -35,12 +39,12 @@ export class SwalService {
 
   warning(message: string) {
     Swal.fire({
-      title: 'Warning',
+      title: "Warning",
       html: message,
-      icon: 'warning',
+      icon: "warning",
       toast: true,
       showConfirmButton: false,
-      position: 'top-end',
+      position: "top-end",
       timer: 3000,
       timerProgressBar: true,
     });
@@ -48,12 +52,12 @@ export class SwalService {
 
   confirmWarning(message: string) {
     return Swal.fire({
-      title: 'Warning',
+      title: "Warning",
       html: message,
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
     });
   }
 }

@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { Address } from "src/app/models/address.model";
+import { Component, Input } from "@angular/core";
 import { Cart } from "src/app/models/cart.model";
 
 @Component({
@@ -7,18 +6,8 @@ import { Cart } from "src/app/models/cart.model";
   templateUrl: "./preview-order.component.html",
   styleUrls: ["./preview-order.component.css"],
 })
-export class PreviewOrderComponent implements OnInit {
+export class PreviewOrderComponent {
   @Input() order!: Cart;
-  @Input() finalOrderPreview: boolean = false;
 
-  currentAddress!: Address;
-  address: string = "";
   constructor() {}
-
-  ngOnInit(): void {
-    this.currentAddress = JSON.parse(
-      sessionStorage.getItem("currentAddress") || ""
-    );
-  }
-  
 }

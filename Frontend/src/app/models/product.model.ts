@@ -6,7 +6,7 @@ export type Product = {
   specifications: object;
   price: number;
   stock: number;
-  images?: ProductImage[]
+  images?: ProductImage[];
 };
 
 export type ProductImage = {

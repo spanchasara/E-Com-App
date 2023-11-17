@@ -50,9 +50,13 @@
       <div class="col-md-2 d-flex align-items-center">
         <div class="col-md-5">
           <img
-            src="https://bootdey.com/img/Content/avatar/avatar1.png"
+            [src]="
+              product.images.length > 0
+                ? product.images[0].url
+                : 'assets/laptop.jpg'
+            "
             class="d-block ui-w-40 ui-bordered mx-2"
-            alt=""
+            alt="product image"
             height="100px"
             width="100px"
             [routerLink]="['/products', product.productId]"
