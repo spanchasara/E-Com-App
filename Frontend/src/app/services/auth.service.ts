@@ -1,20 +1,20 @@
-import { Injectable } from '@angular/core';
-import { SignIn, Signup } from '../models/auth.model';
-import { Observable, Subject, catchError, of, tap } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { User } from '../models/user.model';
-import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
+import { Injectable } from "@angular/core";
+import { SignIn, Signup } from "../models/auth.model";
+import { Observable, Subject, catchError, of, tap } from "rxjs";
+import { HttpClient } from "@angular/common/http";
+import { User } from "../models/user.model";
+import { Router } from "@angular/router";
 
-import { environment } from 'src/environment/environment';
-import { UserStore } from '../store/user-store';
-import { ProductStore } from '../store/product.store';
-import { CartStore } from '../store/cart.store';
-import { LoaderService } from './loader.service';
-import { CartService } from './cart.service';
+import { environment } from "src/environment/environment";
+import { UserStore } from "../store/user-store";
+import { ProductStore } from "../store/product.store";
+import { CartStore } from "../store/cart.store";
+import { LoaderService } from "./loader.service";
+import { CartService } from "./cart.service";
+import { SwalService } from "./swal.service";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class AuthService {
   constructor(
@@ -24,6 +24,7 @@ export class AuthService {
     private productStore: ProductStore,
     private cartStore: CartStore,
     private loaderService: LoaderService,
+    private swalService: SwalService,
     private cartService: CartService
   ) {}
   isAuthenticated = new Subject<boolean>();
@@ -36,30 +37,19 @@ export class AuthService {
   signup(userData: Signup): Observable<any> {
     this.loaderService.show();
     return this.httpClient
-      .post<{ message: string }>(this.apiUrl + 'auth/register', userData, {
-        observe: 'response',
+      .post<{ message: string }>(this.apiUrl + "auth/register", userData, {
+        observe: "response",
       })
       .pipe(
         tap(() => {
           this.loaderService.hide();
-          Swal.fire({
-            title: 'Success',
-            html: 'Registered Successfully!!',
-            icon: 'success',
-            width: 400,
-          }).then((result) => {
-            if (result.isConfirmed) this.router.navigate(['/login']);
-          });
+          this.swalService.success("Registered Successfully!!");
+          this.router.navigate(["/login"]);
         }),
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire({
-            title: 'Error',
-            html: error.error?.message,
-            icon: 'error',
-            width: 400,
-          });
+          this.swalService.error(error.error?.message);
           return of(error);
         })
       );
@@ -69,26 +59,26 @@ export class AuthService {
     this.loaderService.show();
     return this.httpClient
       .post<{ user: User; token: string; tokenExpiresIn: number }>(
-        this.apiUrl + 'auth/login',
+        this.apiUrl + "auth/login",
         userData,
         {
-          observe: 'response',
+          observe: "response",
         }
       )
       .pipe(
         tap((resData) => {
           this.loaderService.hide();
-          const token = resData.body?.token || '';
+          const token = resData.body?.token || "";
           const user = resData.body?.user || null;
           const expiresInDuration = resData.body?.tokenExpiresIn || 0;
 
-          localStorage.setItem('userToken', token);
+          localStorage.setItem("userToken", token);
           this.userStore.updateUserData({ user });
 
           this.autoLogout(expiresInDuration * 1000);
           this.isAuthenticated.next(true);
 
-          if (user?.role === 'customer') {
+          if (user?.role === "customer") {
             const localCart = this.cartService.getLocalCart();
             localCart.products.forEach((product) => {
               this.cartService
@@ -102,34 +92,24 @@ export class AuthService {
                 .subscribe();
             });
           }
-          localStorage.removeItem('cart');
+          localStorage.removeItem("cart");
 
-          Swal.fire({
-            title: 'Success',
-            html: 'LoggedIn Successfully!!',
-            icon: 'success',
-            width: 400,
-          }).then((result) => {
-            if (result.isConfirmed && user) {
-              if (user.role === 'admin') {
-                this.router.navigate(['/admin']);
-              } else if (user.role === 'seller') {
-                this.router.navigate(['/seller']);
-              } else {
-                this.router.navigate(['/']);
-              }
+          this.swalService.success("LoggedIn Successfully!!");
+
+          if (user) {
+            if (user.role === "admin") {
+              this.router.navigate(["/admin"]);
+            } else if (user.role === "seller") {
+              this.router.navigate(["/seller"]);
+            } else {
+              this.router.navigate(["/"]);
             }
-          });
+          }
         }),
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire({
-            title: 'Error',
-            html: error.error?.message,
-            icon: 'error',
-            width: 400,
-          });
+          this.swalService.error(error.error?.message);
           return of(error);
         })
       );
@@ -137,13 +117,13 @@ export class AuthService {
 
   logout() {
     this.loaderService.show();
-    localStorage.removeItem('userToken');
+    localStorage.removeItem("userToken");
     this.userStore.clearUserData();
     this.productStore.clearProductData();
     // this.cartStore.clearCartData();
     this.isAuthenticated.next(false);
     this.loaderService.hide();
-    this.router.navigate(['/']);
+    this.router.navigate(["/"]);
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }
@@ -152,12 +132,8 @@ export class AuthService {
 
   autoLogout(expirationDuration: number) {
     this.tokenExpirationTimer = setTimeout(() => {
-      Swal.fire({
-        title: 'Session Expiry',
-        html: 'The session will expire in 15 seconds',
-        icon: 'warning',
-        width: 400,
-      });
+      this.swalService.warning("The session will expire in 15 seconds");
+
       setTimeout(() => {
         this.logout();
       }, 5000);
@@ -173,7 +149,7 @@ export class AuthService {
 
   checkUserExists() {
     return (
-      !!localStorage.getItem('userToken') && !!this.userStore.getValue().user
+      !!localStorage.getItem("userToken") && !!this.userStore.getValue().user
     );
   }
 
@@ -185,31 +161,73 @@ export class AuthService {
     this.loaderService.show();
     return this.httpClient
       .post<User>(
-        this.apiUrl + 'auth/change-password',
+        this.apiUrl + "auth/change-password",
         { oldPassword, newPassword },
         {
-          observe: 'response',
+          observe: "response",
         }
       )
       .pipe(
-        tap((resData) => {
+        tap(() => {
           this.loaderService.hide();
-          Swal.fire({
-            title: 'Success',
-            html: 'Password Updated Successfully!!',
-            icon: 'success',
-            width: 400,
-          }).then();
+          this.swalService.success("Password Updated Successfully!!");
         }),
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          Swal.fire({
-            title: 'Error',
-            html: error.error?.message,
-            icon: 'error',
-            width: 400,
-          });
+          this.swalService.error(error.error?.message);
+          return of(error);
+        })
+      );
+  }
+
+  sendResetPasswordLink(email: string) {
+    this.loaderService.show();
+    return this.httpClient
+      .post(
+        this.apiUrl + "auth/reset-password/request",
+        { email },
+        {
+          observe: "response",
+        }
+      )
+      .pipe(
+        tap(() => {
+          this.loaderService.hide();
+          this.swalService.success("Password Reset Link Sent Successfully!!");
+          this.router.navigate(["/"]);
+        }),
+        catchError((error) => {
+          this.loaderService.hide();
+          console.log(error);
+          this.swalService.error(error.error?.message);
+          this.router.navigate(["/login"]);
+          return of(error);
+        })
+      );
+  }
+
+  resetPassword(resetToken: string, password: string) {
+    this.loaderService.show();
+    return this.httpClient
+      .post(
+        this.apiUrl + "auth/reset-password",
+        { resetToken, password },
+        {
+          observe: "response",
+        }
+      )
+      .pipe(
+        tap(() => {
+          this.loaderService.hide();
+          this.swalService.success("Password Reset Successfully!!");
+          this.router.navigate(["/"]);
+        }),
+        catchError((error) => {
+          this.loaderService.hide();
+          console.log(error);
+          this.swalService.error(error.error?.message);
+          this.router.navigate(["/login"]);
           return of(error);
         })
       );

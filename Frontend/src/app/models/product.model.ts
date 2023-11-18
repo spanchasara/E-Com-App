@@ -6,6 +6,12 @@ export type Product = {
   specifications: object;
   price: number;
   stock: number;
+  images?: ProductImage[];
+};
+
+export type ProductImage = {
+  url: string;
+  publicId: string;
 };
 
 export type PaginatedProducts = {

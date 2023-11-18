@@ -2,6 +2,7 @@ import httpStatus from "http-status";
 import * as userService from "../services/user.service.js";
 import ApiError from "../utils/api-error.js";
 import catchAsync from "../utils/catch-async.js";
+import { sendTemplateEmail, templates } from "../utils/brevo.js";
 
 /* getUserProfile - controller */
 const getUserProfile = catchAsync(async (req, res) => {
@@ -57,10 +58,54 @@ const toggleRole = catchAsync(async (req, res) => {
   }
 
   const response = await userService.updateUser(userId, { role });
+
+  sendTemplateEmail({
+    to: req.user.email,
+    subject: "Successfully registered as seller !!",
+    params: {
+      name: req.user.username,
+    },
+    templateId: templates.sellerRegistration,
+  });
+
   res.send(response);
 });
 
-/* toggleUserRole - controller*/
+/* markAdmin - controller*/
+const markAdmin = catchAsync(async (req, res) => {
+  const { userId, role } = req.params;
+
+  const user = await userService.getPublicUser(userId);
+
+  if (user.role === role) {
+    throw new ApiError(httpStatus.BAD_REQUEST, `User is already a ${role}`);
+  }
+
+  user.role = role;
+  await user.save();
+
+  const emailBody = {
+    to: user.email,
+    subject:
+      role === "admin"
+        ? "You are now an admin !!"
+        : "You are no longer an admin !!",
+    params: {
+      name: user.username,
+      admin: req.user.username,
+    },
+    templateId:
+      role === "admin"
+        ? templates.markUserAsAdmin
+        : templates.unmarkUserAsAdmin,
+  };
+
+  sendTemplateEmail(emailBody);
+
+  res.send(user);
+});
+
+/* sellerRegistration - controller*/
 const sellerRegistration = catchAsync(async (req, res) => {
   const userId = req.user._id;
   const { companyName } = req.body;
@@ -88,6 +133,7 @@ export {
   updateUser,
   toggleAccountStatus,
   sellerRegistration,
+  markAdmin,
 };
 
 // get profile of logged in user
@@ -256,6 +302,7 @@ export {
  *               $ref: '#/components/schemas/User'
  */
 
+// toggle account role of user
 /**
  * @swagger
  * /user/toggle-role/{userId}:

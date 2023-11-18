@@ -49,6 +49,14 @@ router
   );
 
 router
+  .route("/mark-admin/:userId/:role")
+  .post(
+    auth("mark_admin"),
+    validate(userValidation.markAdmin),
+    userController.markAdmin
+  );
+
+router
   .route("/seller-register")
   .post(
     auth("seller_register"),

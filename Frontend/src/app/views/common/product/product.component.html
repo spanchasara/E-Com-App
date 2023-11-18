@@ -1,35 +1,70 @@
 <div class="container my-4">
   <div class="card">
     <div class="row no-gutters m-5">
-      <div class="col-md-6">
-        <app-carousel [slides]="slides"></app-carousel>
+      <div class="col-md-6" style="margin-top: 10%">
+        <div *ngIf="(product?.images)!.length > 0">
+          <app-carousel [slides]="product?.images || []"></app-carousel>
+        </div>
+        <div *ngIf="(product?.images)!.length === 0">
+          <app-carousel [slides]="slides"></app-carousel>
+        </div>
       </div>
-      <div class="col-md-6 mt-5">
+      <div class="col-md-6 my-5 mt-5">
         <h3>{{ product?.title }}</h3>
         <p>{{ product?.description }}</p>
         <h4>
-          <strong>current price: </strong><span>{{ product?.price }}</span>
+          <span>{{ product?.price || 0 | rupeeFormat }}</span>
         </h4>
-        <p *ngIf="product?.stock !== 0; else outOfStock">
-          <strong>Items in Stock:</strong> {{ product?.stock }}
-        </p>
-        <ng-template #outOfStock>
-          <h4 style="color: red">Out Of Stock</h4>
+        <h6 *ngIf="product?.stock === 0; else NotOutOfStock" style="color: red">
+          This product is currently out of stock
+        </h6>
+        <ng-template #NotOutOfStock>
+          <p
+            style="color: red"
+            *ngIf="!isSellerByRole && !isAdmin && product!.stock < 6"
+          >
+            Hurry, only {{ product!.stock }}
+            {{ product!.stock === 1 ? "item" : "items" }} left !!
+          </p>
+          <p *ngIf="isSellerByRole || isAdmin">
+            <strong>Items in Stock:</strong> {{ product?.stock }}
+          </p>
         </ng-template>
+
         <div class="action">
           <button
             class="btn btn-class mt-1"
-            *ngIf="!isSellerByRole && !currentSeller && !isAdmin"
+            *ngIf="
+              !isSellerByRole &&
+              !currentSeller &&
+              !isAdmin &&
+              product &&
+              product.stock > 0
+            "
             type="button"
             (click)="
-              toggleCart(product?._id || '', !addedProducts[product?._id || ''])
+              toggleCart(product._id || '', !addedProducts[product._id || ''])
             "
           >
             {{
-              !addedProducts[product?._id || ""]
+              !addedProducts[product._id || ""]
                 ? "Add to cart"
                 : "Remove from cart"
             }}
+          </button>
+          <button
+            class="btn btn-class mt-1 mx-3"
+            *ngIf="
+              !isSellerByRole &&
+              !currentSeller &&
+              !isAdmin &&
+              product &&
+              product.stock > 0
+            "
+            type="button"
+            (click)="buyNow()"
+          >
+            Buy Now
           </button>
           <button
             class="btn btn-class mt-1 mx-2"
@@ -37,7 +72,7 @@
             *ngIf="isSellerByRole && currentSeller"
             type="button"
           >
-            Edit Product
+            Edit
           </button>
           <button
             class="btn btn-class mt-1 mx-2"
@@ -45,7 +80,7 @@
             *ngIf="isSellerByRole && currentSeller"
             type="button"
           >
-            Delete Product
+            Delete
           </button>
         </div>
         <br />

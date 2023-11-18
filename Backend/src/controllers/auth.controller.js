@@ -1,10 +1,13 @@
 import * as authService from "../services/auth.service.js";
+import { addToContactList } from "../utils/brevo.js";
 import catchAsync from "../utils/catch-async.js";
 
 /* Register - controller */
 const register = catchAsync(async (req, res) => {
   const registerBody = req.body;
   const response = await authService.register(registerBody);
+  const { email, username } = registerBody;
+  addToContactList(email, username);
   res.send(response);
 });
 
@@ -27,8 +30,21 @@ const changePassword = catchAsync(async (req, res) => {
   res.send(response);
 });
 
-export { register, login, changePassword };
+const resetPasswordRequest = catchAsync(async (req, res) => {
+  const { email } = req.body;
+  const response = await authService.resetPasswordRequest(email);
+  res.send(response);
+});
 
+const resetPassword = catchAsync(async (req, res) => {
+  const reqBody = req.body;
+  const response = await authService.resetPassword(reqBody);
+  res.send(response);
+});
+
+export { register, login, changePassword, resetPasswordRequest, resetPassword };
+
+// Register
 /**
  * @swagger
  * tags:
@@ -80,6 +96,7 @@ export { register, login, changePassword };
  *         description: Internal server error. There was an error registering the user.
  */
 
+// login
 /**
  * @swagger
  * /auth/login:

@@ -7,8 +7,8 @@ export type Cart = {
 };
 
 export const emptyCart: Cart = {
-  _id: '',
-  customerId: '',
+  _id: "",
+  customerId: "",
   totalAmount: 0,
   totalQty: 0,
   products: [],
@@ -18,7 +18,6 @@ export type CartProduct = {
   _id: string;
   productId: Product;
   qty: number;
-  // isChecked?: boolean;
 };
 
 type Product = {
@@ -26,6 +25,12 @@ type Product = {
   title: string;
   price: number;
   stock: number;
+  images: CloudImage[];
+};
+
+type CloudImage = {
+  url: string;
+  publicId: string;
 };
 
 export type UpdateBody = {

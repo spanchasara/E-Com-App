@@ -3,7 +3,15 @@
   class="navbar navbar-expand-lg sticky-top"
 >
   <div class="container-fluid">
-    <a class="navbar-brand text-white" routerLink="/">E-Commerce Website</a>
+    <a class="navbar-brand text-white" routerLink="/">
+      <svg width="150" height="40">
+        <image
+          *ngIf="true"
+          xlink:href="/assets/logo.svg"
+          width="150"
+          height="40"
+        /></svg
+    ></a>
     <button
       class="navbar-toggler"
       type="button"
@@ -25,7 +33,7 @@
             class="nav-link active text-white"
             aria-current="page"
             routerLink="/"
-            >Home</a
+            >{{ isLoggedIn && !isCustomer ? "Dashboard" : "Home" }}</a
           >
         </li>
       </ul>
@@ -34,27 +42,46 @@
         class="navbar-nav ml-auto my-2 my-lg-0 navbar-nav-scroll"
         style="--bs-scroll-height: 100px"
       >
-       
+        <li class="nav-item">
+          <button class="nav-link text-white" routerLink="/products">
+            Products
+          </button>
+        </li>
         <li
           class="nav-item"
+          [ngClass]="{
+            'me-3': totalQty > 0
+          }"
           *ngIf="!isLoggedIn || isCustomer"
         >
-          <button class="nav-link text-white" routerLink="/cart">Cart</button>
+          <button
+            class="nav-link text-white position-relative"
+            routerLink="/cart"
+          >
+            Cart
+            <span
+              *ngIf="totalQty > 0"
+              class="position-absolute translate-middle badge rounded-pill bg-danger"
+            >
+              {{ totalQty > 99 ? "99+" : totalQty }}
+              <span class="visually-hidden">unread messages</span>
+            </span>
+          </button>
         </li>
         <li class="nav-item" *ngIf="!isLoggedIn; else loggedIn">
           <button class="nav-link text-white" routerLink="/login">Login</button>
         </li>
         <ng-template #loggedIn>
           <li class="nav-item">
-            <button class="nav-link text-white" routerLink="/products">
-              Products
+            <button
+              *ngIf="isCustomer"
+              class="nav-link text-white"
+              routerLink="/orders"
+            >
+              Orders
             </button>
           </li>
-          <li class="nav-item">
-            <button class="nav-link text-white" *ngIf="isCustomer" routerLink="/address">
-              Address
-            </button>
-          </li>
+
           <li class="nav-item">
             <button class="nav-link text-white" routerLink="/user">
               Profile

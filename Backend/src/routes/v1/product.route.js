@@ -3,6 +3,7 @@ import * as productController from "../../controllers/product.controller.js";
 import * as productValidation from "../../validations/product.validation.js";
 import validate from "../../middlewares/validate.js";
 import auth from "../../middlewares/auth.js";
+import uploadMiddleware from "../../middlewares/multer.js";
 
 const router = express.Router();
 
@@ -40,6 +41,23 @@ router
     auth("delete_product"),
     validate(productValidation.deleteProduct),
     productController.deleteProduct
+  );
+
+router
+  .route("/images/:productId")
+  .post(
+    auth("upload_product_images"),
+    uploadMiddleware,
+    validate(productValidation.uploadProductImages),
+    productController.uploadProductImages
+  );
+
+router
+  .route("/images/:productId")
+  .patch(
+    auth("delete_product_images"),
+    validate(productValidation.deleteProductImages),
+    productController.deleteProductImages
   );
 
 export default router;

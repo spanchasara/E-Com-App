@@ -1,39 +1,39 @@
 import {
-  AfterViewInit,
   Component,
   ComponentFactoryResolver,
   OnInit,
   ViewChild,
   ViewContainerRef,
-} from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
+} from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
-import { ChangePasswordComponent } from './change-password/change-password.component';
-import { UpdateUser, User } from 'src/app/models/user.model';
-import { UserService } from 'src/app/services/user.service';
-import { LoaderService } from 'src/app/services/loader.service';
-import { UserStore } from 'src/app/store/user-store';
+import { Router } from "@angular/router";
+
+import { ChangePasswordComponent } from "./change-password/change-password.component";
+import { UpdateUser, User } from "src/app/models/user.model";
+import { UserService } from "src/app/services/user.service";
+import { LoaderService } from "src/app/services/loader.service";
+import { UserStore } from "src/app/store/user-store";
+import { SwalService } from "src/app/services/swal.service";
 
 @Component({
-  selector: 'app-user-profile',
-  templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.css'],
+  selector: "app-user-profile",
+  templateUrl: "./user-profile.component.html",
+  styleUrls: ["./user-profile.component.css"],
 })
-export class UserProfileComponent implements AfterViewInit, OnInit {
-  @ViewChild('updateProfileForm', { static: true })
+export class UserProfileComponent implements OnInit {
+  @ViewChild("updateProfileForm", { static: true })
   updateProfileForm!: NgForm;
-  @ViewChild('sellerRegistrationForm', { static: true })
+  @ViewChild("sellerRegistrationForm", { static: true })
   sellerRegistrationForm!: NgForm;
-  @ViewChild('changePasswordContainer', { read: ViewContainerRef })
+  @ViewChild("changePasswordContainer", { read: ViewContainerRef })
   changePasswordContainer!: ViewContainerRef;
 
   changePasswordMode: boolean = false;
   editMode: boolean = false;
   userObject: User | null | undefined;
-  textInput: string = '';
+  textInput: string = "";
   sellerCheck: boolean = true;
   toggleAccountRoleCheck: boolean = false;
   showCompany: boolean = true;
@@ -44,42 +44,39 @@ export class UserProfileComponent implements AfterViewInit, OnInit {
     private modalService: NgbModal,
     private router: Router,
     private loaderService: LoaderService,
+    private swalService: SwalService,
     private componentFactoryResolver: ComponentFactoryResolver
   ) {}
 
   loadProfile() {
     this.loaderService.show();
-    setTimeout(() => {
-      this.userStore.user$.subscribe((user) => {
-        this.userObject = user;
-        this.showCompany = user?.role === 'seller';
-        this.toggleAccountRoleCheck =
-          user?.role !== 'admin' && user?.companyName;
-        this.sellerCheck = user?.role === 'customer' && !user?.companyName;
 
-        const obj = {
-          firstName: user?.firstName,
-          lastName: user?.lastName,
-          email: user?.email,
-          username: user?.username,
-          companyName: '',
-        };
+    this.userStore.user$.subscribe((user) => {
+      this.userObject = user;
+      this.showCompany = user?.role === "seller";
+      this.toggleAccountRoleCheck = user?.role !== "admin" && user?.companyName;
+      this.sellerCheck = user?.role === "customer" && !user?.companyName;
 
-        if (user?.role === 'seller') {
-          obj.companyName = user?.companyName;
-        }
-        this.updateProfileForm.setValue(obj);
-      });
-      this.loaderService.hide();
+      const obj = {
+        firstName: user?.firstName,
+        lastName: user?.lastName,
+        email: user?.email,
+        username: user?.username,
+        companyName: "",
+      };
+
+      if (user?.role === "seller") {
+        obj.companyName = user?.companyName;
+      }
+      this.updateProfileForm.setValue(obj);
     });
+
+    this.loaderService.hide();
   }
 
   ngOnInit(): void {
     this.loadProfile();
-  }
-
-  ngAfterViewInit(): void {
-    this.loadProfile();
+    this.userService.getMe().subscribe();
   }
 
   toggleEditMode(isCancel = false) {
@@ -106,7 +103,7 @@ export class UserProfileComponent implements AfterViewInit, OnInit {
       username: this.updateProfileForm.value?.username,
     };
 
-    if (this.userObject?.role === 'seller') {
+    if (this.userObject?.role === "seller") {
       updateUserData.companyName = this.updateProfileForm.value?.companyName;
     }
 
@@ -134,63 +131,45 @@ export class UserProfileComponent implements AfterViewInit, OnInit {
   }
 
   openModal(content: any) {
-    this.modalService.open(content, { size: 'lg', centered: true });
+    this.modalService.open(content, { size: "lg", centered: true });
   }
 
   saveSeller() {
-    if (this.textInput === '') {
+    if (this.textInput === "") {
       return;
     }
 
     this.userService.sellerRegistration(this.textInput).subscribe((resData) => {
-      Swal.fire({
-        title: 'Success',
-        html: 'Registered as Seller Successfully!!',
-        icon: 'success',
-        width: 400,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.modalService.dismissAll('Close click');
-          this.saveSellerCheck();
-          this.router.navigate(['/user'], { replaceUrl: true });
-        }
-      });
+      this.swalService.success("Registered as Seller Successfully!!");
+      this.modalService.dismissAll("Close click");
+      this.saveSellerCheck();
+      this.router.navigate(["/"]);
     });
   }
 
   saveSellerCheck() {
     this.sellerCheck =
-      this.userObject?.role === 'customer' && !this.userObject?.companyName;
+      this.userObject?.role === "customer" && !this.userObject?.companyName;
   }
 
   closeModal() {
-    this.textInput = '';
-    this.modalService.dismissAll('Close click');
+    this.textInput = "";
+    this.modalService.dismissAll("Close click");
   }
 
   toggleAccountRole() {
     this.toggleAccountRoleCheck =
-      this.userObject?.role !== 'admin' && !!this.userObject?.companyName;
+      this.userObject?.role !== "admin" && !!this.userObject?.companyName;
 
-    if (this.userObject?.role === 'customer') {
+    if (this.userObject?.role === "customer") {
       this.showCompany = true;
-      this.userService.toggleRole('seller').subscribe(() => {
-        Swal.fire({
-          title: 'Success',
-          html: 'Shifted to seller!!',
-          icon: 'success',
-          width: 400,
-        });
+      this.userService.toggleRole("seller").subscribe(() => {
+        this.swalService.success("Shifted to seller!!");
       });
-    } else if (this.userObject?.role === 'seller') {
+    } else if (this.userObject?.role === "seller") {
       this.showCompany = false;
-      this.userService.toggleRole('customer').subscribe(() => {
-        Swal.fire({
-          title: 'Success',
-          html: 'Shifted to customer!!',
-          icon: 'success',
-          width: 400,
-        });
+      this.userService.toggleRole("customer").subscribe(() => {
+        this.swalService.success("Shifted to customer!!");
       });
     }
   }

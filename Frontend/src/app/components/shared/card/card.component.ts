@@ -1,25 +1,26 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import Swal from 'sweetalert2';
+import { AfterViewInit, Component, Input, OnInit } from "@angular/core";
 
-import { Product } from 'src/app/models/product.model';
-import { CartService } from 'src/app/services/cart.service';
-import { ProductService } from 'src/app/services/product.service';
-import { CartStore } from 'src/app/store/cart.store';
-import { UserStore } from 'src/app/store/user-store';
+import { Product } from "src/app/models/product.model";
+import { CartService } from "src/app/services/cart.service";
+import { ProductService } from "src/app/services/product.service";
+import { CartStore } from "src/app/store/cart.store";
+import { UserStore } from "src/app/store/user-store";
+import { SwalService } from "src/app/services/swal.service";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-card',
-  templateUrl: './card.component.html',
-  styleUrls: ['./card.component.css'],
+  selector: "app-card",
+  templateUrl: "./card.component.html",
+  styleUrls: ["./card.component.css"],
 })
 export class CardComponent implements OnInit, AfterViewInit {
   @Input() product: Product = {
-    _id: '',
-    title: '',
-    description: '',
+    _id: "",
+    title: "",
+    description: "",
     price: 0,
     stock: 0,
-    sellerId: '',
+    sellerId: "",
     specifications: {},
   };
   isSellerByRole: boolean = false;
@@ -31,8 +32,10 @@ export class CardComponent implements OnInit, AfterViewInit {
   constructor(
     private productService: ProductService,
     private cartService: CartService,
+    private swalService: SwalService,
     private userStore: UserStore,
-    private cartStore: CartStore
+    private cartStore: CartStore,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -42,26 +45,21 @@ export class CardComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.isSellerByRole = this.userStore.getValue().user?.role === 'seller';
-    this.isAdmin = this.userStore.getValue().user?.role === 'admin';
+    this.isSellerByRole = this.userStore.getValue().user?.role === "seller";
+    this.isAdmin = this.userStore.getValue().user?.role === "admin";
     this.isCurrentSeller =
       this.product?.sellerId === this.userStore.getValue().user?._id;
     this.isAuthenticated = !!this.userStore.getValue().user;
   }
 
   deleteProduct() {
-    Swal.fire({
-      title: 'Warning',
-      showCancelButton: true,
-      icon: 'warning',
-      html: 'Want to Delete Product ?',
-      confirmButtonText: 'Yes',
-      width: 400,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.productService.deleteProduct(this.product._id).subscribe();
-      }
-    });
+    this.swalService
+      .confirmWarning("Want to Delete Product ?")
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.productService.deleteProduct(this.product._id).subscribe();
+        }
+      });
   }
 
   toggleCart(productId: string, isAdd: boolean = true) {
@@ -72,5 +70,16 @@ export class CardComponent implements OnInit, AfterViewInit {
     } else {
       this.cartService.updateLocalCart({ productId, isAdd });
     }
+  }
+  buyNow() {
+    const currentOrder = {
+      action: "single",
+      orderPreview: {
+        productId: this.product?._id,
+        qty: 1,
+      },
+    };
+    sessionStorage.setItem("currentOrder", JSON.stringify(currentOrder));
+    this.router.navigate(["/place-order"]);
   }
 }

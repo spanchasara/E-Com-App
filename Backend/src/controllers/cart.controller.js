@@ -10,7 +10,7 @@ const getCustomerCart = catchAsync(async (req, res) => {
 
   const populate = {
     path: "products.productId",
-    select: "title price stock",
+    select: "title price stock images",
   };
 
   const cart = await cartService.getCustomerCart({ customerId }, populate);

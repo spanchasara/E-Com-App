@@ -1,0 +1,125 @@
+<div class="card my-4 mx-auto" style="width: 80%; font-size: 14px">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-3 text-center">ORDER PLACED</div>
+          <div class="col-md-3 text-center">TOTAL</div>
+          <div class="col-md-3 text-center" *ngIf="role !== 'seller'">
+            SHIP TO
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3 text-center">
+            {{ order.createdAt | date : "mediumDate" }}
+          </div>
+          <div class="col-md-3 text-center">
+            {{ order.totalAmount | rupeeFormat }}
+          </div>
+          <div
+            class="col-md-3 text-center"
+            *ngIf="role !== 'seller'"
+            placement="bottom"
+            container="body"
+            ngbTooltip="
+            {{ role === 'customer' ? order.address.addressLane1 : '' }} {{
+              role === 'customer' ? order.address.addressLane2 : ''
+            }}
+            {{ role === 'customer' ? order.address.landmark : '' }} {{
+              order.address.city
+            }}, 
+            {{ order.address.state }}, {{ order.address.country }}
+            {{ role === 'customer' ? order.address.pincode : '' }}
+            {{ role === 'customer' ? '+91' + order.address.phoneNo : '' }}"
+          >
+            {{ order.address.fullName }}
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-md-6 d-flex justify-content-end flex-column align-items-end"
+      >
+        <div class="row">
+          <div class="col-md-12">ORDER # {{ order.orderId }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row mt-3" *ngFor="let product of order.products">
+      <div class="col-md-2 d-flex align-items-center">
+        <div class="col-md-5">
+          <img
+            [src]="
+              product.images.length > 0
+                ? product.images[0].url
+                : 'assets/laptop.jpg'
+            "
+            class="d-block ui-w-40 ui-bordered mx-2"
+            alt="product image"
+            height="100px"
+            width="100px"
+            [routerLink]="['/products', product.productId]"
+          />
+        </div>
+      </div>
+      <div class="col-md-10 my-3">
+        <a
+          class="d-block text-dark"
+          [routerLink]="['/products', product.productId]"
+          >{{ product.title }}</a
+        >
+        <p class="my-1">
+          <strong>{{ product.price | rupeeFormat }}</strong>
+        </p>
+        <div class="row">
+          <div class="col-md-2">
+            <label for="quantity"
+              ><strong>Quantity:</strong> {{ product.qty }}</label
+            >
+          </div>
+          <div class="col-md-4">
+            <label for="amount"
+              ><strong>Amount:</strong>
+              {{ product.amount | rupeeFormat }}</label
+            >
+          </div>
+          <div
+            *ngIf="isCurrentOrder && !product.deliveredDate"
+            class="d-md-flex justify-content-md-end"
+          >
+            <button
+              class="btn btn-class me-md-2"
+              type="button"
+              (click)="markAsDelivered(product._id)"
+            >
+              Mark delivered
+            </button>
+          </div>
+        </div>
+        <div class="row" *ngIf="role === 'seller'">
+          <div class="col-md-4">
+            <strong>Address:</strong> <br />
+            {{ order.address.fullName }} <br />
+            {{ order.address.addressLane1 }} {{ order.address.addressLane2 }},
+            {{ order.address.landmark }}, {{ order.address.city }},
+            {{ order.address.state }}, {{ order.address.country }},
+            {{ order.address.pincode }}. <br />
+            +91 {{ order.address.phoneNo }}
+          </div>
+        </div>
+        <div
+          class="row mt-3"
+          *ngIf="
+            (role === 'customer' || !isCurrentOrder) && product.deliveredDate
+          "
+        >
+          <div class="col-md-4">
+            <strong>Delivered on:</strong>
+            {{ product.deliveredDate | date : "mediumDate" }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

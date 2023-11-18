@@ -1,8 +1,10 @@
 import jwt from "jsonwebtoken";
-
+import crypto from "crypto";
 import * as userService from "./user.service.js";
 import ApiError from "../utils/api-error.js";
 import httpStatus from "http-status";
+import User from "../models/user.model.js";
+import { sendTemplateEmail, templates } from "../utils/brevo.js";
 
 const generateAuthToken = async (userId, role) => {
   const token = jwt.sign({ userId, role }, process.env.JWT_SECRET, {
@@ -10,6 +12,12 @@ const generateAuthToken = async (userId, role) => {
   });
 
   return token;
+};
+
+const generateResetToken = () => {
+  const tokenBuffer = crypto.randomBytes(32);
+  const resetToken = tokenBuffer.toString("hex");
+  return resetToken;
 };
 
 const register = async (registerBody) => {
@@ -57,4 +65,70 @@ const changePassword = async (userId, oldPassword, newPassword) => {
   return { message: "Password changed successfully !!" };
 };
 
-export { register, login, changePassword };
+const resetPasswordRequest = async (email) => {
+  const user = await userService.getUser({ email });
+  if(!user.isActive){
+    throw new ApiError(httpStatus.BAD_REQUEST, "Account Disabled!");
+  }
+  if (user.passwordChangedAt.getTime() + 30 * 60 * 1000 > Date.now()) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Password Recently Changed!");
+  }
+
+  if (
+    user.resetToken &&
+    user.resetToken.createdAt &&
+    user.resetToken.createdAt.getTime() + 30 * 60 * 1000 > Date.now()
+  ) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "Reset token already sent via mail, try again later!"
+    );
+  }
+
+  const resetToken = generateResetToken();
+
+  user.resetToken = {
+    token: resetToken,
+    createdAt: Date.now(),
+    expiry: Date.now() + 10 * 60 * 1000,
+  };
+
+  await user.save();
+
+  sendTemplateEmail({
+    to: email,
+    subject: "Reset Password",
+    templateId: templates.resetPassword,
+    params: {
+      resetLink: process.env.HOST_URL + "/reset-password?token=" + resetToken,
+    },
+  });
+
+  return {
+    message: "Reset Password Mail Sent Successfully!",
+  };
+};
+
+const resetPassword = async (passwordResetBody) => {
+  const { resetToken, password } = passwordResetBody;
+
+  const user = await User.findOne({ "resetToken.token": resetToken });
+
+  if (!user) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Invalid Token!");
+  }
+
+  if (user.resetToken.expiry.getTime() < Date.now()) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Token Expired!");
+  }
+
+  user.password = password;
+  user.resetToken = null;
+  await user.save();
+
+  return {
+    message: "Password Updated Successfully!",
+  };
+};
+
+export { register, login, changePassword, resetPasswordRequest, resetPassword };

@@ -1,9 +1,21 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
-  selector: 'app-admin-dashboard',
-  template: '<router-outlet></router-outlet>',
+  selector: "app-admin-dashboard",
+  templateUrl: "./admin-dashboard.component.html",
 })
 export class AdminDashboardComponent {
-  constructor() {}
+  constructor(private route: ActivatedRoute) {}
+  action: string = "products";
+
+  ngOnInit() {
+    this.route.children[0].url.subscribe((url) => {
+      this.action = url[0].path;
+    });
+  }
+
+  toggleAction(action: string) {
+    this.action = action;
+  }
 }

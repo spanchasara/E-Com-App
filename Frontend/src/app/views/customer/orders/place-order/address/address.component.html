@@ -1,0 +1,48 @@
+<div *ngIf="currentAddress && !toggleAddressForm">
+  <div class="card my-4 mx-auto" style="width: 80%; font-size: 14px">
+    <div class="card-body">
+      <div class="row mt-3">
+        <div class="col-md-4">
+          <p><strong>Shipping Address</strong></p>
+          <p>
+            {{ currentAddress.fullName }} <br />
+            {{ currentAddress.phoneNo }} <br />
+            {{ currentAddress.addressLane1 }},
+            {{ currentAddress.addressLane2 }}, {{ currentAddress.city }},
+            {{ currentAddress.state }}, {{ currentAddress.country }} -
+            {{ currentAddress.pincode }}
+          </p>
+        </div>
+        <div class="col-md-8 mt-4 text-end">
+          <button class="btn btn-class btn-sm mx-2" (click)="toggleAddress()">
+            Change
+          </button>
+
+          <button
+            *ngIf="showChangeAddress"
+            class="btn btn-class btn-sm mx-2"
+            (click)="useThisAddress()"
+          >
+            Use this Address
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="toggleAddressForm || !currentAddress">
+  <div class="row">
+    <div class="col-md-10">
+      <h4>Your Addresses</h4>
+    </div>
+    <div class="col-md-2 text-end">
+      <button class="btn btn-class" [routerLink]="['/address/add']">
+        Add Address
+      </button>
+    </div>
+  </div>
+  <app-address-list
+    (addressSubject)="loadCurrentAddress($event)"
+    (closeForm)="closeAddressForm($event)"
+  ></app-address-list>
+</div>

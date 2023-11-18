@@ -1,0 +1,33 @@
+<div class="container mt-5" *ngIf="status === 'success'">
+  <div class="alert alert-success">
+    <h4 class="alert-heading">Payment Successful!</h4>
+    <p>
+      Thank you for your payment. Your transaction has been completed
+      successfully.
+    </p>
+  </div>
+  <div class="text-center">
+    <a class="btn btn-class" routerLink="/">Continue shopping</a>
+  </div>
+</div>
+
+<div class="container" *ngIf="status === 'failed'">
+  <div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header bg-danger text-white">
+          <h4 class="text-center">Payment Error</h4>
+        </div>
+        <div class="card-body">
+          <p class="text-center">There was an issue processing your payment.</p>
+          <p class="text-center">
+            Please try again later or contact customer support for assistance.
+          </p>
+          <div class="text-center mt-4">
+            <a class="btn btn-danger" routerLink="/">Go to home</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

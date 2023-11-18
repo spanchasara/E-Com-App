@@ -72,25 +72,37 @@
           {{ data.role }}
         </td>
         <td>
-          <ng-container *ngIf="currentUserId === data._id; else buttonTemplate">
-            You
+          <ng-container *ngIf="data.username === 'admin'; else AdminTemplate">
+            Super Admin
           </ng-container>
 
-          <ng-template #buttonTemplate>
-            <button
-              type="button"
-              class="btn btn-primary mx-2"
-              [routerLink]="['/user', data._id]"
+          <ng-template #AdminTemplate>
+            <ng-container
+              *ngIf="currentUserId === data._id; else buttonTemplate"
             >
-              View
-            </button>
-            <button
-              type="button"
-              [ngClass]="data.isActive ? 'btn btn-danger' : 'btn btn-success'"
-              (click)="toggleUserStatus(data, data.isActive)"
-            >
-              {{ data.isActive ? "Disable" : "Enable" }}
-            </button>
+              You
+            </ng-container>
+
+            <ng-template #buttonTemplate>
+              <button
+                type="button"
+                class="btn btn-class mx-2"
+                [routerLink]="['/user', data._id]"
+              >
+                View
+              </button>
+              <button
+                type="button"
+                [ngClass]="
+                  data.isActive
+                    ? 'btn btn-outline-danger'
+                    : 'btn btn-outline-success'
+                "
+                (click)="toggleUserStatus(data, data.isActive)"
+              >
+                {{ data.isActive ? "Disable" : "Enable" }}
+              </button>
+            </ng-template>
           </ng-template>
         </td>
       </tr>

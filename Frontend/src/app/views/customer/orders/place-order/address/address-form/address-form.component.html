@@ -1,0 +1,229 @@
+<div class="container my-3">
+  <div class="row my-3 content">
+    <h2 style="text-align: center">{{ !editMode ? "Add" : "Edit" }} Address</h2>
+    <div class="col-md-12">
+      <form #f="ngForm" (ngSubmit)="onSubmit()">
+        <div class="add-address">
+          <!-- full name -->
+          <div class="form-group mt-3">
+            <label class="control-label" for="fullName"
+              >Full Name (First Name + Last Name)</label
+            >
+            <div class="col-md-8">
+              <input
+                name="fullName"
+                placeholder="Full Name"
+                class="form-control"
+                type="text"
+                #fullName="ngModel"
+                required
+                [(ngModel)]="address.fullName"
+              />
+              <span
+                class="help-block"
+                style="color: red"
+                *ngIf="!fullName.valid && fullName.touched"
+                >Please enter a valid Full Name!</span
+              >
+            </div>
+          </div>
+
+          <!-- phone no-->
+          <div class="form-group mt-3">
+            <label class="control-label" for="phoneNo">Phone Number</label>
+            <div class="col-md-8">
+              <input
+                name="phoneNo"
+                placeholder="Phone Number"
+                class="form-control"
+                type="text"
+                #phoneNo="ngModel"
+                required
+                pattern="^\d{10}$"
+                [(ngModel)]="address.phoneNo"
+              />
+              <span
+                class="help-block"
+                style="color: red"
+                *ngIf="!phoneNo.valid && phoneNo.touched"
+                >Please enter a valid Phone Number (max length 10)!</span
+              >
+            </div>
+          </div>
+
+          <!-- country -->
+          <div class="form-group mt-3">
+            <label class="control-label" for="country">Country</label>
+            <div class="col-md-8">
+              <input
+                class="form-control"
+                type="text"
+                value="India"
+                name="country"
+                disabled
+              />
+            </div>
+          </div>
+
+          <!-- state -->
+          <div class="form-group mt-3">
+            <label class="control-label" for="state">State</label>
+            <div class="col-md-8">
+              <select
+                class="form-control"
+                name="state"
+                #state="ngModel"
+                id="stateSelect"
+                [(ngModel)]="address.state"
+                required
+              >
+                <option value="" disabled>Select a State</option>
+                <option *ngFor="let state of states" [ngValue]="state">
+                  {{ state }}
+                </option>
+              </select>
+
+              <span
+                class="help-block"
+                style="color: red"
+                *ngIf="!state.valid && state.touched"
+                >Please enter a valid state!</span
+              >
+            </div>
+          </div>
+
+          <!-- city -->
+          <div class="form-group mt-3">
+            <label class="control-label" for="city">City</label>
+            <div class="col-md-8">
+              <input
+                type="text"
+                placeholder="city"
+                name="city"
+                #city="ngModel"
+                required
+                class="form-control"
+                [(ngModel)]="address.city"
+              />
+              <span
+                class="help-block"
+                style="color: red"
+                *ngIf="!city.valid && city.touched"
+                >Please enter a valid city!</span
+              >
+            </div>
+          </div>
+
+          <!-- AddressLane1 -->
+          <div class="form-group mt-3">
+            <label class="control-label" for="addressLane1"
+              >Address Lane 1</label
+            >
+            <div class="col-md-8">
+              <input
+                type="text"
+                placeholder="Address Lane 1"
+                name="addressLane1"
+                #addressLane1="ngModel"
+                required
+                class="form-control"
+                [(ngModel)]="address.addressLane1"
+              />
+              <span
+                class="help-block"
+                style="color: red"
+                *ngIf="!addressLane1.valid && addressLane1.touched"
+                >Please enter a valid Address Lane 1!</span
+              >
+            </div>
+          </div>
+
+          <!-- AddressLane2 -->
+          <div class="form-group mt-3">
+            <label class="control-label" for="addressLane2"
+              >Address Lane 2</label
+            >
+            <div class="col-md-8">
+              <input
+                type="text"
+                placeholder="address Lane 2"
+                name="addressLane2"
+                #addressLane2="ngModel"
+                class="form-control"
+                [(ngModel)]="address.addressLane2"
+              />
+            </div>
+          </div>
+
+          <!-- Landmark -->
+          <div class="form-group mt-3">
+            <label class="control-label" for="landmark">Landmark</label>
+            <div class="col-md-8">
+              <input
+                type="text"
+                placeholder="landmark"
+                name="landmark"
+                #landmark="ngModel"
+                class="form-control"
+                [(ngModel)]="address.landmark"
+              />
+              <span
+                class="help-block"
+                style="color: red"
+                *ngIf="!landmark.valid && landmark.touched"
+                >Please enter a valid Landmark!</span
+              >
+            </div>
+          </div>
+
+          <!-- pincode -->
+          <div class="form-group mt-3">
+            <label class="control-label" for="pincode">Pincode</label>
+            <div class="col-md-8">
+              <input
+                type="text"
+                placeholder="pincode"
+                name="pincode"
+                #pincode="ngModel"
+                required
+                class="form-control"
+                pattern="^\d{6}$"
+                [(ngModel)]="address.pincode"
+              />
+              <span
+                class="help-block"
+                style="color: red"
+                *ngIf="!pincode.valid && pincode.touched"
+                >Please enter a valid pincode! (max length 6)</span
+              >
+            </div>
+          </div>
+
+          <div class="form-group mt-3">
+            <span>
+              <input
+                class="custom-checkbox"
+                type="checkbox"
+                name="defaultAddress"
+                [(ngModel)]="address.isDefault"
+                [checked]="address.isDefault"
+              />
+              <label class="control-label" for="defaultAddress"
+                >Mark this as Default Address</label
+              >
+            </span>
+          </div>
+        </div>
+        <div class="form-group text-center">
+          <button
+            class="btn btn-class mt-3 text-center"
+            type="submit"
+            [disabled]="!f.valid"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

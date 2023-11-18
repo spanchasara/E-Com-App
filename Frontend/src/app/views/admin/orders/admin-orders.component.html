@@ -1,0 +1,22 @@
+<div class="container mt-4">
+  <div>
+    <div class="row">
+      <div class="col-md-10">
+        <h2>All Orders</h2>
+      </div>
+    </div>
+    <div class="mt-3" *ngFor="let order of orders.docs">
+      <app-order-card [order]="order" role="admin"></app-order-card>
+    </div>
+    <app-pagination
+      [totalItems]="orders.totalDocs || 0"
+      [page]="orders.page || 1"
+      [limit]="orders.limit || 5"
+      (pageChange)="pageChanged($event)"
+    ></app-pagination>
+  </div>
+
+  <div *ngIf="!orders?.totalDocs">
+    <h1 class="text-center mt-5">No orders to display</h1>
+  </div>
+</div>

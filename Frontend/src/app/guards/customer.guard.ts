@@ -1,32 +1,22 @@
-import { Injectable } from '@angular/core';
-import {
-  CanActivate,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  UrlTree,
-  Router,
-} from '@angular/router';
-import { Observable } from 'rxjs';
-import { AuthService } from '../services/auth.service';
+import { inject } from "@angular/core";
+import { CanActivateFn, Router } from "@angular/router";
+import { AuthService } from "../services/auth.service";
 
-@Injectable({
-  providedIn: 'root',
-})
-export class CustomerGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+export const customerGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
 
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ):
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree>
-    | boolean
-    | UrlTree {
-    if (this.authService.checkRole('customer')) {
-      return true;
-    } else {
-      return this.router.navigate(['/']);
+  const currentPath = route.url[0]?.path.toLowerCase();
+  if (authService.checkRole("customer")) {
+    if (
+      ["place-order"].includes(currentPath) &&
+      (!sessionStorage.getItem("currentOrder") ||
+        sessionStorage.getItem("currentOrder") === "")
+    ) {
+      return router.navigate(["/orders"]);
     }
+    return true;
+  } else {
+    return router.navigate(["/"]);
   }
-}
+};

@@ -23,23 +23,37 @@ const getSingleAddress = async (userId, addressId) => {
 };
 
 const addAddress = async (userId, addressBody) => {
-  
   const addresses = await Address.find({ userId });
 
-  if(addresses.length === 0) {
+  if (addresses.length === 0) {
     addressBody.isDefault = true;
   }
+  if (addressBody.isDefault) {
+    const prevDefault = await Address.findOne({ userId, isDefault: true });
+    if (prevDefault) {
+      prevDefault.isDefault = false;
+      await prevDefault.save();
+    }
+  }
   const address = await Address.create(addressBody);
+
   if (!address) {
     throw new ApiError(
       httpStatus.INTERNAL_SERVER_ERROR,
       "Error in Creating Address!"
     );
   }
+  const allAddresses = await Address.find({ userId });
+  console.log(allAddresses);
   return address;
 };
 
 const editAddress = async (userId, addressId, addressBody) => {
+  if (addressBody.isDefault) {
+    const prevDefault = await Address.findOne({ userId, isDefault: true });
+    prevDefault.isDefault = false;
+    await prevDefault.save();
+  }
   const address = await Address.findOneAndUpdate(
     { userId, _id: addressId },
     addressBody,
@@ -57,25 +71,10 @@ const deleteAddress = async (userId, addressId) => {
   return { message: "Address Deleted Successfully!" };
 };
 
-
-const toggleDefaultAddress = async (userId, oldAddressId, newAddressId) => {
-  const oldAddress = await Address.findOne({ userId, _id: oldAddressId });
-  const newAddress = await Address.findOne({ userId, _id: newAddressId });
-  if (!oldAddress || !newAddress)
-    throw new ApiError(httpStatus.NOT_FOUND, "No Address Found for the user!");
-
-    oldAddress.isDefault = false;
-    newAddress.isDefault = true;
-    await oldAddress.save();
-    await newAddress.save();
-  return {message: "Default Address Updated Successfully!!"}
-};
-
 export {
   getUsersAddress,
   getSingleAddress,
   addAddress,
   deleteAddress,
   editAddress,
-  toggleDefaultAddress
 };

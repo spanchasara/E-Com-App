@@ -1,0 +1,13 @@
+.add-address {
+  margin-left: 25%;
+}
+
+.custom-checkbox {
+  width: 15px;
+  height: 15px;
+  border: 1px solid #000;
+  border-radius: 4px;
+}
+label[for="defaultAddress"] {
+  margin-left: 10px;
+}

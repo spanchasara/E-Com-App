@@ -51,10 +51,27 @@ const deleteProduct = {
   }),
 };
 
+const uploadProductImages = {
+  params: Joi.object().keys({
+    productId: Joi.string().required(),
+  }),
+};
+
+const deleteProductImages = {
+  params: Joi.object().keys({
+    productId: Joi.string().required(),
+  }),
+  body: Joi.object().keys({
+    publicIds: Joi.array().items(Joi.string()).required(),
+  }),
+};
+
 export {
   getProducts,
   getSellerProducts,
   createProduct,
   updateProduct,
   deleteProduct,
+  uploadProductImages,
+  deleteProductImages,
 };

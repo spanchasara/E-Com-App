@@ -4,10 +4,11 @@
     (enteredSearch)="enteredSearch($event)"
   ></app-searchbar>
 
-  <div *ngIf="products.totalDocs > 0; else noProducts">
-    <div *ngFor="let prod of products?.docs" class="mt-3">
-      <app-card [product]="prod"></app-card>
-    </div>
+  <div
+    class="row row-cols-1 row-cols-md-3 g-4 mt-3"
+    *ngIf="products.totalDocs > 0; else noProducts"
+  >
+    <app-card *ngFor="let prod of products?.docs" [product]="prod"></app-card>
   </div>
 
   <ng-template #noProducts>

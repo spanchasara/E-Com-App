@@ -24,4 +24,17 @@ const changePassword = {
   }),
 };
 
-export { register, login, changePassword };
+const resetPasswordRequest = {
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+  }),
+};
+
+const resetPassword = {
+  body: Joi.object().keys({
+    resetToken: Joi.string().required(),
+    password: Joi.string().required().min(3),
+  }),
+};
+
+export { register, login, changePassword, resetPasswordRequest, resetPassword };

@@ -1,7 +1,7 @@
 <ngb-carousel *ngIf="slides.length > 0">
   <ng-template ngbSlide *ngFor="let slide of slides">
-    <div class="picsum-img-wrapper">
-      <img [src]="slide.src" alt="Random slide" />
+    <div style="width: 100%; " class="picsum-img-wrapper">
+      <img [src]="slide.url" alt="Random slide" style="height: 100%; width: 100%;" />
     </div>
   </ng-template>
 </ngb-carousel>
