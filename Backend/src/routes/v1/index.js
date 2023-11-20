@@ -8,6 +8,7 @@ import docsRoute from "./docs.route.js";
 import addressRoute from "./address.route.js";
 import orderRoute from "./order.route.js";
 import paymentRoute from "./stripe.route.js";
+import couponRoute from "./coupon.route.js";
 
 const router = express.Router();
 
@@ -20,5 +21,6 @@ router.use("/docs", docsRoute);
 router.use("/address", addressRoute);
 router.use("/order", orderRoute);
 router.use("/payment", paymentRoute);
+router.use("/coupon", couponRoute);
 
 export default router;

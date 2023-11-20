@@ -28,6 +28,8 @@ import { AllOrdersComponent } from "./views/customer/orders/all-orders/all-order
 import { PlaceOrderComponent } from "./views/customer/orders/place-order/place-order.component";
 import { StatusComponent } from "./components/status/status.component";
 import { ResetPasswordComponent } from "./views/common/reset-password/reset-password.component";
+import { CouponsListComponent } from "./views/admin/coupons-list/coupons-list.component";
+import { CouponFormComponent } from "./views/admin/coupon-form/coupon-form.component";
 
 const routes: Routes = [
   {
@@ -94,6 +96,18 @@ const routes: Routes = [
       {
         path: "orders",
         component: AdminOrdersComponent,
+      },
+      {
+        path: "coupons",
+        component: CouponsListComponent,
+      },
+      {
+        path: "coupons/add",
+        component: CouponFormComponent,
+      },
+      {
+        path: "coupons/edit/:id",
+        component: CouponFormComponent,
       },
     ],
   },

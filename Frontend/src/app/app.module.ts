@@ -51,6 +51,8 @@ import { PaymentComponent } from "./views/customer/orders/place-order/payment/pa
 import { StatusComponent } from "./components/status/status.component";
 import { ResetPasswordComponent } from './views/common/reset-password/reset-password.component';
 import { ProductImagesComponent } from './views/seller/product-images/product-images.component';
+import { CouponsListComponent } from './views/admin/coupons-list/coupons-list.component';
+import { CouponFormComponent } from './views/admin/coupon-form/coupon-form.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -95,6 +97,8 @@ import { ProductImagesComponent } from './views/seller/product-images/product-im
     StatusComponent,
     ResetPasswordComponent,
     ProductImagesComponent,
+    CouponsListComponent,
+    CouponFormComponent,
   ],
   imports: [
     BrowserModule,
