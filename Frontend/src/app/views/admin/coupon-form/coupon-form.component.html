@@ -44,54 +44,6 @@
           </div>
 
           <div class="form-group mt-3">
-            <label class="control-label" for="validityPeriod"
-              >Validity Period (in months)</label
-            >
-            <div class="col-md-8">
-              <input
-                type="number"
-                placeholder="Validity Period"
-                name="validityPeriod"
-                #validityPeriod="ngModel"
-                min="1"
-                required
-                class="form-control"
-                [(ngModel)]="coupon.validityPeriod"
-              />
-              <span
-                class="help-block"
-                style="color: red"
-                *ngIf="!validityPeriod.valid && validityPeriod.touched"
-                >Please enter a valid validity period with minimum 1 month</span
-              >
-            </div>
-          </div>
-
-          <div class="form-group mt-3">
-            <label class="control-label" for="userUsageLimit"
-              >User Usage Limit</label
-            >
-            <div class="col-md-8">
-              <input
-                type="number"
-                placeholder="User Usage Limit"
-                name="userUsageLimit"
-                #userUsageLimit="ngModel"
-                min="1"
-                required
-                class="form-control"
-                [(ngModel)]="coupon.userUsageLimit"
-              />
-              <span
-                class="help-block"
-                style="color: red"
-                *ngIf="!userUsageLimit.valid && userUsageLimit.touched"
-                >Please enter a valid user usage limit!</span
-              >
-            </div>
-          </div>
-
-          <div class="form-group mt-3">
             <label class="control-label" for="couponUsageLimit"
               >Coupon Usage Limit</label
             >
@@ -106,23 +58,13 @@
                 class="form-control"
                 [(ngModel)]="coupon.couponUsageLimit"
               />
-              <div
+              <span
                 class="help-block"
                 style="color: red"
                 *ngIf="!couponUsageLimit.valid && couponUsageLimit.touched"
               >
                 Please enter a valid coupon usage limit!
-              </div>
-              <div
-                class="help-block"
-                style="color: red"
-                *ngIf="
-                  couponUsageLimit.touched &&
-                  couponUsageLimit.value < userUsageLimit.value
-                "
-              >
-                Coupon usage limit cannot be less than user usage limit!
-              </div>
+              </span>
             </div>
           </div>
 

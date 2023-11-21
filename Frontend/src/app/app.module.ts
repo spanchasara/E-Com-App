@@ -53,6 +53,7 @@ import { ResetPasswordComponent } from './views/common/reset-password/reset-pass
 import { ProductImagesComponent } from './views/seller/product-images/product-images.component';
 import { CouponsListComponent } from './views/admin/coupons-list/coupons-list.component';
 import { CouponFormComponent } from './views/admin/coupon-form/coupon-form.component';
+import { CouponComponent } from './components/shared/coupon/coupon.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -99,6 +100,7 @@ import { CouponFormComponent } from './views/admin/coupon-form/coupon-form.compo
     ProductImagesComponent,
     CouponsListComponent,
     CouponFormComponent,
+    CouponComponent,
   ],
   imports: [
     BrowserModule,

@@ -2,6 +2,8 @@ import { v4 as uuidv4 } from "uuid";
 
 import catchAsync from "../utils/catch-async.js";
 import * as couponService from "../services/coupon.service.js";
+import ApiError from "../utils/api-error.js";
+import httpStatus from "http-status";
 
 const getCoupon = catchAsync(async (req, res) => {
   const { couponId } = req.params;
@@ -12,6 +14,15 @@ const getCoupon = catchAsync(async (req, res) => {
 const getAllCoupons = catchAsync(async (req, res) => {
   const options = req.query;
   const coupons = await couponService.getAllCoupons(req.user._id, options);
+  res.send(coupons);
+});
+
+const getAllCustomerCoupons = catchAsync(async (req, res) => {
+  const options = req.query;
+  const coupons = await couponService.getAllCustomerCoupons(
+    req.user._id,
+    options
+  );
   res.send(coupons);
 });
 
@@ -40,4 +51,11 @@ const deleteCoupon = catchAsync(async (req, res) => {
   res.send(response);
 });
 
-export { addCoupon, getCoupon, updateCoupon, deleteCoupon, getAllCoupons };
+export {
+  addCoupon,
+  getCoupon,
+  updateCoupon,
+  deleteCoupon,
+  getAllCoupons,
+  getAllCustomerCoupons,
+};

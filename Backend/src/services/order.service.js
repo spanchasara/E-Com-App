@@ -51,6 +51,20 @@ const aggregateQuery = async (
     },
     {
       $lookup: {
+        from: "coupons",
+        localField: "coupon",
+        foreignField: "_id",
+        as: "couponInfo",
+      },
+    },
+    {
+      $unwind: {
+        path: "$couponInfo",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
         from: "users",
         localField: "sellerId",
         foreignField: "_id",
@@ -98,6 +112,9 @@ const aggregateQuery = async (
         address: {
           $first: "$addressInfo",
         },
+        coupon: {
+          $first: "$couponInfo",
+        },
         createdAt: {
           $first: "$createdAt",
         },
@@ -125,6 +142,7 @@ const aggregateQuery = async (
         totalQty: 1,
         products: 1,
         address: 1,
+        coupon: 1,
       },
     },
   ]);

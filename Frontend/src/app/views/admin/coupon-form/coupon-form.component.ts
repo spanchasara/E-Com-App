@@ -36,8 +36,6 @@ export class CouponFormComponent implements OnInit {
       } else {
         this.coupon = {
           discountPercent: 0,
-          validityPeriod: 0,
-          userUsageLimit: 0,
           couponUsageLimit: 0,
           expiryDate: new Date(),
           isActive: false,

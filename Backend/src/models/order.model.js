@@ -41,6 +41,10 @@ const orderSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    coupon: {
+      type: Schema.Types.ObjectId,
+      ref: "Coupon",
+    },
   },
   {
     timestamps: true,

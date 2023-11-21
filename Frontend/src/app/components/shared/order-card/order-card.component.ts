@@ -17,4 +17,14 @@ export class OrderCardComponent {
   markAsDelivered(orderId: string) {
     this.ordersService.markDelivered(orderId).subscribe();
   }
+
+  getTotalAmt() {
+    const { totalAmount, coupon } = this.order;
+
+    if (this.role === "seller") return totalAmount;
+
+    return coupon
+      ? totalAmount * (1 - coupon.discountPercent / 100)
+      : totalAmount;
+  }
 }

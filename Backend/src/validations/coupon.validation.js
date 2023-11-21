@@ -3,12 +3,7 @@ import Joi from "joi";
 const addCoupon = {
   body: Joi.object().keys({
     discountPercent: Joi.number().required().min(1).max(100),
-    validityPeriod: Joi.number().required(),
-    userUsageLimit: Joi.number().required(),
-    couponUsageLimit: Joi.number()
-      .required()
-      .greater(Joi.ref("userUsageLimit"))
-      .allow(Joi.ref("userUsageLimit")),
+    couponUsageLimit: Joi.number().required().min(1),
     expiryDate: Joi.date().required().greater("now"),
   }),
 };
@@ -29,15 +24,21 @@ const getAllCoupons = {
   }),
 };
 
+const getAllCustomerCoupons = {
+  query: Joi.object().keys({
+    page: Joi.number().integer().min(1).default(1),
+    limit: Joi.number().integer().min(1).default(10),
+    sort: Joi.string().default("-discountPercent"),
+  }),
+};
+
 const updateCoupon = {
   params: Joi.object().keys({
     couponId: Joi.string().required(),
   }),
   body: Joi.object().keys({
     discountPercent: Joi.number().min(1).max(100),
-    validityPeriod: Joi.number(),
-    userUsageLimit: Joi.number(),
-    couponUsageLimit: Joi.number().greater(Joi.ref("userUsageLimit")),
+    couponUsageLimit: Joi.number().min(1),
     expiryDate: Joi.date().greater("now"),
     isActive: Joi.boolean(),
   }),
@@ -49,4 +50,11 @@ const deleteCoupon = {
   }),
 };
 
-export { addCoupon, getCoupon, updateCoupon, deleteCoupon, getAllCoupons };
+export {
+  addCoupon,
+  getCoupon,
+  updateCoupon,
+  deleteCoupon,
+  getAllCoupons,
+  getAllCustomerCoupons,
+};

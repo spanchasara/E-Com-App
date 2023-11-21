@@ -14,7 +14,7 @@
             {{ order.createdAt | date : "mediumDate" }}
           </div>
           <div class="col-md-3 text-center">
-            {{ order.totalAmount | rupeeFormat }}
+            {{ getTotalAmt() | rupeeFormat }}
           </div>
           <div
             class="col-md-3 text-center"
@@ -95,6 +95,12 @@
             >
               Mark delivered
             </button>
+          </div>
+        </div>
+        <div class="row mt-2" *ngIf="order.coupon && role !== 'seller'">
+          <div class="col-md-12">
+            <strong>Coupon Applied:</strong>
+            Flat {{ order.coupon.discountPercent }}% off
           </div>
         </div>
         <div class="row" *ngIf="role === 'seller'">

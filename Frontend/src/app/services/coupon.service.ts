@@ -84,10 +84,39 @@ export class CouponService {
       options?.isActive === undefined ? true : options?.isActive
     );
     params = params.append("limit", options?.limit || 10);
-    params = params.append("sort", options?.sort || "-createdAt");
+    params = params.append("sort", options?.sort || "expiryDate");
 
     return this.http
       .get<PaginatedCoupons>(this.apiUrl + "coupon/all", {
+        params,
+      })
+      .pipe(
+        tap(() => {
+          this.loaderService.hide();
+        }),
+        catchError((error) => {
+          this.loaderService.hide();
+          console.log(error);
+          this.swalService.error(error.error?.message);
+          return of(error);
+        })
+      );
+  }
+
+  getAllCustomerCoupons(options: {
+    page?: number;
+    limit?: number;
+    sort?: string;
+  }) {
+    this.loaderService.show();
+    let params = new HttpParams();
+
+    params = params.append("page", options?.page || 1);
+    params = params.append("limit", options?.limit || 10);
+    params = params.append("sort", options?.sort || "expiryDate");
+
+    return this.http
+      .get<PaginatedCoupons>(this.apiUrl + "coupon/all-customer", {
         params,
       })
       .pipe(

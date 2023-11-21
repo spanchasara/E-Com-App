@@ -46,6 +46,12 @@
             >
           </div>
         </div>
+        <div class="row mt-2" *ngIf="coupon">
+          <div class="col-md-12">
+            <strong>Coupon Applied:</strong>
+            Flat {{ coupon.discountPercent }}% off
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -2,20 +2,17 @@ export type Coupon = {
   _id: string;
   couponCode: string;
   discountPercent: number;
-  validityPeriod: number;
-  userUsageLimit: number;
   couponUsageLimit: number;
   expiryDate: Date;
   isActive: boolean;
   createdBy: CouponUser;
   createdAt: Date;
+  usedBy: string[];
 };
 
 export type CouponBody = {
   couponCode?: string;
   discountPercent?: number;
-  validityPeriod?: number;
-  userUsageLimit?: number;
   couponUsageLimit?: number;
   expiryDate?: Date;
   isActive?: boolean;

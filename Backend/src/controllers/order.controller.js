@@ -1,6 +1,7 @@
 import catchAsync from "../utils/catch-async.js";
 import * as orderService from "../services/order.service.js";
 import * as productService from "../services/product.service.js";
+import * as couponService from "../services/coupon.service.js";
 import * as cartService from "../services/cart.service.js";
 import ApiError from "../utils/api-error.js";
 import httpStatus from "http-status";
@@ -12,7 +13,7 @@ const createOrder = catchAsync(async (req, res) => {
   const customerId = req.user._id;
   const orderBody = req.body;
   const { action } = req.params;
-  const { addressId } = orderBody;
+  const { addressId, coupon } = orderBody;
 
   const cart = await cartService.getCustomerCart({ customerId });
 
@@ -73,6 +74,7 @@ const createOrder = catchAsync(async (req, res) => {
       customerId,
       addressId,
       orderId,
+      coupon,
     });
   });
 
@@ -181,6 +183,9 @@ const updateOrderStatus = catchAsync(async (req, res) => {
     await orderService.deleteOrder({ customerId, orderId });
     message = "Order failed";
   } else {
+    if (order.coupon)
+      await couponService.toggleCouponUsedCount(order.coupon._id, customerId);
+
     await orderService.updateMany(
       {
         customerId,
@@ -210,6 +215,10 @@ const updateOrderStatus = catchAsync(async (req, res) => {
           : process.env.DEFAULT_PRODUCT_IMAGE;
     });
 
+    const discount = order.coupon
+      ? (order.totalAmount * order.coupon.discountPercent) / 100
+      : 0;
+
     // send mail to customer
     sendTemplateEmail({
       to: req.user.email,
@@ -219,7 +228,9 @@ const updateOrderStatus = catchAsync(async (req, res) => {
         products: temp,
         orderId,
         orderDate: formatDate(order.createdAt),
+        discount: rupeeFormat(discount),
         totalAmount: rupeeFormat(order.totalAmount),
+        finalAmount: rupeeFormat(order.totalAmount - discount),
         totalQty: order.totalQty,
         deliveryAddress: order.address,
         homeUrl: process.env.HOST_URL + "/products",

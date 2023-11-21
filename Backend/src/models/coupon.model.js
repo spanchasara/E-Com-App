@@ -12,14 +12,6 @@ const couponSchema = new Schema(
       type: Number,
       required: true,
     },
-    validityPeriod: {
-      type: Number,
-      required: true,
-    },
-    userUsageLimit: {
-      type: Number,
-      required: true,
-    },
     couponUsageLimit: {
       type: Number,
       required: true,
@@ -35,6 +27,15 @@ const couponSchema = new Schema(
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
+    },
+    usedBy: {
+      type: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
+      default: [],
     },
   },
   {

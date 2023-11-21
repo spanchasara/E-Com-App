@@ -1,5 +1,6 @@
 import { Address } from "./address.model";
 import { Cart } from "./cart.model";
+import { Coupon } from "./coupon.model";
 import { ProductImage } from "./product.model";
 
 export type PlaceOrder = {
@@ -12,6 +13,7 @@ export type CreateOrderBody = {
   productId?: string;
   qty?: number;
   selectedProductIds?: string[];
+  coupon: string | null;
 };
 
 export type ProjectOrder = {
@@ -42,6 +44,7 @@ export type Order = {
   totalQty: number;
   products: OrderedProducts[];
   address: Address;
+  coupon: Coupon;
   customerId: string;
   createdAt: Date | string;
 };

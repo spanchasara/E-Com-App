@@ -70,25 +70,6 @@ const userSchema = new Schema(
         type: Date,
       },
     },
-    allCoupons: {
-      type: [
-        {
-          coupon: {
-            type: Schema.Types.ObjectId,
-            ref: "Coupon",
-          },
-          usedCount: {
-            type: Number,
-            default: 0,
-          },
-          acceptedDate: {
-            type: Date,
-            default: Date.now(),
-          },
-        },
-      ],
-      default: [],
-    },
   },
   {
     timestamps: true,

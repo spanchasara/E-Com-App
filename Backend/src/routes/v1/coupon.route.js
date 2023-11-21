@@ -23,6 +23,14 @@ router
   );
 
 router
+  .route("/all-customer")
+  .get(
+    auth("get_all_customer_coupons"),
+    validate(couponValidation.getAllCustomerCoupons),
+    couponController.getAllCustomerCoupons
+  );
+
+router
   .route("/:couponId")
   .get(
     auth("get_coupon"),

@@ -1,10 +1,49 @@
 import Stripe from "stripe";
 
+const createCoupon = async (body) => {
+  const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
+  const { discountPercent, couponCode, couponUsageLimit } = body;
+
+  const coupon = await stripe.coupons.create({
+    percent_off: discountPercent,
+    duration: "forever",
+    id: couponCode,
+    max_redemptions: couponUsageLimit,
+    name: `Flat ${discountPercent}% off`,
+  });
+
+  return coupon;
+};
+
+const updateCoupon = async (body) => {
+  const { couponCode } = body;
+
+  await deleteCoupon(couponCode);
+  const coupon = await createCoupon(body);
+
+  return coupon;
+};
+
+const deleteCoupon = async (couponCode) => {
+  const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
+
+  const coupon = await stripe.coupons.del(couponCode);
+
+  return coupon;
+};
+
 const handlePayment = async (body) => {
   const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
 
-  const { products, orderId } = body;
+  const { products, orderId, couponCode } = body;
   console.log(products);
+
+  const totalBeforeDiscount = products.reduce(
+    (total, prod) => total + prod.productId.price * prod.qty,
+    0
+  );
+
+  const discountAmount = (totalBeforeDiscount * 10) / 100;
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
@@ -46,6 +85,12 @@ const handlePayment = async (body) => {
       },
       quantity: prod.qty,
     })),
+
+    discounts: [
+      couponCode && {
+        coupon: couponCode,
+      },
+    ],
     mode: "payment",
     success_url: `http://localhost:4200/status/?status=success&order_id=${orderId}`,
     cancel_url: `http://localhost:4200/status/?status=failed&order_id=${orderId}`,
@@ -54,4 +99,4 @@ const handlePayment = async (body) => {
   return session;
 };
 
-export { handlePayment };
+export { createCoupon, handlePayment, updateCoupon, deleteCoupon };

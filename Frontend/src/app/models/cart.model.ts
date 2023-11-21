@@ -1,4 +1,5 @@
 export type Cart = {
+  [x: string]: any;
   _id: string;
   customerId: string;
   totalAmount: number;

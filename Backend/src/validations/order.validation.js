@@ -7,6 +7,7 @@ const createOrder = {
       selectedProductIds: Joi.array().items(Joi.string()),
       productId: Joi.string(),
       qty: Joi.number(),
+      coupon: Joi.string().allow(null),
     })
     .custom((value, helpers) => {
       const { selectedProductIds, productId, qty } = value;

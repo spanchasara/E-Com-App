@@ -36,10 +36,10 @@
         <th scope="col">#</th>
         <th scope="col">Coupon Code</th>
         <th scope="col">Discount (%)</th>
-        <th scope="col">Validity (in months)</th>
+        <th scope="col">Created At</th>
         <th scope="col">Expiry Date</th>
-        <th scope="col">Per User Limit</th>
         <th scope="col">Coupon Limit</th>
+        <th scope="col">Utilization</th>
         <th scope="col" *ngIf="!isOwn">Created By</th>
         <th scope="col" *ngIf="isOwn">Actions</th>
       </tr>
@@ -55,16 +55,16 @@
           {{ data.discountPercent }}
         </td>
         <td>
-          {{ data.validityPeriod }}
+          {{ data.createdAt | date : "mediumDate" }}
         </td>
         <td>
           {{ data.expiryDate | date : "mediumDate" }}
         </td>
         <td>
-          {{ data.userUsageLimit }}
+          {{ data.couponUsageLimit }}
         </td>
         <td>
-          {{ data.couponUsageLimit }}
+          {{ data.usedBy.length }}
         </td>
         <td *ngIf="!isOwn">
           {{ data.createdBy.username }}
