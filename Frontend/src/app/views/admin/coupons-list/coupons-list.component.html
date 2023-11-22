@@ -27,6 +27,27 @@
     </div>
   </div>
 
+  <ng-template #content let-modal>
+    <table class="table table-striped text-center">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of selectedList; index as i">
+          <th scope="row">
+            {{ i + 1 }}
+          </th>
+          <td>{{ data.username }}</td>
+          <td>{{ data.email }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-template>
+
   <table
     class="table table-striped text-center"
     *ngIf="coupons?.totalDocs || 0 > 0; else noData"
@@ -63,7 +84,7 @@
         <td>
           {{ data.couponUsageLimit }}
         </td>
-        <td>
+        <td (click)="open(content, data.usedBy)" style="cursor: pointer">
           {{ data.usedBy.length }}
         </td>
         <td *ngIf="!isOwn">

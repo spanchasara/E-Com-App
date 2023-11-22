@@ -1,4 +1,5 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef, inject } from "@angular/core";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { PaginatedCoupons } from "src/app/models/coupon.model";
 import { CouponService } from "src/app/services/coupon.service";
 import { SwalService } from "src/app/services/swal.service";
@@ -17,11 +18,21 @@ export class CouponsListComponent implements OnInit {
     private couponService: CouponService,
     private swalService: SwalService
   ) {}
-
+  private modalService = inject(NgbModal);
+  selectedList: any;
   ngOnInit() {
     this.getData({
       isOwn: this.isOwn,
     });
+  }
+
+  open(content: TemplateRef<any>, selectedList: any) {
+    if (selectedList.length == 0) {
+      return;
+    }
+
+    this.selectedList = selectedList;
+    this.modalService.open(content, { centered: true });
   }
 
   getData(options = {}) {

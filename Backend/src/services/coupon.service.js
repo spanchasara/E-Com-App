@@ -17,6 +17,17 @@ const getAllCoupons = async (userId, options) => {
     createdBy: options.isOwn ? userId : { $ne: userId },
   };
 
+  options.populate = [
+    {
+      path: "usedBy",
+      select: "username email",
+    },
+    {
+      path: "createdBy",
+      select: "username",
+    },
+  ];
+
   const coupons = await Coupon.paginate(filter, options);
 
   if (!coupons) {
