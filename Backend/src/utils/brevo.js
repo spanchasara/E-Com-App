@@ -9,6 +9,7 @@ const templates = {
   sellerOrderReceived: 11,
   markUserAsAdmin: 12,
   unmarkUserAsAdmin: 13,
+  customerFeedback: 14,
 };
 
 const brevoConfig = () => {

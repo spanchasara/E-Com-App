@@ -163,6 +163,31 @@ const markDelivered = catchAsync(async (req, res) => {
     templateId: templates.customerOrderDelivered,
   });
 
+  const fullOrder = await orderService.getSingleOrder(
+    order.customerId._id,
+    order.orderId
+  );
+
+  let sendFeedback = true;
+  fullOrder.products.forEach((prod) => {
+    if (!prod.deliveredDate) sendFeedback = false;
+  });
+
+  if (sendFeedback) {
+    sendTemplateEmail({
+      to: order.customerId.email,
+      subject: "Please Share Your Experience",
+      params: {
+        name: order.customerId.username,
+        orderId: order.orderId,
+        orderDate: formatDate(order.createdAt),
+        feedbackUrl:
+          process.env.HOST_URL + "/feedback?orderId=" + order.orderId,
+      },
+      templateId: templates.customerFeedback,
+    });
+  }
+
   res.send(order);
 });
 

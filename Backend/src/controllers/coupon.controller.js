@@ -2,8 +2,6 @@ import { v4 as uuidv4 } from "uuid";
 
 import catchAsync from "../utils/catch-async.js";
 import * as couponService from "../services/coupon.service.js";
-import ApiError from "../utils/api-error.js";
-import httpStatus from "http-status";
 
 const getCoupon = catchAsync(async (req, res) => {
   const { couponId } = req.params;

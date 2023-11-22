@@ -6,7 +6,7 @@ import { AppComponent } from "./app.component";
 import { FormsModule } from "@angular/forms";
 import { SweetAlert2Module } from "@sweetalert2/ngx-sweetalert2";
 import { AkitaNgDevtools } from "@datorama/akita-ngdevtools";
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { NgbModule, NgbRatingModule } from "@ng-bootstrap/ng-bootstrap";
 import { NgbCarouselModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { NavbarComponent } from "./components/navbar/navbar.component";
@@ -49,11 +49,12 @@ import { AllOrdersComponent } from "./views/customer/orders/all-orders/all-order
 import { RupeeFormatPipe } from "./rupee-format.pipe";
 import { PaymentComponent } from "./views/customer/orders/place-order/payment/payment.component";
 import { StatusComponent } from "./components/status/status.component";
-import { ResetPasswordComponent } from './views/common/reset-password/reset-password.component';
-import { ProductImagesComponent } from './views/seller/product-images/product-images.component';
-import { CouponsListComponent } from './views/admin/coupons-list/coupons-list.component';
-import { CouponFormComponent } from './views/admin/coupon-form/coupon-form.component';
-import { CouponComponent } from './components/shared/coupon/coupon.component';
+import { ResetPasswordComponent } from "./views/common/reset-password/reset-password.component";
+import { ProductImagesComponent } from "./views/seller/product-images/product-images.component";
+import { CouponsListComponent } from "./views/admin/coupons-list/coupons-list.component";
+import { CouponFormComponent } from "./views/admin/coupon-form/coupon-form.component";
+import { CouponComponent } from "./components/shared/coupon/coupon.component";
+import { FeedbackComponent } from "./views/customer/feedback/feedback.component";
 @NgModule({
   declarations: [
     AppComponent,
@@ -101,6 +102,7 @@ import { CouponComponent } from './components/shared/coupon/coupon.component';
     CouponsListComponent,
     CouponFormComponent,
     CouponComponent,
+    FeedbackComponent,
   ],
   imports: [
     BrowserModule,
@@ -111,6 +113,7 @@ import { CouponComponent } from './components/shared/coupon/coupon.component';
     SweetAlert2Module.forRoot(),
     AkitaNgDevtools.forRoot(),
     NgbCarouselModule,
+    NgbRatingModule,
   ],
   providers: [
     {

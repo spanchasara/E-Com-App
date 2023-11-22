@@ -30,6 +30,7 @@ import { StatusComponent } from "./components/status/status.component";
 import { ResetPasswordComponent } from "./views/common/reset-password/reset-password.component";
 import { CouponsListComponent } from "./views/admin/coupons-list/coupons-list.component";
 import { CouponFormComponent } from "./views/admin/coupon-form/coupon-form.component";
+import { FeedbackComponent } from "./views/customer/feedback/feedback.component";
 
 const routes: Routes = [
   {
@@ -77,6 +78,11 @@ const routes: Routes = [
   {
     path: "status",
     component: StatusComponent,
+    canActivate: [authGuard, customerGuard],
+  },
+  {
+    path: "feedback",
+    component: FeedbackComponent,
     canActivate: [authGuard, customerGuard],
   },
   {

@@ -9,6 +9,7 @@ import addressRoute from "./address.route.js";
 import orderRoute from "./order.route.js";
 import paymentRoute from "./stripe.route.js";
 import couponRoute from "./coupon.route.js";
+import feedbackRoute from "./feedback.route.js";
 
 const router = express.Router();
 
@@ -22,5 +23,6 @@ router.use("/address", addressRoute);
 router.use("/order", orderRoute);
 router.use("/payment", paymentRoute);
 router.use("/coupon", couponRoute);
+router.use("/feedback", feedbackRoute);
 
 export default router;
