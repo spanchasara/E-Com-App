@@ -20,7 +20,7 @@ export class FeedbackComponent implements OnInit {
   ) {}
 
   orderId = "";
-  order!: Order;
+  order: Order | null = null;
   product = {
     rating: 3,
     comment: "",
@@ -36,15 +36,15 @@ export class FeedbackComponent implements OnInit {
         this.orderId = params.get("orderId") as string;
 
         this.feedbackService.getFeedback(this.orderId).subscribe((data) => {
-          if (data.ok) {
+          if (data) {
             this.swalService.info("Feedback Already Given !!");
             this.router.navigate(["/"]);
           } else {
             this.orderService
               .getCustomerOrders(true, this.orderId)
               .subscribe((data) => {
-                if (data.ok) {
-                  this.order = data.body as Order;
+                if (data) {
+                  this.order = data as Order;
                 } else {
                   this.router.navigate(["/"]);
                 }

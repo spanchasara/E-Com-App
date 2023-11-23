@@ -32,7 +32,7 @@ export class FeedbackService {
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
-          return of(error);
+          return of(undefined);
         })
       );
   }

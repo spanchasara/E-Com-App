@@ -1,6 +1,10 @@
 <div class="card my-4 mx-auto" style="width: 80%; font-size: 14px">
   <div class="card-header d-flex justify-content-between">
     <span><strong>Total Quantity:</strong> {{ order.totalQty }}</span>
+    <span *ngIf="coupon">
+      <strong>Coupon Applied:</strong>
+      Flat {{ coupon.discountPercent }}% off
+    </span>
     <span
       ><strong>Total Amount:</strong>
       {{ order.totalAmount | rupeeFormat }}</span
@@ -44,12 +48,6 @@
               ><strong>Amount:</strong>
               {{ product.productId.price * product.qty | rupeeFormat }}</label
             >
-          </div>
-        </div>
-        <div class="row mt-2" *ngIf="coupon">
-          <div class="col-md-12">
-            <strong>Coupon Applied:</strong>
-            Flat {{ coupon.discountPercent }}% off
           </div>
         </div>
       </div>

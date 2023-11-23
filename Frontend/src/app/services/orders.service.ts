@@ -149,14 +149,13 @@ export class OrdersService {
       })
       .pipe(
         tap((data) => {
-          console.log(data);
           this.loaderService.hide();
         }),
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
           this.swalService.error(error.error?.message);
-          return of(error);
+          return of(undefined);
         })
       );
   }
