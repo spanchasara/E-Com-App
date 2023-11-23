@@ -7,7 +7,7 @@ import auth from "../../middlewares/auth.js";
 const router = express.Router();
 
 router
-  .route("/:type")
+  .route("/")
   .post(
     auth("add_feedback"),
     validate(feedbackValidation.addFeedback),

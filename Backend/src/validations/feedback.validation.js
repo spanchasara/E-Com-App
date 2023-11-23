@@ -1,11 +1,9 @@
 import Joi from "joi";
 
 const addFeedback = {
-  params: Joi.object().keys({
-    type: Joi.string().required().valid("product", "app"),
-  }),
-  body: Joi.object().keys({
+  body: Joi.array().items({
     orderId: Joi.string().required(),
+    productId: Joi.string(),
     rating: Joi.number().min(1).max(5).required(),
     comment: Joi.string().allow(""),
   }),

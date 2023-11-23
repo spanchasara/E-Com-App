@@ -7,6 +7,8 @@ export type Product = {
   price: number;
   stock: number;
   images?: ProductImage[];
+  feedbacks?: any[];
+  avgRating?: number;
 };
 
 export type ProductImage = {

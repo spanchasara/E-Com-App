@@ -1,13 +1,12 @@
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { tap, catchError, of, Subject } from "rxjs";
+import { tap, catchError, of } from "rxjs";
 
 import { environment } from "src/environment/environment";
-import { Address } from "../models/address.model";
 import { LoaderService } from "./loader.service";
 import { SwalService } from "./swal.service";
-import { CouponBody, Coupon, PaginatedCoupons } from "../models/coupon.model";
+import { FeedbackBody } from "../models/feedback.model";
 
 @Injectable({ providedIn: "root" })
 export class FeedbackService {
@@ -37,10 +36,10 @@ export class FeedbackService {
       );
   }
 
-  addFeedback(feedbackBody: any, type: string = "app") {
+  addFeedback(feedbackBody: FeedbackBody[]) {
     this.loaderService.show();
     return this.http
-      .post(this.apiUrl + `feedback/${type}`, feedbackBody, {
+      .post(this.apiUrl + "feedback", feedbackBody, {
         observe: "response",
       })
       .pipe(

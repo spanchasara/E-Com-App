@@ -1,36 +1,15 @@
 import catchAsync from "../utils/catch-async.js";
 import * as feedbackService from "../services/feedback.service.js";
-import * as orderService from "../services/order.service.js";
 
 const addFeedback = catchAsync(async (req, res) => {
   const userId = req.user._id;
-  const { type } = req.params;
-  const { orderId } = req.body;
+  const feedbacks = req.body;
 
-  if (type === "app") {
-    // app feedback
-    const body = {
-      ...req.body,
-      userId,
-    };
+  feedbacks.forEach((feedback) => {
+    feedback.userId = userId;
+  });
 
-    await feedbackService.addFeedback(body);
-  } else {
-    // product feedback
-    const order = await orderService.getSingleOrder(userId, orderId);
-
-    const productIds = order.products.map((p) => p.productId);
-
-    productIds.forEach(async (productId) => {
-      const body = {
-        ...req.body,
-        userId,
-        productId,
-      };
-
-      await feedbackService.addFeedback(body);
-    });
-  }
+  await feedbackService.addMultipleFeedback(feedbacks);
 
   res.send({
     message: "Feedback Added Successfully!",

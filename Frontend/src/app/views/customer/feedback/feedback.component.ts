@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { FeedbackBody } from "src/app/models/feedback.model";
 import { Order } from "src/app/models/order.model";
 import { FeedbackService } from "src/app/services/feedback.service";
 import { OrdersService } from "src/app/services/orders.service";
@@ -21,14 +22,14 @@ export class FeedbackComponent implements OnInit {
 
   orderId = "";
   order: Order | null = null;
-  product = {
-    rating: 3,
-    comment: "",
-  };
+
   app = {
+    orderId: "",
     rating: 3,
     comment: "",
   };
+
+  productFeedback: FeedbackBody[] = [];
 
   ngOnInit() {
     this.route.queryParamMap.subscribe((params) => {
@@ -45,6 +46,17 @@ export class FeedbackComponent implements OnInit {
               .subscribe((data) => {
                 if (data) {
                   this.order = data as Order;
+
+                  data.products.forEach((product: any) => {
+                    this.productFeedback.push({
+                      orderId: this.orderId,
+                      productId: product.productId,
+                      rating: 3,
+                      comment: "",
+                    });
+                  });
+
+                  this.app.orderId = this.orderId;
                 } else {
                   this.router.navigate(["/"]);
                 }
@@ -59,11 +71,21 @@ export class FeedbackComponent implements OnInit {
   }
 
   submitFeedback() {
-    this.feedbackService
-      .addFeedback({ ...this.product, orderId: this.orderId }, "product")
-      .subscribe();
-    this.feedbackService
-      .addFeedback({ ...this.app, orderId: this.orderId }, "app")
-      .subscribe();
+    this.productFeedback.push(this.app);
+
+    this.feedbackService.addFeedback(this.productFeedback).subscribe();
+  }
+
+  getTotalAmt() {
+    const { totalAmount, coupon } = this.order as Order;
+
+    return coupon
+      ? totalAmount * (1 - coupon.discountPercent / 100)
+      : totalAmount;
+  }
+
+  ratingChange(rating: number, index: number) {
+    if (index >= 0) this.productFeedback[index].rating = rating;
+    else this.app.rating = rating;
   }
 }

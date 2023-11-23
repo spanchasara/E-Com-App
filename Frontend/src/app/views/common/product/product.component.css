@@ -9,3 +9,11 @@
   -ms-flex-direction: column;
   flex-direction: column;
 }
+
+.text-muted {
+  font-size: small;
+}
+
+.card-text {
+  text-align: justify;
+}

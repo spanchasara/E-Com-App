@@ -1,110 +1,154 @@
 <h3 class="text-center mt-3">Feedback Form</h3>
 
 <div class="container">
-  <app-order-card
-    role="customer"
+  <div
+    class="card my-4 mx-auto"
     *ngIf="order"
-    [order]="order"
-  ></app-order-card>
+    style="width: 80%; font-size: 14px"
+  >
+    <div class="card-header">
+      <div class="row">
+        <div class="col-md-7">
+          <div class="row">
+            <div class="col-md-3 text-center">ORDER PLACED</div>
+            <div class="col-md-3 text-center">TOTAL</div>
+            <div class="col-md-3 text-center">SHIP TO</div>
+          </div>
+          <div class="row">
+            <div class="col-md-3 text-center">
+              {{ order.createdAt | date : "mediumDate" }}
+            </div>
+            <div class="col-md-3 text-center">
+              {{ getTotalAmt() | rupeeFormat }}
+            </div>
+            <div
+              class="col-md-3 text-center"
+              placement="bottom"
+              container="body"
+              ngbTooltip="
+              {{ order.address.addressLane1 }} {{ order.address.addressLane2 }}
+              {{ order.address.landmark }} {{ order.address.city }}, 
+              {{ order.address.state }}, {{ order.address.country }}
+              {{ order.address.pincode }}
+              {{ '+91' + order.address.phoneNo }}"
+            >
+              {{ order.address.fullName }}
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-md-5 d-flex justify-content-end flex-column align-items-end"
+        >
+          <div class="row">
+            <div class="col-md-12">ORDER # {{ order.orderId }}</div>
+          </div>
+          <div class="row">
+            <div class="col-md-12" *ngIf="order.coupon">
+              COUPON APPLIED # Flat {{ order.coupon.discountPercent }}% off
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row mt-3" *ngFor="let product of order.products; index as i">
+        <div class="col-md-2 d-flex pt-3">
+          <div class="col-md-7">
+            <img
+              [src]="
+                product.images.length > 0
+                  ? product.images[0].url
+                  : 'assets/laptop.jpg'
+              "
+              class="d-block ui-w-40 ui-bordered mx-2"
+              alt="product image"
+              height="150px"
+              width="150px"
+              [routerLink]="['/products', product.productId]"
+            />
+          </div>
+        </div>
+        <div class="col-md-9 my-3 ms-5">
+          <a
+            class="d-block text-dark"
+            [routerLink]="['/products', product.productId]"
+            >{{ product.title }}</a
+          >
+          <p class="my-1">
+            <strong>{{ product.price | rupeeFormat }}</strong>
+          </p>
+          <div class="row">
+            <div class="col-md-2">
+              <label for="quantity"
+                ><strong>Quantity:</strong> {{ product.qty }}</label
+              >
+            </div>
+            <div class="col-md-4">
+              <label for="amount"
+                ><strong>Amount:</strong>
+                {{ product.amount | rupeeFormat }}</label
+              >
+            </div>
+          </div>
+
+          <div class="row" *ngIf="product.deliveredDate">
+            <div class="col-md-4">
+              <strong>Delivered on:</strong>
+              {{ product.deliveredDate | date : "mediumDate" }}
+            </div>
+          </div>
+
+          <div>
+            <div class="mt-2">
+              <label class="control-label" for="ratings"
+                ><strong>Ratings:</strong></label
+              >
+              <app-rating
+                class="ms-3"
+                [readonly]="false"
+                [rating]="productFeedback[i].rating"
+                (ratingChange)="ratingChange($event, i)"
+              ></app-rating>
+            </div>
+            <div class="row">
+              <div class="col-md-5">
+                <textarea
+                  class="form-control mt-2"
+                  rows="3"
+                  [(ngModel)]="productFeedback[i].comment"
+                  placeholder="Comments"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="row my-3 contentBack">
     <div class="col-md-12">
       <form>
-        <div style="margin-left: 25%">
-          <h4>Product Feedback</h4>
+        <div>
+          <h5>
+            🌟 Enjoying GadgetGrove? Kindly tell us how was your experience with
+            our app
+          </h5>
           <div class="form-group mt-3">
             <div class="col-md-8">
               <label class="control-label" for="ratings">Ratings:</label>
-              <ngb-rating class="ms-3" [(rate)]="product.rating" [max]="5">
-                <ng-template let-fill="fill" let-index="index">
-                  <span [class.filled]="fill === 100">
-                    <svg
-                      *ngIf="fill === 100; else noFill"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="25"
-                      height="25"
-                      fill="currentColor"
-                      class="bi bi-star-fill"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                      />
-                    </svg>
-                    <ng-template #noFill>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="25"
-                        height="25"
-                        fill="currentColor"
-                        class="bi bi-star"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"
-                        />
-                      </svg>
-                    </ng-template>
-                  </span>
-                </ng-template>
-              </ngb-rating>
+              <app-rating
+                class="ms-3"
+                [readonly]="false"
+                [rating]="app.rating"
+                (ratingChange)="ratingChange($event, -1)"
+                [size]="25"
+              ></app-rating>
             </div>
           </div>
 
           <div class="form-group mt-3">
-            <div class="col-md-8">
-              <textarea
-                class="form-control"
-                rows="3"
-                [(ngModel)]="product.comment"
-                placeholder="Comments"
-                name="productComment"
-              ></textarea>
-            </div>
-          </div>
-
-          <h4 class="mt-5">App Feedback</h4>
-          <div class="form-group mt-3">
-            <div class="col-md-8">
-              <label class="control-label" for="ratings">Ratings:</label>
-              <ngb-rating class="ms-3" [(rate)]="app.rating" [max]="5">
-                <ng-template let-fill="fill" let-index="index">
-                  <span [class.filled]="fill === 100">
-                    <svg
-                      *ngIf="fill === 100; else noFill"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="25"
-                      height="25"
-                      fill="currentColor"
-                      class="bi bi-star-fill"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                      />
-                    </svg>
-                    <ng-template #noFill>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="25"
-                        height="25"
-                        fill="currentColor"
-                        class="bi bi-star"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"
-                        />
-                      </svg>
-                    </ng-template>
-                  </span>
-                </ng-template>
-              </ngb-rating>
-            </div>
-          </div>
-
-          <div class="form-group mt-3">
-            <div class="col-md-8">
+            <div class="col-md-6">
               <textarea
                 class="form-control"
                 rows="3"
