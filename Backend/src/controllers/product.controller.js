@@ -35,15 +35,15 @@ const getProducts = catchAsync(async (req, res) => {
 
     const products = await productService.getProducts(filterQuery, options);
 
-    products.docs = await Promise.all(
-      products.docs.map(async (product) => {
-        const avgRating = await feedbackService.getAvgRating(product._id);
+    const productIds = products.docs.map((product) => product._id);
 
-        product = product.toJSON();
-        product.avgRating = avgRating;
-        return product;
-      })
-    );
+    const mapping = await feedbackService.getRatingsMapping(productIds);
+
+    products.docs = products.docs.map((product) => {
+      product = product.toJSON();
+      product.avgRating = mapping[product._id.toString()];
+      return product;
+    });
 
     res.send(products);
   }

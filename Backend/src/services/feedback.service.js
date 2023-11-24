@@ -48,6 +48,31 @@ const getAvgRating = async (productId) => {
   else return Math.round(num);
 };
 
+const getRatingsMapping = async (productIds) => {
+  const result = await Feedback.find({ productId: { $in: productIds } }).select(
+    "productId rating"
+  );
+
+  const mapping = {};
+
+  result.forEach((feedback) => {
+    if (!mapping[feedback.productId]) mapping[feedback.productId] = [];
+    mapping[feedback.productId].push(feedback.rating);
+  });
+
+  // calculate average rating
+  for (const key in mapping) {
+    const num = mapping[key].length;
+    const sum = mapping[key].reduce((a, b) => a + b, 0);
+    const avg = sum / num;
+
+    mapping[key] =
+      (Math.ceil(avg) + Math.floor(avg)) / 2 === avg ? avg : Math.round(avg);
+  }
+
+  return mapping;
+};
+
 const getFeedback = async (userId, orderId) => {
   const feedback = await Feedback.findOne({
     userId,
@@ -64,4 +89,10 @@ const getFeedback = async (userId, orderId) => {
   return feedback;
 };
 
-export { addMultipleFeedback, getTopNFeedback, getAvgRating, getFeedback };
+export {
+  addMultipleFeedback,
+  getTopNFeedback,
+  getAvgRating,
+  getFeedback,
+  getRatingsMapping,
+};
