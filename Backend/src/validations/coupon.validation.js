@@ -31,6 +31,9 @@ const getAllCoupons = {
 
 const getAllCustomerCoupons = {
   query: Joi.object().keys({
+    keyword: Joi.string()
+      .valid("available", "used", "not-active", "all")
+      .default("all"),
     page: Joi.number().integer().min(1).default(1),
     limit: Joi.number().integer().min(1).default(10),
     sort: Joi.string().default("-discountPercent"),

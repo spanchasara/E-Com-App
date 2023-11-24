@@ -27,6 +27,27 @@ export class PlaceOrderComponent implements OnInit {
   coupon: Coupon | null = null;
   allCoupons!: PaginatedCoupons;
 
+  filters = [
+    {
+      label: "All",
+      value: "all",
+    },
+    {
+      label: "Available",
+      value: "available",
+    },
+    {
+      label: "Used",
+      value: "used",
+    },
+    {
+      label: "Not Active Yet",
+      value: "not-active",
+    },
+  ];
+
+  selectedFilter = this.filters[1];
+
   constructor(
     private ordersService: OrdersService,
     private couponService: CouponService
@@ -113,5 +134,12 @@ export class PlaceOrderComponent implements OnInit {
 
   pageChanged(page: number) {
     this.getCoupons({ page });
+  }
+
+  filterChanged(event: any) {
+    const { value } = event.target;
+    this.selectedFilter = this.filters.find((f) => f.value === value)!;
+
+    this.getCoupons({ keyword: value });
   }
 }

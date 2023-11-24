@@ -36,14 +36,24 @@ const getAllCoupons = async (userId, options) => {
   return coupons;
 };
 
-const getAllCustomerCoupons = async (options) => {
-  const coupons = await Coupon.paginate(
-    {
-      isActive: true,
-      expiryDate: { $gte: new Date() },
-    },
-    options
-  );
+const getAllCustomerCoupons = async (userId, options) => {
+  const { keyword } = options;
+
+  const filterBody = {
+    isActive: true,
+    expiryDate: { $gte: new Date() },
+  };
+
+  if (keyword === "available") {
+    filterBody.usedBy = { $nin: [userId] };
+    filterBody.activationDate = { $lte: new Date() };
+  } else if (keyword === "used") {
+    filterBody.usedBy = { $in: [userId] };
+  } else if (keyword === "not-active") {
+    filterBody.activationDate = { $gt: new Date() };
+  }
+
+  const coupons = await Coupon.paginate(filterBody, options);
 
   if (!coupons) {
     throw new ApiError(httpStatus.NOT_FOUND, "Coupons not found!");

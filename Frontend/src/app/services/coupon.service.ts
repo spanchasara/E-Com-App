@@ -104,6 +104,7 @@ export class CouponService {
   }
 
   getAllCustomerCoupons(options: {
+    keyword?: string;
     page?: number;
     limit?: number;
     sort?: string;
@@ -111,6 +112,7 @@ export class CouponService {
     this.loaderService.show();
     let params = new HttpParams();
 
+    params = params.append("keyword", options?.keyword || "all");
     params = params.append("page", options?.page || 1);
     params = params.append("limit", options?.limit || 9);
     params = params.append("sort", options?.sort || "expiryDate");
