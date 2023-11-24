@@ -27,6 +27,20 @@
       Orders
     </button>
   </div>
+  <div class="nav-item">
+    <button
+      [ngClass]="
+        action === 'coupons'
+          ? 'nav-link active text-black'
+          : 'nav-link text-black'
+      "
+      (click)="toggleAction('coupons')"
+      [routerLink]="['coupons']"
+      [disabled]="action === 'coupons'"
+    >
+      Coupons
+    </button>
+  </div>
 </div>
 
 <router-outlet></router-outlet>

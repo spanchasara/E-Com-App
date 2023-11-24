@@ -12,9 +12,21 @@
       <div class="col-md-6 my-5 mt-5">
         <h3>{{ product?.title }}</h3>
         <p>{{ product?.description }}</p>
-        <h4>
-          <span>{{ product?.price || 0 | rupeeFormat }}</span>
-        </h4>
+        <div class="row">
+          <div class="col-md-3">
+            <h4>
+              <span>{{ product?.price || 0 | rupeeFormat }}</span>
+            </h4>
+          </div>
+          <div class="col mt-1">
+            {{ product?.avgRating | number : "1.1-1" || 0 }}
+
+            <app-rating
+              [rating]="product?.avgRating || 0"
+              [wantHalfStar]="true"
+            ></app-rating>
+          </div>
+        </div>
         <h6 *ngIf="product?.stock === 0; else NotOutOfStock" style="color: red">
           This product is currently out of stock
         </h6>
@@ -97,6 +109,38 @@
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+    <div class="row container pb-2">
+      <h4>Top Reviews</h4>
+      <div
+        class="d-flex"
+        style="flex-wrap: wrap; justify-content: space-between"
+      >
+        <div
+          class="col-md-6 card mb-3"
+          style="width: 48%"
+          *ngFor="let feedback of product?.feedbacks"
+        >
+          <div class="card-header">
+            <div class="row">
+              <div class="col">
+                <strong>{{ feedback.userId.username }}</strong>
+              </div>
+              <div class="col text-end" style="padding-right: 0.5vw">
+                <app-rating [rating]="feedback.rating"></app-rating>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-text">
+              {{ feedback.comment }}
+            </p>
+          </div>
+          <div class="text-muted text-end me-3">
+            ~ {{ feedback.createdAt | date : "mediumDate" }}
+          </div>
+        </div>
       </div>
     </div>
   </div>

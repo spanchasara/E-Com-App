@@ -10,9 +10,7 @@ export class AdminDashboardComponent {
   action: string = "products";
 
   ngOnInit() {
-    this.route.children[0].url.subscribe((url) => {
-      this.action = url[0].path;
-    });
+    this.action = window.location.href.split("/").slice(-1)[0];
   }
 
   toggleAction(action: string) {

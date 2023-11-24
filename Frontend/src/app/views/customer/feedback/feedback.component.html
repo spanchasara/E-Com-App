@@ -1,0 +1,175 @@
+<h3 class="text-center mt-3">Feedback Form</h3>
+
+<div class="container">
+  <div
+    class="card my-4 mx-auto"
+    *ngIf="order"
+    style="width: 80%; font-size: 14px"
+  >
+    <div class="card-header">
+      <div class="row">
+        <div class="col-md-7">
+          <div class="row">
+            <div class="col-md-3 text-center">ORDER PLACED</div>
+            <div class="col-md-3 text-center">TOTAL</div>
+            <div class="col-md-3 text-center">SHIP TO</div>
+          </div>
+          <div class="row">
+            <div class="col-md-3 text-center">
+              {{ order.createdAt | date : "mediumDate" }}
+            </div>
+            <div class="col-md-3 text-center">
+              {{ getTotalAmt() | rupeeFormat }}
+            </div>
+            <div
+              class="col-md-3 text-center"
+              placement="bottom"
+              container="body"
+              ngbTooltip="
+              {{ order.address.addressLane1 }} {{ order.address.addressLane2 }}
+              {{ order.address.landmark }} {{ order.address.city }}, 
+              {{ order.address.state }}, {{ order.address.country }}
+              {{ order.address.pincode }}
+              {{ '+91' + order.address.phoneNo }}"
+            >
+              {{ order.address.fullName }}
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-md-5 d-flex justify-content-end flex-column align-items-end"
+        >
+          <div class="row">
+            <div class="col-md-12">ORDER # {{ order.orderId }}</div>
+          </div>
+          <div class="row">
+            <div class="col-md-12" *ngIf="order.coupon">
+              COUPON APPLIED # Flat {{ order.coupon.discountPercent }}% off
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row mt-3" *ngFor="let product of order.products; index as i">
+        <div class="col-md-2 d-flex pt-3">
+          <div class="col-md-7">
+            <img
+              [src]="
+                product.images.length > 0
+                  ? product.images[0].url
+                  : 'assets/laptop.jpg'
+              "
+              class="d-block ui-w-40 ui-bordered mx-2"
+              alt="product image"
+              height="150px"
+              width="150px"
+              [routerLink]="['/products', product.productId]"
+            />
+          </div>
+        </div>
+        <div class="col-md-9 my-3 ms-5">
+          <a
+            class="d-block text-dark"
+            [routerLink]="['/products', product.productId]"
+            >{{ product.title }}</a
+          >
+          <p class="my-1">
+            <strong>{{ product.price | rupeeFormat }}</strong>
+          </p>
+          <div class="row">
+            <div class="col-md-2">
+              <label for="quantity"
+                ><strong>Quantity:</strong> {{ product.qty }}</label
+              >
+            </div>
+            <div class="col-md-4">
+              <label for="amount"
+                ><strong>Amount:</strong>
+                {{ product.amount | rupeeFormat }}</label
+              >
+            </div>
+          </div>
+
+          <div class="row" *ngIf="product.deliveredDate">
+            <div class="col-md-4">
+              <strong>Delivered on:</strong>
+              {{ product.deliveredDate | date : "mediumDate" }}
+            </div>
+          </div>
+
+          <div>
+            <div class="mt-2">
+              <label class="control-label" for="ratings"
+                ><strong>Ratings:</strong></label
+              >
+              <app-rating
+                class="ms-3"
+                [readonly]="false"
+                [rating]="productFeedback[i].rating"
+                (ratingChange)="ratingChange($event, i)"
+              ></app-rating>
+            </div>
+            <div class="row">
+              <div class="col-md-5">
+                <textarea
+                  class="form-control mt-2"
+                  rows="3"
+                  [(ngModel)]="productFeedback[i].comment"
+                  placeholder="Comments"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row my-3 contentBack">
+    <div class="col-md-12">
+      <form>
+        <div>
+          <h5>
+            🌟 Enjoying GadgetGrove? Kindly tell us how was your experience with
+            our app
+          </h5>
+          <div class="form-group mt-3">
+            <div class="col-md-8">
+              <label class="control-label" for="ratings">Ratings:</label>
+              <app-rating
+                class="ms-3"
+                [readonly]="false"
+                [rating]="app.rating"
+                (ratingChange)="ratingChange($event, -1)"
+                [size]="25"
+              ></app-rating>
+            </div>
+          </div>
+
+          <div class="form-group mt-3">
+            <div class="col-md-6">
+              <textarea
+                class="form-control"
+                rows="3"
+                [(ngModel)]="app.comment"
+                placeholder="Comments"
+                name="appComment"
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <button
+              class="btn btn-class mt-3"
+              type="submit"
+              (click)="submitFeedback()"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,5 @@
 import * as productService from "../services/product.service.js";
+import * as feedbackService from "../services/feedback.service.js";
 import catchAsync from "../utils/catch-async.js";
 
 /* getProducts - controller */
@@ -6,8 +7,17 @@ const getProducts = catchAsync(async (req, res) => {
   const { productId } = req.params;
 
   if (productId) {
-    const product = await productService.getProductById(productId);
-    res.send(product);
+    const [product, feedbacks, avgRating] = await Promise.all([
+      productService.getProductById(productId),
+      feedbackService.getTopNFeedback(productId, 6),
+      feedbackService.getAvgRating(productId),
+    ]);
+
+    const productData = product.toJSON();
+    productData.feedbacks = feedbacks;
+    productData.avgRating = avgRating;
+
+    res.send(productData);
   } else {
     const { keyword = "" } = req.query;
     const keywordRegx = new RegExp(keyword, "i");
@@ -24,6 +34,17 @@ const getProducts = catchAsync(async (req, res) => {
     };
 
     const products = await productService.getProducts(filterQuery, options);
+
+    const productIds = products.docs.map((product) => product._id);
+
+    const mapping = await feedbackService.getRatingsMapping(productIds);
+
+    products.docs = products.docs.map((product) => {
+      product = product.toJSON();
+      product.avgRating = mapping[product._id.toString()];
+      return product;
+    });
+
     res.send(products);
   }
 });

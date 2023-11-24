@@ -6,7 +6,6 @@ import { environment } from "src/environment/environment";
 import { Cart } from "../models/cart.model";
 import { LoaderService } from "./loader.service";
 import { ProductService } from "./product.service";
-import { CartStore } from "../store/cart.store";
 import { SwalService } from "./swal.service";
 import { CreateOrderBody, PaginatedOrders } from "../models/order.model";
 import { Product } from "../models/product.model";
@@ -23,7 +22,6 @@ export class OrdersService {
     private swalService: SwalService,
     private productService: ProductService,
     private cartService: CartService,
-    private cartStore: CartStore,
     private router: Router
   ) {}
 
@@ -151,14 +149,13 @@ export class OrdersService {
       })
       .pipe(
         tap((data) => {
-          console.log(data);
           this.loaderService.hide();
         }),
         catchError((error) => {
           this.loaderService.hide();
           console.log(error);
           this.swalService.error(error.error?.message);
-          return of(error);
+          return of(undefined);
         })
       );
   }

@@ -1,7 +1,7 @@
 <div class="card my-4 mx-auto" style="width: 80%; font-size: 14px">
   <div class="card-header">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-7">
         <div class="row">
           <div class="col-md-3 text-center">ORDER PLACED</div>
           <div class="col-md-3 text-center">TOTAL</div>
@@ -14,7 +14,7 @@
             {{ order.createdAt | date : "mediumDate" }}
           </div>
           <div class="col-md-3 text-center">
-            {{ order.totalAmount | rupeeFormat }}
+            {{ getTotalAmt() | rupeeFormat }}
           </div>
           <div
             class="col-md-3 text-center"
@@ -37,10 +37,15 @@
         </div>
       </div>
       <div
-        class="col-md-6 d-flex justify-content-end flex-column align-items-end"
+        class="col-md-5 d-flex justify-content-end flex-column align-items-end"
       >
         <div class="row">
           <div class="col-md-12">ORDER # {{ order.orderId }}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-12" *ngIf="order.coupon && role !== 'seller'">
+            COUPON APPLIED # Flat {{ order.coupon.discountPercent }}% off
+          </div>
         </div>
       </div>
     </div>
@@ -97,6 +102,7 @@
             </button>
           </div>
         </div>
+
         <div class="row" *ngIf="role === 'seller'">
           <div class="col-md-4">
             <strong>Address:</strong> <br />

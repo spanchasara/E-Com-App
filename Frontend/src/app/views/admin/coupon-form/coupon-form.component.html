@@ -1,0 +1,106 @@
+<div class="container my-5">
+  <div class="row my-3 content">
+    <h2 style="text-align: center">{{ !editMode ? "Add" : "Edit" }} Coupon</h2>
+    <div class="col-md-12">
+      <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+        <div style="margin-left: 25%">
+          <div class="form-group mt-3" *ngIf="editMode">
+            <label class="control-label" for="couponCode">Coupon Code</label>
+            <div class="col-md-8">
+              <input
+                name="couponCode"
+                placeholder="Coupon Code"
+                class="form-control"
+                type="text"
+                disabled
+                [(ngModel)]="coupon.couponCode"
+              />
+            </div>
+          </div>
+
+          <div class="form-group mt-3">
+            <label class="control-label" for="discountPercent"
+              >Discount (%)</label
+            >
+            <div class="col-md-8">
+              <input
+                type="number"
+                placeholder="Coupon Discount"
+                name="discountPercent"
+                #discount="ngModel"
+                min="1"
+                max="99"
+                required
+                class="form-control"
+                [(ngModel)]="coupon.discountPercent"
+              />
+              <span
+                class="help-block"
+                style="color: red"
+                *ngIf="!discount.valid && discount.touched"
+                >Please enter a valid coupon discount! Range 1-99%</span
+              >
+            </div>
+          </div>
+
+          <div class="form-group mt-3">
+            <label class="control-label" for="couponUsageLimit"
+              >Coupon Usage Limit</label
+            >
+            <div class="col-md-8">
+              <input
+                type="number"
+                placeholder="Coupon Usage Limit"
+                name="couponUsageLimit"
+                #couponUsageLimit="ngModel"
+                required
+                min="1"
+                class="form-control"
+                [(ngModel)]="coupon.couponUsageLimit"
+              />
+              <span
+                class="help-block"
+                style="color: red"
+                *ngIf="!couponUsageLimit.valid && couponUsageLimit.touched"
+              >
+                Please enter a valid coupon usage limit!
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group mt-3">
+            <label class="control-label" for="expiryDate">Expiry Date</label>
+            <div class="col-md-8">
+              <input
+                type="date"
+                placeholder="Expiry Date"
+                name="expiryDate"
+                #expiryDate="ngModel"
+                min="{{ today | date : 'yyyy-MM-dd' }}"
+                required
+                class="form-control"
+                [ngModel]="coupon.expiryDate | date : 'yyyy-MM-dd'"
+                (ngModelChange)="coupon.expiryDate = $event"
+              />
+              <span
+                class="help-block"
+                style="color: red"
+                *ngIf="!expiryDate.valid && expiryDate.touched"
+                >Please enter a valid expiry date!</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="form-group text-center">
+          <button
+            class="btn btn-class mt-3 text-center"
+            type="submit"
+            [disabled]="!f.valid"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

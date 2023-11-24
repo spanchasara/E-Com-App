@@ -1,5 +1,6 @@
 import { Component, Input } from "@angular/core";
 import { Cart } from "src/app/models/cart.model";
+import { Coupon } from "src/app/models/coupon.model";
 
 @Component({
   selector: "app-preview-order",
@@ -8,6 +9,7 @@ import { Cart } from "src/app/models/cart.model";
 })
 export class PreviewOrderComponent {
   @Input() order!: Cart;
+  @Input() coupon!: Coupon | null;
 
   constructor() {}
 }

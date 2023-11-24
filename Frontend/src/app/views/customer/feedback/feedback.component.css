@@ -1,0 +1,14 @@
+.contentBack {
+  margin: 10%;
+  background-color: #f9f7f7;
+  padding: 1rem;
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.05);
+}
+
+span {
+  padding-right: 0.1rem;
+  color: #112d4e;
+}
+.filled {
+  color: #112d4e;
+}

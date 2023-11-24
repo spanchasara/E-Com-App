@@ -37,6 +37,19 @@ export class SwalService {
     });
   }
 
+  info(message: string) {
+    Swal.fire({
+      title: "Info",
+      html: message,
+      icon: "info",
+      toast: true,
+      showConfirmButton: false,
+      position: "top-end",
+      timer: 3000,
+      timerProgressBar: true,
+    });
+  }
+
   warning(message: string) {
     Swal.fire({
       title: "Warning",

@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import ApiError from "../utils/api-error.js";
 import httpStatus from "http-status";
 import paginate from "mongoose-paginate-v2";
+
 const userSchema = new Schema(
   {
     firstName: {
@@ -56,19 +57,19 @@ const userSchema = new Schema(
     },
     companyName: {
       type: String,
-      default: null
+      default: null,
     },
     resetToken: {
       token: {
-        type: String
+        type: String,
       },
-      createdAt : {
-        type : Date,
+      createdAt: {
+        type: Date,
       },
       expiry: {
         type: Date,
-      }
-    }
+      },
+    },
   },
   {
     timestamps: true,
@@ -94,6 +95,7 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.plugin(paginate);
+
 const User = mongoose.model("User", userSchema);
 
 export default User;
