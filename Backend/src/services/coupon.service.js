@@ -36,10 +36,9 @@ const getAllCoupons = async (userId, options) => {
   return coupons;
 };
 
-const getAllCustomerCoupons = async (userId, options) => {
+const getAllCustomerCoupons = async (options) => {
   const coupons = await Coupon.paginate(
     {
-      usedBy: { $nin: [userId] },
       isActive: true,
       expiryDate: { $gte: new Date() },
     },

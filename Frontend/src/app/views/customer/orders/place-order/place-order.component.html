@@ -15,6 +15,12 @@
       (applyDiscount)="applyDiscount($event)"
     ></app-coupon>
   </div>
+  <app-pagination
+    [totalItems]="allCoupons.totalDocs || 0"
+    [page]="allCoupons.page || 1"
+    [limit]="allCoupons.limit || 5"
+    (pageChange)="pageChanged($event)"
+  ></app-pagination>
 </ng-template>
 
 <div class="container">

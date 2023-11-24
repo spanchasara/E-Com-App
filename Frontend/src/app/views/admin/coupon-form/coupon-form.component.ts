@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Coupon, CouponBody } from "src/app/models/coupon.model";
+import { Coupon, CouponBody, CouponType } from "src/app/models/coupon.model";
 import { CouponService } from "src/app/services/coupon.service";
 
 @Component({
@@ -18,6 +18,23 @@ export class CouponFormComponent implements OnInit {
   coupon!: Coupon | CouponBody;
   editMode = false;
   today = new Date();
+
+  isNowActive: boolean = false;
+
+  CouponType = [
+    {
+      value: CouponType.general,
+      label: "General",
+    },
+    {
+      value: CouponType.festival,
+      label: "Festival",
+    },
+    {
+      value: CouponType.firstOrder,
+      label: "First Order",
+    },
+  ];
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
@@ -36,8 +53,10 @@ export class CouponFormComponent implements OnInit {
       } else {
         this.coupon = {
           discountPercent: 0,
-          couponUsageLimit: 0,
           expiryDate: new Date(),
+          activationDate: new Date(),
+          name: "",
+          type: CouponType.general,
           isActive: false,
         };
       }
@@ -45,6 +64,12 @@ export class CouponFormComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
+    if (!this.editMode && this.isNowActive) {
+      delete form.value.activationDate;
+    }
+
+    delete form.value.isNowActive;
+
     if (this.editMode) {
       this.couponService
         .editCoupon((this.coupon as Coupon)._id, form.value)

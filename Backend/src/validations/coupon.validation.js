@@ -2,8 +2,13 @@ import Joi from "joi";
 
 const addCoupon = {
   body: Joi.object().keys({
+    name: Joi.string().required(),
+    type: Joi.string()
+      .required()
+      .valid("general", "first-order", "festival")
+      .default("general"),
     discountPercent: Joi.number().required().min(1).max(100),
-    couponUsageLimit: Joi.number().required().min(1),
+    activationDate: Joi.date().greater("now"),
     expiryDate: Joi.date().required().greater("now"),
   }),
 };
@@ -37,8 +42,10 @@ const updateCoupon = {
     couponId: Joi.string().required(),
   }),
   body: Joi.object().keys({
+    name: Joi.string(),
+    type: Joi.string().valid("general", "first-order", "festival"),
     discountPercent: Joi.number().min(1).max(100),
-    couponUsageLimit: Joi.number().min(1),
+    activationDate: Joi.date(),
     expiryDate: Joi.date().greater("now"),
     isActive: Joi.boolean(),
   }),

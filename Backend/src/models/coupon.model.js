@@ -8,13 +8,26 @@ const couponSchema = new Schema(
       required: true,
       unique: [true, "coupon code already exists"],
     },
+    name: {
+      type: String,
+      required: true,
+      unique: [true, "coupon name already exists"],
+    },
+    type: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true,
+      enum: ["general", "first-order", "festival"],
+    },
     discountPercent: {
       type: Number,
       required: true,
     },
-    couponUsageLimit: {
-      type: Number,
+    activationDate: {
+      type: Date,
       required: true,
+      default: Date.now(),
     },
     expiryDate: {
       type: Date,

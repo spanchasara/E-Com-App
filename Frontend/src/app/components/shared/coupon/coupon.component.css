@@ -28,3 +28,7 @@ span {
   right: 0;
   opacity: 0.1;
 }
+
+.grey-out {
+  opacity: 0.5;
+}

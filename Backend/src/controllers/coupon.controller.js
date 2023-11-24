@@ -17,10 +17,7 @@ const getAllCoupons = catchAsync(async (req, res) => {
 
 const getAllCustomerCoupons = catchAsync(async (req, res) => {
   const options = req.query;
-  const coupons = await couponService.getAllCustomerCoupons(
-    req.user._id,
-    options
-  );
+  const coupons = await couponService.getAllCustomerCoupons(options);
   res.send(coupons);
 });
 

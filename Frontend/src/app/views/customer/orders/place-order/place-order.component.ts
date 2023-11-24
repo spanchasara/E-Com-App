@@ -45,7 +45,11 @@ export class PlaceOrderComponent implements OnInit {
       sessionStorage.getItem("currentAddress") || ""
     )._id;
 
-    this.couponService.getAllCustomerCoupons({}).subscribe((data) => {
+    this.getCoupons({});
+  }
+
+  getCoupons(options: any) {
+    this.couponService.getAllCustomerCoupons(options).subscribe((data) => {
       this.allCoupons = data;
     });
   }
@@ -105,5 +109,9 @@ export class PlaceOrderComponent implements OnInit {
             });
           });
       });
+  }
+
+  pageChanged(page: number) {
+    this.getCoupons({ page });
   }
 }

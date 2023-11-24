@@ -112,7 +112,7 @@ export class CouponService {
     let params = new HttpParams();
 
     params = params.append("page", options?.page || 1);
-    params = params.append("limit", options?.limit || 10);
+    params = params.append("limit", options?.limit || 9);
     params = params.append("sort", options?.sort || "expiryDate");
 
     return this.http

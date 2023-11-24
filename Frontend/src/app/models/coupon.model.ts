@@ -1,20 +1,30 @@
+export enum CouponType {
+  general = "general",
+  festival = "festival",
+  firstOrder = "first-order",
+}
+
 export type Coupon = {
   _id: string;
   couponCode: string;
   discountPercent: number;
-  couponUsageLimit: number;
   expiryDate: Date;
   isActive: boolean;
   createdBy: CouponUser;
   createdAt: Date;
   usedBy: string[];
+  name: string;
+  type: CouponType;
+  activationDate: Date;
 };
 
 export type CouponBody = {
   couponCode?: string;
+  name?: string;
+  type?: CouponType;
   discountPercent?: number;
-  couponUsageLimit?: number;
   expiryDate?: Date;
+  activationDate?: Date;
   isActive?: boolean;
 };
 

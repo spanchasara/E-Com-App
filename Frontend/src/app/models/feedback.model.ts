@@ -1,14 +1,3 @@
-export type Feedback = {
-  _id: string;
-  couponCode: string;
-  discountPercent: number;
-  couponUsageLimit: number;
-  expiryDate: Date;
-  isActive: boolean;
-  createdAt: Date;
-  usedBy: string[];
-};
-
 export type FeedbackBody = {
   orderId: string;
   productId?: string;

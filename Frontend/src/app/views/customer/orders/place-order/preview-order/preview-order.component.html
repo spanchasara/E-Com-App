@@ -3,7 +3,7 @@
     <span><strong>Total Quantity:</strong> {{ order.totalQty }}</span>
     <span *ngIf="coupon">
       <strong>Coupon Applied:</strong>
-      Flat {{ coupon.discountPercent }}% off
+      {{ coupon.name }} ({{ coupon.discountPercent }}% off)
     </span>
     <span
       ><strong>Total Amount:</strong>

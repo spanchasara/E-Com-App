@@ -11,7 +11,7 @@
         (click)="toggleState(true)"
         [disabled]="isOwn"
       >
-        own
+        Own
       </button>
     </div>
     <div class="nav-item">
@@ -56,10 +56,11 @@
       <tr>
         <th scope="col">#</th>
         <th scope="col">Coupon Code</th>
+        <th scope="col">Coupon Name</th>
+        <th scope="col">Type</th>
         <th scope="col">Discount (%)</th>
-        <th scope="col">Created At</th>
+        <th scope="col">Activated On</th>
         <th scope="col">Expiry Date</th>
-        <th scope="col">Coupon Limit</th>
         <th scope="col">Utilization</th>
         <th scope="col" *ngIf="!isOwn">Created By</th>
         <th scope="col" *ngIf="isOwn">Actions</th>
@@ -71,19 +72,21 @@
           {{ ((coupons?.page || 1) - 1) * (coupons?.limit || 10) + i + 1 }}
         </th>
         <td>{{ data.couponCode }}</td>
-
+        <td>{{ data.name }}</td>
+        <td>{{ data.type }}</td>
         <td>
           {{ data.discountPercent }}
         </td>
         <td>
-          {{ data.createdAt | date : "mediumDate" }}
+          <div>{{ data.activationDate | date : "mediumDate" }}</div>
+          <div>{{ data.activationDate | date : "h:mm a" }}</div>
         </td>
+
         <td>
-          {{ data.expiryDate | date : "mediumDate" }}
+          <div>{{ data.expiryDate | date : "mediumDate" }}</div>
+          <div>{{ data.expiryDate | date : "h:mm a" }}</div>
         </td>
-        <td>
-          {{ data.couponUsageLimit }}
-        </td>
+
         <td (click)="open(content, data.usedBy)" style="cursor: pointer">
           {{ data.usedBy.length }}
         </td>

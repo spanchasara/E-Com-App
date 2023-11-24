@@ -2,14 +2,13 @@ import Stripe from "stripe";
 
 const createCoupon = async (body) => {
   const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
-  const { discountPercent, couponCode, couponUsageLimit } = body;
+  const { discountPercent, couponCode, name } = body;
 
   const coupon = await stripe.coupons.create({
     percent_off: discountPercent,
     duration: "forever",
     id: couponCode,
-    max_redemptions: couponUsageLimit,
-    name: `Flat ${discountPercent}% off`,
+    name,
   });
 
   return coupon;
