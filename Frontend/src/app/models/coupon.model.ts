@@ -9,7 +9,7 @@ export type Coupon = {
   couponCode: string;
   discountPercent: number;
   expiryDate: Date;
-  isActive: boolean;
+  isEnabled: boolean;
   createdBy: CouponUser;
   createdAt: Date;
   usedBy: string[];
@@ -25,7 +25,7 @@ export type CouponBody = {
   discountPercent?: number;
   expiryDate?: Date;
   activationDate?: Date;
-  isActive?: boolean;
+  isEnabled?: boolean;
 };
 
 export type PaginatedCoupons = {

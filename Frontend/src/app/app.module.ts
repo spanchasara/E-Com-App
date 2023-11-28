@@ -56,6 +56,7 @@ import { CouponFormComponent } from "./views/admin/coupon-form/coupon-form.compo
 import { CouponComponent } from "./components/shared/coupon/coupon.component";
 import { FeedbackComponent } from "./views/customer/feedback/feedback.component";
 import { RatingComponent } from './components/shared/rating/rating.component';
+import { FilterbarComponent } from './components/shared/filterbar/filterbar.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -105,6 +106,7 @@ import { RatingComponent } from './components/shared/rating/rating.component';
     CouponComponent,
     FeedbackComponent,
     RatingComponent,
+    FilterbarComponent,
   ],
   imports: [
     BrowserModule,

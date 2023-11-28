@@ -9,6 +9,9 @@ const getProducts = {
     page: Joi.number().integer().min(1).default(1),
     limit: Joi.number().integer().min(1).default(10),
     sort: Joi.string().allow(""),
+    rating: Joi.string().default(0),
+    minPrice: Joi.number().min(0).max(999999).default(0),
+    maxPrice: Joi.number().min(0).max(999999).default(999999),
   }),
 };
 

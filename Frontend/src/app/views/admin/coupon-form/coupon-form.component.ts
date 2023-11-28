@@ -18,8 +18,8 @@ export class CouponFormComponent implements OnInit {
   coupon!: Coupon | CouponBody;
   editMode = false;
   today = new Date();
-
-  isNowActive: boolean = false;
+  tomorrow = Date.now() + 24 * 60 * 60 * 1000;
+  isNowActive: boolean = true;
 
   CouponType = [
     {
@@ -41,6 +41,7 @@ export class CouponFormComponent implements OnInit {
       this.editMode = params.has("id");
 
       const id = params.get("id") || "";
+      console.log(this.tomorrow);
 
       if (this.editMode) {
         if (id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -53,11 +54,11 @@ export class CouponFormComponent implements OnInit {
       } else {
         this.coupon = {
           discountPercent: 0,
-          expiryDate: new Date(),
+          expiryDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
           activationDate: new Date(),
           name: "",
           type: CouponType.general,
-          isActive: false,
+          isEnabled: false,
         };
       }
     });

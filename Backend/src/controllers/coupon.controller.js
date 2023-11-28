@@ -29,6 +29,7 @@ const addCoupon = catchAsync(async (req, res) => {
   const couponCode = uuidv4();
 
   const body = { ...req.body, couponCode, createdBy: userId };
+  console.log(body);
   const coupon = await couponService.addCoupon(body);
   res.send(coupon);
 });

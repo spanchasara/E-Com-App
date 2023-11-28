@@ -1,8 +1,17 @@
 import Product from "../models/product.model.js";
 import ApiError from "../utils/api-error.js";
 import httpStatus from "http-status";
+import * as feedbackService from "./feedback.service.js"
+
 
 import { uploadImage, deleteImage } from "../utils/cloudinary.js";
+
+const convertStringToSortObject = (sortString = '-createdAt') => {
+  const sortOrder = sortString.startsWith("-") ? -1 : 1;
+  const sortField = sortString.replace(/^-/, ""); // Remove the '-' if present
+
+  return { [sortField]: sortOrder };
+};
 
 const getProductById = async (productId) => {
   const product = await Product.findById(productId);
@@ -15,13 +24,93 @@ const getProductById = async (productId) => {
 };
 
 const getProducts = async (filterQuery = {}, options = {}) => {
-  const products = await Product.paginate(filterQuery, options);
+  const { page = 1, limit = 10 } = options;
+  const skip = (page - 1) * limit;
 
-  if (!products) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Products not found!!");
-  }
+  const totalDocs = await Product.aggregate([
+    {
+      $match: filterQuery,
+    },
+    {
+      $lookup: {
+        from: "feedbacks",
+        localField: "_id",
+        foreignField: "productId",
+        as: "feedbacks",
+      },
+    },
+    {
+      $addFields: {
+        avgRating: { $avg: "$feedbacks.rating" },
+      },
+    },
+    {
+      $match: {
+        avgRating: { $gte: Number(options.rating) },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        count: {
+          $sum: 1
+        }
+      }
+    }
+  ]);
 
-  return products;
+
+  const docs = await Product.aggregate([
+    {
+      $match: filterQuery,
+    },
+    {
+      $lookup: {
+        from: "feedbacks",
+        localField: "_id",
+        foreignField: "productId",
+        as: "feedbacks",
+      },
+    },
+    {
+      $addFields: {
+        avgRating: { $avg: "$feedbacks.rating" },
+      },
+    },
+    {
+      $match: {
+        avgRating: { $gte: Number(options.rating) },
+      },
+    },
+    {
+      $sort: convertStringToSortObject(options.sort),
+    },
+    {
+      $skip: skip
+    },
+    {
+      $limit: limit
+    },
+    {
+      $project: {
+        feedbacks : 0
+      }
+    }
+  ]);
+
+  docs.map((doc) => {
+    doc.avgRating = feedbackService.getCustomRating(doc.avgRating);
+  })
+
+  const resp = {
+    docs,
+    totalDocs: totalDocs[0]?.count || 0,
+    limit,
+    page
+  };
+
+  return resp;
+
 };
 
 const createProduct = async (productBody) => {
