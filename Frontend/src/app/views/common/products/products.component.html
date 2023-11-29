@@ -3,7 +3,8 @@
     (sortOption)="sortOption($event)"
     (enteredSearch)="enteredSearch($event)"
   ></app-searchbar>
-
+  <div class="my-3"></div>
+  <app-filterbar (changer)="changer($event)"></app-filterbar>
   <div
     class="row row-cols-1 row-cols-md-3 g-4 mt-3"
     *ngIf="products.totalDocs > 0; else noProducts"

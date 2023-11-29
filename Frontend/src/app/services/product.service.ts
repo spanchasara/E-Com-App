@@ -33,16 +33,22 @@ export class ProductService {
           page?: number;
           limit?: number;
           sort?: string;
-        }
+          rating ?: number; 
+          minPrice ?: number; 
+          maxPrice ?: number; 
+        },
   ): Observable<any> {
     this.loaderService.show();
     let params = new HttpParams();
 
     if (!isSingle && typeof productData === "object") {
       params = params.append("keyword", productData?.keyword || "");
+      params = params.append("rating", productData?.rating || 0);
+      params = params.append("minPrice", productData?.minPrice || 0);
+      params = params.append("maxPrice", productData?.maxPrice || 999999);
       params = params.append("page", productData?.page || 1);
       params = params.append("limit", productData?.limit || 10);
-      params = params.append("sort", productData?.sort || "");
+      params = params.append("sort", productData?.sort || "-createdAt");
     }
 
     return this.httpClient
@@ -50,7 +56,7 @@ export class ProductService {
         this.apiUrl + `product/${isSingle ? productData : ""}`,
         {
           params,
-        }
+        }, 
       )
       .pipe(
         tap(() => {
@@ -185,7 +191,9 @@ export class ProductService {
   deleteImages(deleteImages: string[], productId: string) {
     this.loaderService.show();
     return this.httpClient
-      .patch(this.apiUrl + `product/images/${productId}`,{publicIds: deleteImages})
+      .patch(this.apiUrl + `product/images/${productId}`, {
+        publicIds: deleteImages,
+      })
       .pipe(
         tap(() => {
           this.loaderService.hide();

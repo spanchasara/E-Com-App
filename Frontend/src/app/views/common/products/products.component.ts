@@ -25,6 +25,10 @@ export class ProductsComponent implements OnInit {
     private productStore: ProductStore
   ) {}
 
+  changer(products: PaginatedProducts) {
+    this.products= products;
+  }
+
   ngOnInit() {
     const sortOptionKey = this.productStore.getValue().sort;
     const sortOptionValue =

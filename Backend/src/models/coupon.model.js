@@ -33,7 +33,7 @@ const couponSchema = new Schema(
       type: Date,
       required: true,
     },
-    isActive: {
+    isEnabled: {
       type: Boolean,
       default: true,
     },

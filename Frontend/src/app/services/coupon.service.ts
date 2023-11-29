@@ -66,7 +66,7 @@ export class CouponService {
 
   getAllCoupons(options: {
     isOwn?: boolean;
-    isActive?: boolean;
+    isEnabled?: boolean;
     page?: number;
     limit?: number;
     sort?: string;
@@ -80,8 +80,8 @@ export class CouponService {
       options?.isOwn === undefined ? true : options?.isOwn
     );
     params = params.append(
-      "isActive",
-      options?.isActive === undefined ? true : options?.isActive
+      "isEnabled",
+      options?.isEnabled === undefined ? true : options?.isEnabled
     );
     params = params.append("limit", options?.limit || 10);
     params = params.append("sort", options?.sort || "expiryDate");

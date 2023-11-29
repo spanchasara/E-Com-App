@@ -122,7 +122,7 @@
                 placeholder="Expiry Date"
                 name="expiryDate"
                 #expiryDate="ngModel"
-                min="{{ today | date : 'yyyy-MM-ddTHH:mm' }}"
+                min="{{ tomorrow | date : 'yyyy-MM-ddTHH:mm' }}"
                 required
                 class="form-control"
                 [ngModel]="coupon.expiryDate | date : 'yyyy-MM-ddTHH:mm'"
@@ -132,7 +132,7 @@
                 class="help-block"
                 style="color: red"
                 *ngIf="!expiryDate.valid && expiryDate.touched"
-                >Please enter a valid expiry date!</span
+                >Please enter a valid expiry date! (Should be greater than Activation Date)</span
               >
             </div>
           </div>

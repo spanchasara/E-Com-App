@@ -97,13 +97,13 @@
           <button
             type="button"
             [ngClass]="
-              data.isActive
+              data.isEnabled
                 ? 'btn btn-sm btn-outline-danger'
                 : 'btn btn-sm btn-outline-success'
             "
-            (click)="toggleCouponStatus(data._id, !data.isActive)"
+            (click)="toggleCouponStatus(data._id, !data.isEnabled)"
           >
-            {{ data.isActive ? "Disable" : "Enable" }}
+            {{ data.isEnabled ? "Disable" : "Enable" }}
           </button>
           <button class="custom-button mx-3" [routerLink]="['edit', data._id]">
             <svg

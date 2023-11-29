@@ -9,7 +9,10 @@ const addCoupon = {
       .default("general"),
     discountPercent: Joi.number().required().min(1).max(100),
     activationDate: Joi.date().greater("now"),
-    expiryDate: Joi.date().required().greater("now"),
+    expiryDate: Joi.date()
+      .required()
+      .greater(Joi.ref("activationDate"))
+      .greater("now"),
   }),
 };
 
@@ -25,7 +28,7 @@ const getAllCoupons = {
     limit: Joi.number().integer().min(1).default(10),
     sort: Joi.string().default("-createdAt"),
     isOwn: Joi.boolean().default(true),
-    isActive: Joi.boolean().default(true),
+    isEnabled: Joi.boolean().default(true),
   }),
 };
 
@@ -50,7 +53,7 @@ const updateCoupon = {
     discountPercent: Joi.number().min(1).max(100),
     activationDate: Joi.date(),
     expiryDate: Joi.date().greater("now"),
-    isActive: Joi.boolean(),
+    isEnabled: Joi.boolean(),
   }),
 };
 
