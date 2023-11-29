@@ -29,13 +29,13 @@ const checkIsExistingUser = async (email, username) => {
   const userCheckEmail = await User.findOne({ email });
 
   if (userCheckEmail) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Email already exists !!");
+    return true;
   }
 
   const userCheckUsername = await User.findOne({ username });
 
   if (userCheckUsername) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Username already exists !!");
+    return true;
   }
 
   return false;

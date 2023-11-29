@@ -1,9 +1,9 @@
-import { NgModule } from "@angular/core";
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SweetAlert2Module } from "@sweetalert2/ngx-sweetalert2";
 import { AkitaNgDevtools } from "@datorama/akita-ngdevtools";
 import { NgbModule, NgbRatingModule } from "@ng-bootstrap/ng-bootstrap";
@@ -55,8 +55,16 @@ import { CouponsListComponent } from "./views/admin/coupons-list/coupons-list.co
 import { CouponFormComponent } from "./views/admin/coupon-form/coupon-form.component";
 import { CouponComponent } from "./components/shared/coupon/coupon.component";
 import { FeedbackComponent } from "./views/customer/feedback/feedback.component";
-import { RatingComponent } from './components/shared/rating/rating.component';
-import { FilterbarComponent } from './components/shared/filterbar/filterbar.component';
+import { RatingComponent } from "./components/shared/rating/rating.component";
+import { FilterbarComponent } from "./components/shared/filterbar/filterbar.component";
+
+import {
+  SocialLoginModule,
+  SocialAuthServiceConfig,
+  GoogleSigninButtonModule,
+} from "@abacritt/angularx-social-login";
+import { GoogleLoginProvider } from "@abacritt/angularx-social-login";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -118,12 +126,31 @@ import { FilterbarComponent } from './components/shared/filterbar/filterbar.comp
     AkitaNgDevtools.forRoot(),
     NgbCarouselModule,
     NgbRatingModule,
+    SocialLoginModule,
+    GoogleSigninButtonModule,
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true,
+    },
+    {
+      provide: "SocialAuthServiceConfig",
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              "631074242418-om4kcvar28m2bvdrj6fl585qjtkq7cmo.apps.googleusercontent.com"
+            ),
+          },
+        ],
+        onError: (err) => {
+          console.error(err);
+        },
+      } as SocialAuthServiceConfig,
     },
   ],
   bootstrap: [AppComponent],

@@ -1,6 +1,7 @@
 import * as authService from "../services/auth.service.js";
 import { addToContactList } from "../utils/brevo.js";
 import catchAsync from "../utils/catch-async.js";
+import { OAuth2Client } from "google-auth-library";
 
 /* Register - controller */
 const register = catchAsync(async (req, res) => {
@@ -42,7 +43,36 @@ const resetPassword = catchAsync(async (req, res) => {
   res.send(response);
 });
 
-export { register, login, changePassword, resetPasswordRequest, resetPassword };
+const socialLogin = catchAsync(async (req, res) => {
+  const client = new OAuth2Client();
+  const ticket = await client.verifyIdToken({
+    idToken: req.body.idToken,
+    audience:
+      "631074242418-om4kcvar28m2bvdrj6fl585qjtkq7cmo.apps.googleusercontent.com",
+  });
+  const payload = ticket.getPayload();
+  const userid = payload["sub"];
+  res.send(payload);
+  // If request specified a G Suite domain:
+  // const domain = payload['hd'];
+
+  // const { provider } = req.params;
+  // const reqBody = req.body;
+
+  // if (provider === "google") {
+  //   const response = await authService.googleLogin(reqBody);
+  //   return res.send(response);
+  // }
+});
+
+export {
+  register,
+  login,
+  changePassword,
+  resetPasswordRequest,
+  resetPassword,
+  socialLogin,
+};
 
 // Register
 /**

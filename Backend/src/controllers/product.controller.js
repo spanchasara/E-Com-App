@@ -18,10 +18,10 @@ const getProducts = catchAsync(async (req, res) => {
 
     res.send(productData);
   } else {
-    const { keyword = "", rating, minPrice, maxPrice} = req.query;
+    const { keyword = "", rating, minPrice, maxPrice } = req.query;
     const keywordRegx = new RegExp(keyword, "i");
 
-    if(maxPrice < minPrice) {
+    if (maxPrice < minPrice) {
       maxPrice = 999999;
       minPrice = 0;
     }
@@ -31,12 +31,12 @@ const getProducts = catchAsync(async (req, res) => {
         { title: { $regex: keywordRegx } },
         { description: { $regex: keywordRegx } },
       ],
-      price: { $gte: minPrice , $lte: maxPrice },
+      price: { $gte: minPrice, $lte: maxPrice },
     };
 
     const options = {
       ...req.query,
-      rating
+      rating,
     };
 
     const products = await productService.getProducts(filterQuery, options);
@@ -61,7 +61,12 @@ const getSellerProducts = catchAsync(async (req, res) => {
     filterQuery.stock = { $eq: 0 };
   }
 
-  const products = await productService.getProducts(filterQuery, req.query);
+  const options = {
+    ...req.query,
+    rating: 0,
+  };
+
+  const products = await productService.getProducts(filterQuery, options);
   res.send(products);
 });
 
