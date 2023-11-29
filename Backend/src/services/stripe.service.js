@@ -35,7 +35,6 @@ const handlePayment = async (body) => {
   const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
 
   const { products, orderId, couponCode } = body;
-  console.log(products);
 
   const totalBeforeDiscount = products.reduce(
     (total, prod) => total + prod.productId.price * prod.qty,

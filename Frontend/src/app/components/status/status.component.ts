@@ -21,8 +21,6 @@ export class StatusComponent {
       const status = params["status"];
       const orderId = params["order_id"];
 
-      console.log(status, orderId);
-
       if (!orderId || !status) {
         return this.router.navigate(["/"]);
       }

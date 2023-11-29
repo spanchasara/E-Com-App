@@ -41,7 +41,6 @@ export class CouponFormComponent implements OnInit {
       this.editMode = params.has("id");
 
       const id = params.get("id") || "";
-      console.log(this.tomorrow);
 
       if (this.editMode) {
         if (id.match(/^[0-9a-fA-F]{24}$/)) {

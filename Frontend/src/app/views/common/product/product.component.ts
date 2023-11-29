@@ -52,7 +52,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.isSellerByRole = this.userStore.getValue().user?.role === "seller";
         this.isAdmin = this.userStore.getValue().user?.role === "admin";
         this.isAuthenticated = !!this.userStore.getValue().user;
-        console.log(this.product);
       });
     });
 
