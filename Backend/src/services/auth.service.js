@@ -132,22 +132,21 @@ const resetPassword = async (passwordResetBody) => {
 };
 
 const googleLogin = async (googleLoginBody) => {
-  const { email, id, firstName, lastName } = googleLoginBody;
+  const { email, name, sub } = googleLoginBody;
   const username = email.split("@")[0];
 
   const isExistingUser = await userService.checkIsExistingUser(email, username);
 
   if (!isExistingUser) {
     await userService.createUser({
-      firstName,
-      lastName,
+      firstName: name,
       email,
       username,
-      password: id,
+      password: sub,
     });
   }
 
-  const user = await userService.findByCredentials(email, id);
+  const user = await userService.findByCredentials(email, sub);
   const token = await generateAuthToken(user._id, user.role);
 
   return {

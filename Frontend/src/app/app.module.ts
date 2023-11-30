@@ -1,9 +1,9 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
+import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { FormsModule } from "@angular/forms";
 import { SweetAlert2Module } from "@sweetalert2/ngx-sweetalert2";
 import { AkitaNgDevtools } from "@datorama/akita-ngdevtools";
 import { NgbModule, NgbRatingModule } from "@ng-bootstrap/ng-bootstrap";
@@ -64,6 +64,7 @@ import {
   GoogleSigninButtonModule,
 } from "@abacritt/angularx-social-login";
 import { GoogleLoginProvider } from "@abacritt/angularx-social-login";
+import { environment } from "src/environment/environment";
 
 @NgModule({
   declarations: [
@@ -143,7 +144,7 @@ import { GoogleLoginProvider } from "@abacritt/angularx-social-login";
           {
             id: GoogleLoginProvider.PROVIDER_ID,
             provider: new GoogleLoginProvider(
-              "631074242418-om4kcvar28m2bvdrj6fl585qjtkq7cmo.apps.googleusercontent.com"
+              environment.googleClientId
             ),
           },
         ],

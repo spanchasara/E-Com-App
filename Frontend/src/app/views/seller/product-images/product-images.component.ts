@@ -59,6 +59,5 @@ export class ProductImagesComponent {
     this.productService
       .deleteImages(this.deletedImages, this.productId)
       .subscribe();
-    console.log(this.deletedImages);
   }
 }

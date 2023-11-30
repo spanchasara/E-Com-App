@@ -37,4 +37,13 @@ const resetPassword = {
   }),
 };
 
-export { register, login, changePassword, resetPasswordRequest, resetPassword };
+const socialLogin = {
+  params: Joi.object().keys({
+    provider: Joi.string().required(),
+  }), 
+  query: Joi.object().keys({
+    idToken: Joi.string().required(),
+  }), 
+}
+
+export { register, login, changePassword, resetPasswordRequest, resetPassword, socialLogin };

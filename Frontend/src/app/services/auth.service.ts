@@ -1,17 +1,17 @@
 import { Injectable } from "@angular/core";
 import { SignIn, Signup } from "../models/auth.model";
 import { Observable, Subject, catchError, of, tap } from "rxjs";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { User } from "../models/user.model";
 import { Router } from "@angular/router";
 
 import { environment } from "src/environment/environment";
 import { UserStore } from "../store/user-store";
 import { ProductStore } from "../store/product.store";
-import { CartStore } from "../store/cart.store";
 import { LoaderService } from "./loader.service";
 import { CartService } from "./cart.service";
 import { SwalService } from "./swal.service";
+import { SocialAuthService } from "@abacritt/angularx-social-login";
 
 @Injectable({
   providedIn: "root",
@@ -22,7 +22,7 @@ export class AuthService {
     private router: Router,
     private userStore: UserStore,
     private productStore: ProductStore,
-    private cartStore: CartStore,
+    private socialService: SocialAuthService,
     private loaderService: LoaderService,
     private swalService: SwalService,
     private cartService: CartService
@@ -228,6 +228,73 @@ export class AuthService {
           console.log(error);
           this.swalService.error(error.error?.message);
           this.router.navigate(["/login"]);
+          return of(error);
+        })
+      );
+  }
+
+  googleLogin() {
+   return  this.socialService.authState.subscribe((user) => {
+      this.socialSignIn('google', user.idToken).subscribe();
+    });
+  }
+
+  socialSignIn(provider: string, idToken: string): Observable<any> {
+    this.loaderService.show();
+    let params = new HttpParams();
+    params = params.append("idToken", idToken || '');
+    return this.httpClient
+      .get<{ user: User; token: string; tokenExpiresIn: number }>(
+        this.apiUrl + `auth/social-login/${provider}`,
+        {
+          params,
+        }
+      )
+      .pipe(
+        tap((resData) => {
+          this.loaderService.hide();
+          const token = resData?.token || "";
+          const user = resData?.user || null;
+          const expiresInDuration = resData?.tokenExpiresIn || 0;
+
+          localStorage.setItem("userToken", token);
+          this.userStore.updateUserData({ user });
+
+          this.autoLogout(expiresInDuration * 1000);
+          this.isAuthenticated.next(true);
+
+          if (user?.role === "customer") {
+            const localCart = this.cartService.getLocalCart();
+            localCart.products.forEach((product) => {
+              this.cartService
+                .updateCart(
+                  {
+                    productId: product.productId._id,
+                    qty: product.qty,
+                  },
+                  false
+                )
+                .subscribe();
+            });
+          }
+          localStorage.removeItem("cart");
+
+          this.swalService.success("LoggedIn Successfully!!");
+
+          if (user) {
+            if (user.role === "admin") {
+              this.router.navigate(["/admin"]);
+            } else if (user.role === "seller") {
+              this.router.navigate(["/seller"]);
+            } else {
+              this.router.navigate(["/"]);
+            }
+          }
+        }),
+        catchError((error) => {
+          this.loaderService.hide();
+          console.log(error);
+          this.swalService.error(error.error?.message);
           return of(error);
         })
       );
