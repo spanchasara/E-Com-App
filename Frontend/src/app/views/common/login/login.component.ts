@@ -1,6 +1,4 @@
 import {
-  GoogleLoginProvider,
-  SocialAuthService,
   SocialUser,
 } from "@abacritt/angularx-social-login";
 import { Component, ViewChild } from "@angular/core";
@@ -19,16 +17,12 @@ export class LoginComponent {
   user!: SocialUser;
   constructor(
     private authService: AuthService,
-    private googleService: SocialAuthService
   ) {}
   onSubmit() {
     this.authService.signin(this.loginForm.form.value).subscribe();
   }
 
   ngOnInit(): void {
-    this.googleService.authState.subscribe((user) => {
-      this.user = user;
-      console.log(this.user);
-    });
+    this.authService.googleLogin();
   }
 }

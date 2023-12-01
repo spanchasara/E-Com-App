@@ -5,10 +5,6 @@ import { ProductImage } from 'src/app/models/product.model';
   templateUrl: './carousel.component.html',
   styleUrls: ["./carousel.component.css"],
 })
-export class CarouselComponent implements OnInit{
+export class CarouselComponent {
   @Input() slides: ProductImage[] = [];
-
-  ngOnInit(): void {
-    console.log(this.slides)
-  }
 }

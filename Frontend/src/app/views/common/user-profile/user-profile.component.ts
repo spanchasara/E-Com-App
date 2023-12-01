@@ -51,15 +51,14 @@ export class UserProfileComponent implements OnInit {
   loadProfile() {
     this.loaderService.show();
 
-    this.userStore.user$.subscribe((user) => {
+    this.userService.getMe().subscribe((user) => {
       this.userObject = user;
       this.showCompany = user?.role === "seller";
       this.toggleAccountRoleCheck = user?.role !== "admin" && user?.companyName;
-      this.sellerCheck = user?.role === "customer" && !user?.companyName;
-
+      this.sellerCheck = user?.role === "customer" && !user?.companyName; 
       const obj = {
         firstName: user?.firstName,
-        lastName: user?.lastName,
+        lastName: user?.lastName || '',
         email: user?.email,
         username: user?.username,
         companyName: "",
@@ -76,7 +75,6 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProfile();
-    this.userService.getMe().subscribe();
   }
 
   toggleEditMode(isCancel = false) {
