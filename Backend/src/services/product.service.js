@@ -1,12 +1,11 @@
 import Product from "../models/product.model.js";
 import ApiError from "../utils/api-error.js";
 import httpStatus from "http-status";
-import * as feedbackService from "./feedback.service.js"
-
+import * as feedbackService from "./feedback.service.js";
 
 import { uploadImage, deleteImage } from "../utils/cloudinary.js";
 
-const convertStringToSortObject = (sortString = '-createdAt') => {
+const convertStringToSortObject = (sortString = "-createdAt") => {
   const sortOrder = sortString.startsWith("-") ? -1 : 1;
   const sortField = sortString.replace(/^-/, ""); // Remove the '-' if present
 
@@ -41,24 +40,23 @@ const getProducts = async (filterQuery = {}, options = {}) => {
     },
     {
       $addFields: {
-        avgRating: { $avg: "$feedbacks.rating" },
+        avgRating: {
+          $ifNull: [{ $avg: "$feedbacks.rating" }, 0],
+        },
       },
     },
     {
-      $match: {
-        avgRating: { $gte: Number(options.rating) },
-      },
+      $match: { avgRating: { $gte: Number(options.rating) } },
     },
     {
       $group: {
         _id: null,
         count: {
-          $sum: 1
-        }
-      }
-    }
+          $sum: 1,
+        },
+      },
+    },
   ]);
-
 
   const docs = await Product.aggregate([
     {
@@ -74,7 +72,9 @@ const getProducts = async (filterQuery = {}, options = {}) => {
     },
     {
       $addFields: {
-        avgRating: { $avg: "$feedbacks.rating" },
+        avgRating: {
+          $ifNull: [{ $avg: "$feedbacks.rating" }, 0],
+        },
       },
     },
     {
@@ -86,31 +86,30 @@ const getProducts = async (filterQuery = {}, options = {}) => {
       $sort: convertStringToSortObject(options.sort),
     },
     {
-      $skip: skip
+      $skip: skip,
     },
     {
-      $limit: limit
+      $limit: limit,
     },
     {
       $project: {
-        feedbacks : 0
-      }
-    }
+        feedbacks: 0,
+      },
+    },
   ]);
 
   docs.map((doc) => {
     doc.avgRating = feedbackService.getCustomRating(doc.avgRating);
-  })
+  });
 
   const resp = {
     docs,
     totalDocs: totalDocs[0]?.count || 0,
     limit,
-    page
+    page,
   };
 
   return resp;
-
 };
 
 const createProduct = async (productBody) => {

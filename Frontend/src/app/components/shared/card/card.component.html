@@ -1,13 +1,12 @@
 <div class="card h-100 cart-content">
-  <img
-    class="card-img-top link"
-    [src]="product.images?.[0]?.url || 'assets/laptop.jpg'"
-    alt="Product Image"
-    height="200"
-    width="200"
-    [routerLink]="['/products', product._id]"
-  />
-  <div></div>
+  <div class="mx-auto" style="height: 65%">
+    <img
+      class="card-img-top link img-set"
+      [src]="product.images?.[0]?.url || 'assets/laptop.jpg'"
+      alt="Product Image"
+      [routerLink]="['/products', product._id]"
+    />
+  </div>
   <div class="card-body d-flex flex-column justify-content-between">
     <h6
       class="card-title link text-truncate"
