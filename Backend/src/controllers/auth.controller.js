@@ -1,6 +1,7 @@
 import * as authService from "../services/auth.service.js";
 import { addToContactList } from "../utils/brevo.js";
 import catchAsync from "../utils/catch-async.js";
+import { OAuth2Client } from "google-auth-library";
 
 /* Register - controller */
 const register = catchAsync(async (req, res) => {
@@ -42,7 +43,31 @@ const resetPassword = catchAsync(async (req, res) => {
   res.send(response);
 });
 
-export { register, login, changePassword, resetPasswordRequest, resetPassword };
+const socialLogin = catchAsync(async (req, res) => {
+  const client = new OAuth2Client();
+  const ticket = await client.verifyIdToken({
+    idToken: req.query.idToken,
+    audience: process.env.GOOGLE_CLIENT_ID,
+  });
+
+  const payload = ticket.getPayload();
+
+  const { provider } = req.params;
+
+  if (provider === "google") {
+    const response = await authService.googleLogin(payload);
+    return res.send(response);
+  }
+});
+
+export {
+  register,
+  login,
+  changePassword,
+  resetPasswordRequest,
+  resetPassword,
+  socialLogin,
+};
 
 // Register
 /**

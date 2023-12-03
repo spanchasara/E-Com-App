@@ -45,8 +45,8 @@ export class CouponsListComponent implements OnInit {
     return this.coupons?.docs;
   }
 
-  toggleCouponStatus(couponId: string, isActive: boolean = false) {
-    this.couponService.editCoupon(couponId, { isActive }).subscribe(() => {
+  toggleCouponStatus(couponId: string, isEnabled: boolean = false) {
+    this.couponService.editCoupon(couponId, { isEnabled }).subscribe(() => {
       const options = { page: this.coupons?.page || 1, isOwn: this.isOwn };
       this.getData(options);
     });

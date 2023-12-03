@@ -55,7 +55,17 @@ import { CouponsListComponent } from "./views/admin/coupons-list/coupons-list.co
 import { CouponFormComponent } from "./views/admin/coupon-form/coupon-form.component";
 import { CouponComponent } from "./components/shared/coupon/coupon.component";
 import { FeedbackComponent } from "./views/customer/feedback/feedback.component";
-import { RatingComponent } from './components/shared/rating/rating.component';
+import { RatingComponent } from "./components/shared/rating/rating.component";
+import { FilterbarComponent } from "./components/shared/filterbar/filterbar.component";
+
+import {
+  SocialLoginModule,
+  SocialAuthServiceConfig,
+  GoogleSigninButtonModule,
+} from "@abacritt/angularx-social-login";
+import { GoogleLoginProvider } from "@abacritt/angularx-social-login";
+import { environment } from "src/environment/environment";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -105,6 +115,7 @@ import { RatingComponent } from './components/shared/rating/rating.component';
     CouponComponent,
     FeedbackComponent,
     RatingComponent,
+    FilterbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -116,12 +127,31 @@ import { RatingComponent } from './components/shared/rating/rating.component';
     AkitaNgDevtools.forRoot(),
     NgbCarouselModule,
     NgbRatingModule,
+    SocialLoginModule,
+    GoogleSigninButtonModule,
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true,
+    },
+    {
+      provide: "SocialAuthServiceConfig",
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              environment.googleClientId
+            ),
+          },
+        ],
+        onError: (err) => {
+          console.error(err);
+        },
+      } as SocialAuthServiceConfig,
     },
   ],
   bootstrap: [AppComponent],

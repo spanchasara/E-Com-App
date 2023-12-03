@@ -8,6 +8,15 @@
       (click)="modal.dismiss()"
     ></button>
   </div>
+  <div class="d-flex justify-content-end me-5 mt-2">
+    <div>
+      <select class="form-select" (change)="filterChanged($event)">
+        <option *ngFor="let type of filters" [value]="type.value">
+          {{ type.label }}
+        </option>
+      </select>
+    </div>
+  </div>
   <div class="modal-body d-flex justify-content-start flex-wrap">
     <app-coupon
       *ngFor="let coupon of allCoupons.docs"
@@ -15,6 +24,12 @@
       (applyDiscount)="applyDiscount($event)"
     ></app-coupon>
   </div>
+  <app-pagination
+    [totalItems]="allCoupons.totalDocs || 0"
+    [page]="allCoupons.page || 1"
+    [limit]="allCoupons.limit || 5"
+    (pageChange)="pageChanged($event)"
+  ></app-pagination>
 </ng-template>
 
 <div class="container">

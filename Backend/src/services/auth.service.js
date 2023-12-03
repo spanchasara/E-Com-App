@@ -67,7 +67,7 @@ const changePassword = async (userId, oldPassword, newPassword) => {
 
 const resetPasswordRequest = async (email) => {
   const user = await userService.getUser({ email });
-  if(!user.isActive){
+  if (!user.isActive) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Account Disabled!");
   }
   if (user.passwordChangedAt.getTime() + 30 * 60 * 1000 > Date.now()) {
@@ -131,4 +131,36 @@ const resetPassword = async (passwordResetBody) => {
   };
 };
 
-export { register, login, changePassword, resetPasswordRequest, resetPassword };
+const googleLogin = async (googleLoginBody) => {
+  const { email, name, sub } = googleLoginBody;
+  const username = email.split("@")[0];
+
+  const isExistingUser = await userService.checkIsExistingUser(email, username);
+
+  if (!isExistingUser) {
+    await userService.createUser({
+      firstName: name,
+      email,
+      username,
+      password: sub,
+    });
+  }
+
+  const user = await userService.findByCredentials(email, sub);
+  const token = await generateAuthToken(user._id, user.role);
+
+  return {
+    user,
+    token,
+    tokenExpiresIn: process.env.JWT_ACCESS_EXPIRATION * 60 * 60,
+  };
+};
+
+export {
+  register,
+  login,
+  changePassword,
+  resetPasswordRequest,
+  resetPassword,
+  googleLogin,
+};

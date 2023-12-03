@@ -5,7 +5,6 @@ import catchAsync from "../utils/catch-async.js";
 /* getProducts - controller */
 const getProducts = catchAsync(async (req, res) => {
   const { productId } = req.params;
-
   if (productId) {
     const [product, feedbacks, avgRating] = await Promise.all([
       productService.getProductById(productId),
@@ -19,32 +18,28 @@ const getProducts = catchAsync(async (req, res) => {
 
     res.send(productData);
   } else {
-    const { keyword = "" } = req.query;
+    const { keyword = "", rating, minPrice, maxPrice } = req.query;
     const keywordRegx = new RegExp(keyword, "i");
+
+    if (maxPrice < minPrice) {
+      maxPrice = 999999;
+      minPrice = 0;
+    }
 
     const filterQuery = {
       $or: [
         { title: { $regex: keywordRegx } },
         { description: { $regex: keywordRegx } },
       ],
+      price: { $gte: minPrice, $lte: maxPrice },
     };
 
     const options = {
       ...req.query,
+      rating,
     };
 
     const products = await productService.getProducts(filterQuery, options);
-
-    const productIds = products.docs.map((product) => product._id);
-
-    const mapping = await feedbackService.getRatingsMapping(productIds);
-
-    products.docs = products.docs.map((product) => {
-      product = product.toJSON();
-      product.avgRating = mapping[product._id.toString()];
-      return product;
-    });
-
     res.send(products);
   }
 });
@@ -66,7 +61,12 @@ const getSellerProducts = catchAsync(async (req, res) => {
     filterQuery.stock = { $eq: 0 };
   }
 
-  const products = await productService.getProducts(filterQuery, req.query);
+  const options = {
+    ...req.query,
+    rating: 0,
+  };
+
+  const products = await productService.getProducts(filterQuery, options);
   res.send(products);
 });
 

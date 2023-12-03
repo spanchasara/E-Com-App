@@ -31,9 +31,10 @@ router
 
 router
   .route("/reset-password")
-  .post(
-    validate(authValidation.resetPassword),
-    authController.resetPassword
-    );
-    
+  .post(validate(authValidation.resetPassword), authController.resetPassword);
+
+router.route("/social-login/:provider").get(
+  validate(authValidation.socialLogin),
+  authController.socialLogin);
+
 export default router;

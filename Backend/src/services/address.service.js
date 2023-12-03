@@ -44,7 +44,6 @@ const addAddress = async (userId, addressBody) => {
     );
   }
   const allAddresses = await Address.find({ userId });
-  console.log(allAddresses);
   return address;
 };
 

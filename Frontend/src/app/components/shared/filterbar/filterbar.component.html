@@ -1,0 +1,54 @@
+<div class="form-group">
+  <form #f="ngForm" (ngSubmit)="onPriceFormSubmit()">
+    <div class="row">
+      <div class="col-md-2">
+        <div class="d-flex align-items-center">
+          <label for="rating" class="my-2"><b>Rating :</b></label>
+          <select
+            id="rating"
+            name="rating"
+            class="form-control ms-2"
+            style="width: 30%"
+            [(ngModel)]="selectedRating"
+          >
+            <option *ngFor="let option of ratingOptions" [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-8 d-flex justify-content-start">
+        <label for="ratingDropdown" class="my-2 mx-2"><b>Price :</b></label>
+        <input
+          class="form-control mr-2"
+          type="number"
+          name="minPrice"
+          ngModel
+          min="0"
+          #minPrice="ngModel"
+          placeholder="Min"
+          style="width: 10%"
+        />
+        <input
+          class="form-control mx-2"
+          type="number"
+          name="maxPrice"
+          ngModel
+          min="0"
+          #maxPrice="ngModel"
+          placeholder="Max"
+          style="width: 10%"
+        />
+
+        <button
+          class="btn btn-class mx-5"
+          type="submit"
+        >
+          Apply
+        </button>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+  </form>
+</div>

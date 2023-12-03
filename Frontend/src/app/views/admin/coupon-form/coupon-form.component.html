@@ -19,6 +19,38 @@
           </div>
 
           <div class="form-group mt-3">
+            <label class="control-label" for="name">Coupon Name</label>
+            <div class="col-md-8">
+              <input
+                type="text"
+                placeholder="Coupon Name"
+                name="name"
+                #name="ngModel"
+                required
+                class="form-control"
+                [(ngModel)]="coupon.name"
+              />
+              <span
+                class="help-block"
+                style="color: red"
+                *ngIf="!name.valid && name.touched"
+                >Please enter a valid and unique coupon name !</span
+              >
+            </div>
+          </div>
+
+          <div class="form-group mt-3">
+            <label class="control-label" for="name">Coupon Type</label>
+            <div class="col-md-8">
+              <select class="form-select" name="type" [(ngModel)]="coupon.type">
+                <option *ngFor="let type of CouponType" [value]="type.value">
+                  {{ type.label }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group mt-3">
             <label class="control-label" for="discountPercent"
               >Discount (%)</label
             >
@@ -43,28 +75,42 @@
             </div>
           </div>
 
-          <div class="form-group mt-3">
-            <label class="control-label" for="couponUsageLimit"
-              >Coupon Usage Limit</label
+          <div class="form-group mt-3" *ngIf="!editMode">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="isNowActive"
+                [(ngModel)]="isNowActive"
+                id="flexCheckDefault"
+              />
+              <label class="form-check-label" for="flexCheckDefault">
+                Activate Coupon Now ?
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group mt-3" *ngIf="!isNowActive">
+            <label class="control-label" for="activationDate"
+              >Activation Date</label
             >
             <div class="col-md-8">
               <input
-                type="number"
-                placeholder="Coupon Usage Limit"
-                name="couponUsageLimit"
-                #couponUsageLimit="ngModel"
-                required
-                min="1"
+                type="datetime-local"
+                placeholder="Activation Date"
+                name="activationDate"
+                #activationDate="ngModel"
+                min="{{ today | date : 'yyyy-MM-ddTHH:mm' }}"
                 class="form-control"
-                [(ngModel)]="coupon.couponUsageLimit"
+                [ngModel]="coupon.activationDate | date : 'yyyy-MM-ddTHH:mm'"
+                (ngModelChange)="coupon.activationDate = $event"
               />
               <span
                 class="help-block"
                 style="color: red"
-                *ngIf="!couponUsageLimit.valid && couponUsageLimit.touched"
+                *ngIf="!activationDate.valid && activationDate.touched"
+                >Please enter a valid activation date!</span
               >
-                Please enter a valid coupon usage limit!
-              </span>
             </div>
           </div>
 
@@ -72,21 +118,21 @@
             <label class="control-label" for="expiryDate">Expiry Date</label>
             <div class="col-md-8">
               <input
-                type="date"
+                type="datetime-local"
                 placeholder="Expiry Date"
                 name="expiryDate"
                 #expiryDate="ngModel"
-                min="{{ today | date : 'yyyy-MM-dd' }}"
+                min="{{ tomorrow | date : 'yyyy-MM-ddTHH:mm' }}"
                 required
                 class="form-control"
-                [ngModel]="coupon.expiryDate | date : 'yyyy-MM-dd'"
+                [ngModel]="coupon.expiryDate | date : 'yyyy-MM-ddTHH:mm'"
                 (ngModelChange)="coupon.expiryDate = $event"
               />
               <span
                 class="help-block"
                 style="color: red"
                 *ngIf="!expiryDate.valid && expiryDate.touched"
-                >Please enter a valid expiry date!</span
+                >Please enter a valid expiry date! (Should be greater than Activation Date)</span
               >
             </div>
           </div>

@@ -44,8 +44,7 @@ const getAvgRating = async (productId) => {
 
   const num = result.length > 0 ? result[0].averageRating : 0;
 
-  if ((Math.ceil(num) + Math.floor(num)) / 2 === num) return num;
-  else return Math.round(num);
+  return getCustomRating(num);
 };
 
 const getRatingsMapping = async (productIds) => {
@@ -66,8 +65,7 @@ const getRatingsMapping = async (productIds) => {
     const sum = mapping[key].reduce((a, b) => a + b, 0);
     const avg = sum / num;
 
-    mapping[key] =
-      (Math.ceil(avg) + Math.floor(avg)) / 2 === avg ? avg : Math.round(avg);
+    mapping[key] = getCustomRating(avg);
   }
 
   return mapping;
@@ -89,10 +87,24 @@ const getFeedback = async (userId, orderId) => {
   return feedback;
 };
 
+const getCustomRating = (value) => {
+  if (value >= Math.floor(value) && value < Math.floor(value) + 0.5) {
+    return Math.floor(value);
+  } else if (
+    value >= Math.floor(value) + 0.5 &&
+    value < Math.floor(value) + 1
+  ) {
+    return Math.floor(value) + 0.5;
+  } else {
+    return value;
+  }
+};
+
 export {
   addMultipleFeedback,
   getTopNFeedback,
   getAvgRating,
   getFeedback,
   getRatingsMapping,
+  getCustomRating
 };

@@ -44,7 +44,9 @@
           </div>
           <div class="row">
             <div class="col-md-12" *ngIf="order.coupon">
-              COUPON APPLIED # Flat {{ order.coupon.discountPercent }}% off
+              COUPON APPLIED # {{ order.coupon.name }} ({{
+                order.coupon.discountPercent
+              }}% off)
             </div>
           </div>
         </div>

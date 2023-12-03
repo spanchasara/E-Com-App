@@ -4,7 +4,7 @@ import ApiError from "../utils/api-error.js";
 import * as stripeService from "./stripe.service.js";
 
 const getCoupon = async (couponId) => {
-  const coupon = await Coupon.findOne({ _id: couponId, isActive: true });
+  const coupon = await Coupon.findOne({ _id: couponId, isEnabled: true });
 
   if (!coupon) {
     throw new ApiError(httpStatus.NOT_FOUND, "Coupon not found!");
@@ -37,14 +37,23 @@ const getAllCoupons = async (userId, options) => {
 };
 
 const getAllCustomerCoupons = async (userId, options) => {
-  const coupons = await Coupon.paginate(
-    {
-      usedBy: { $nin: [userId] },
-      isActive: true,
-      expiryDate: { $gte: new Date() },
-    },
-    options
-  );
+  const { keyword } = options;
+
+  const filterBody = {
+    isEnabled: true,
+    expiryDate: { $gte: new Date() },
+  };
+
+  if (keyword === "available") {
+    filterBody.usedBy = { $nin: [userId] };
+    filterBody.activationDate = { $lte: new Date() };
+  } else if (keyword === "used") {
+    filterBody.usedBy = { $in: [userId] };
+  } else if (keyword === "not-active") {
+    filterBody.activationDate = { $gt: new Date() };
+  }
+
+  const coupons = await Coupon.paginate(filterBody, options);
 
   if (!coupons) {
     throw new ApiError(httpStatus.NOT_FOUND, "Coupons not found!");
