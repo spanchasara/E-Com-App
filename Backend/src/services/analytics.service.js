@@ -14,9 +14,7 @@ const getAnalytics = async (filterQuery) => {
   for (const obj of allProducts) {
     totalProductsSold += obj.totalQty;
     totalSales += obj.totalAmount;
-    for (const orderId in obj.orderIds) {
-      orderSet.add(orderId);
-    }
+    obj.orderIds.reduce((s, e) => orderSet.add(e), orderSet);
   }
   return {
     allProducts,
@@ -64,13 +62,10 @@ const allProductsSold = async (filterQuery) => {
     {
       $lookup: {
         from: "feedbacks",
-        localField: "productId",
+        localField: "product",
         foreignField: "productId",
         as: "feedbacks",
       },
-    },
-    {
-      $unwind: "$feedbacks",
     },
     {
       $addFields: {
@@ -171,7 +166,7 @@ const getMonthAnalysis = async (filterQuery) => {
     {
       $group: {
         _id: {
-          month: { $month: { $toDate: "$createdAt" } }, 
+          month: { $month: { $toDate: "$createdAt" } },
         },
         totalAmount: {
           $sum: {

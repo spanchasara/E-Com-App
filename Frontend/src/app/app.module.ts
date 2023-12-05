@@ -65,6 +65,11 @@ import {
 } from "@abacritt/angularx-social-login";
 import { GoogleLoginProvider } from "@abacritt/angularx-social-login";
 import { environment } from "src/environment/environment";
+import { AnalyticsComponent } from "./views/common/analytics/analytics.component";
+import { NgApexchartsModule } from "ng-apexcharts";
+import { ChartComponent } from "./components/shared/chart/chart.component";
+import { MetricsComponent } from "./components/shared/metrics/metrics.component";
+import { AnalyticsProductComponent } from "./components/shared/analytics-product/analytics-product.component";
 
 @NgModule({
   declarations: [
@@ -116,6 +121,10 @@ import { environment } from "src/environment/environment";
     FeedbackComponent,
     RatingComponent,
     FilterbarComponent,
+    AnalyticsComponent,
+    ChartComponent,
+    MetricsComponent,
+    AnalyticsProductComponent,
   ],
   imports: [
     BrowserModule,
@@ -129,6 +138,7 @@ import { environment } from "src/environment/environment";
     NgbRatingModule,
     SocialLoginModule,
     GoogleSigninButtonModule,
+    NgApexchartsModule,
   ],
   providers: [
     {
@@ -143,9 +153,7 @@ import { environment } from "src/environment/environment";
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              environment.googleClientId
-            ),
+            provider: new GoogleLoginProvider(environment.googleClientId),
           },
         ],
         onError: (err) => {

@@ -1,0 +1,25 @@
+.link {
+  cursor: pointer;
+}
+
+.link:hover {
+  color: #c45500;
+}
+.custom-button {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.cart-content {
+  margin-bottom: 1%;
+  background-color: #fff;
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.05);
+}
+
+.img-set {
+  height: -webkit-fill-available;
+  width: 100%;
+}

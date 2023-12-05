@@ -31,6 +31,7 @@ import { ResetPasswordComponent } from "./views/common/reset-password/reset-pass
 import { CouponsListComponent } from "./views/admin/coupons-list/coupons-list.component";
 import { CouponFormComponent } from "./views/admin/coupon-form/coupon-form.component";
 import { FeedbackComponent } from "./views/customer/feedback/feedback.component";
+import { AnalyticsComponent } from "./views/common/analytics/analytics.component";
 
 const routes: Routes = [
   {
@@ -115,6 +116,13 @@ const routes: Routes = [
         path: "coupons/edit/:id",
         component: CouponFormComponent,
       },
+      {
+        path: "analytics",
+        component: AnalyticsComponent,
+        data: {
+          type: "admin",
+        },
+      },
     ],
   },
   {
@@ -142,6 +150,13 @@ const routes: Routes = [
       {
         path: "orders",
         component: SellerOrdersComponent,
+      },
+      {
+        path: "analytics",
+        component: AnalyticsComponent,
+        data: {
+          type: "seller",
+        },
       },
     ],
   },
