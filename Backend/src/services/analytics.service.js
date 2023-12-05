@@ -7,7 +7,7 @@ const getAnalytics = async (filterQuery) => {
   const allProducts = await allProductsSold(filterQuery);
   const worstProducts = allProducts.slice(-3).reverse();
   const bestProducts = allProducts.slice(0, 3);
-  
+
   let totalProductsSold = 0;
   let totalSales = 0;
   const orderSet = new Set();
@@ -18,19 +18,6 @@ const getAnalytics = async (filterQuery) => {
       orderSet.add(orderId);
     }
   }
-  if (filterQuery.sellerId != null) {
-    const avgRating = await getSellerAvgRating(filterQuery);
-    return {
-      allProducts,
-      worstProducts,
-      bestProducts,
-      totalProductsSold,
-      totalSales,
-      totalOrders: orderSet.size,
-      avgRating,
-    };
-  }
-  const avgRating = await getAppRating();
   return {
     allProducts,
     worstProducts,
@@ -38,9 +25,11 @@ const getAnalytics = async (filterQuery) => {
     totalProductsSold,
     totalSales,
     totalOrders: orderSet.size,
-    avgRating,
+    avgRating:
+      filterQuery.sellerId != null
+        ? await getSellerAvgRating(filterQuery)
+        : await getAppRating(),
   };
-
 };
 
 const allProductsSold = async (filterQuery) => {
@@ -62,7 +51,7 @@ const allProductsSold = async (filterQuery) => {
               title: 1,
               stock: 1,
               price: 1,
-              images:1
+              images: 1,
             },
           },
         ],
@@ -81,7 +70,7 @@ const allProductsSold = async (filterQuery) => {
       },
     },
     {
-      $unwind: "$feedbacks", 
+      $unwind: "$feedbacks",
     },
     {
       $addFields: {
@@ -97,7 +86,7 @@ const allProductsSold = async (filterQuery) => {
           title: "$productInfo.title",
           stock: "$productInfo.stock",
           price: "$productInfo.price",
-          images: "$productInfo.images"
+          images: "$productInfo.images",
         },
         totalAmount: {
           $sum: {
@@ -126,7 +115,7 @@ const allProductsSold = async (filterQuery) => {
         stock: "$_id.stock",
         price: "$_id.price",
         images: "$_id.images",
-        avgRating: 1, 
+        avgRating: 1,
         totalAmount: 1,
         totalQty: 1,
         orderIds: 1,
@@ -144,9 +133,17 @@ const allProductsSold = async (filterQuery) => {
 };
 
 const getMonthAnalysis = async (filterQuery) => {
+  const firstDate = new Date();
+  firstDate.setMonth(0, 1);
+  firstDate.setHours(0, 0, 0, 0);
   const resp = await Order.aggregate([
     {
-      $match: { ...filterQuery, isPlaced: true, deliveredDate: { $ne: null } },
+      $match: {
+        ...filterQuery,
+        isPlaced: true,
+        deliveredDate: { $ne: null },
+        createdAt: { $gte: firstDate },
+      },
     },
     {
       $lookup: {
@@ -174,7 +171,7 @@ const getMonthAnalysis = async (filterQuery) => {
     {
       $group: {
         _id: {
-          month: { $month: { $toDate: "$createdAt" } }, // Convert to date and then extract the month
+          month: { $month: { $toDate: "$createdAt" } }, 
         },
         totalAmount: {
           $sum: {
@@ -282,7 +279,7 @@ const getYearAnalysis = async (filterQuery) => {
 };
 
 const getSellerAvgRating = async (filterQuery) => {
-  const {sellerId} = filterQuery;
+  const { sellerId } = filterQuery;
   const resp = await Feedback.aggregate([
     {
       $lookup: {
@@ -322,10 +319,7 @@ const getAppRating = async () => {
   const resp = await Feedback.aggregate([
     {
       $match: {
-        $or: [
-          { productId: { $eq: null } },
-          { productId: { $exists: false } }
-        ]
+        $or: [{ productId: { $eq: null } }, { productId: { $exists: false } }],
       },
     },
     {
