@@ -1,6 +1,36 @@
-::ng-deep .carousel-control-prev-icon{
-    color: black;
-  }
-  ::ng-deep .carousel-control-next-icon{
-    color: black;
-  }
+/* Change color of the carousel controls */
+::ng-deep .carousel-control-prev-icon, ::ng-deep .carousel-control-next-icon {
+  background-color: #112d4e;
+}
+
+/* Change color of the carousel indicators */
+::ng-deep .carousel-indicators li {
+  background-color: #112d4e;
+}
+
+/* Change color of the active carousel indicator */
+::ng-deep .carousel-indicators .active {
+  background-color: #112d4e;
+}
+
+/* Fix height of the carousel container */
+.carousel {
+  height: 90vh;
+  width: 100%;
+}
+
+.carousel-inner img {
+  max-height: 100%;
+  max-width: 50%;
+  object-fit: cover; /* Choti tasveerain ko center mein rakhne ke liye */
+  object-position: center; /* Horizontal centering */
+  display: block;
+  margin: auto;}
+
+/* Center the images vertically */
+.carousel-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
