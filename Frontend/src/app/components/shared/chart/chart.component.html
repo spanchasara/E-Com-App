@@ -1,0 +1,15 @@
+<div id="chart">
+  <apx-chart
+    [series]="chartOptions.series ? chartOptions.series : []"
+    [chart]="chartOptions.chart!"
+    [xaxis]="chartOptions.xaxis ? chartOptions.xaxis : {}"
+    [stroke]="chartOptions.stroke ? chartOptions.stroke : {}"
+    [colors]="chartOptions.colors ? chartOptions.colors : []"
+    [dataLabels]="chartOptions.dataLabels ? chartOptions.dataLabels : {}"
+    [legend]="chartOptions.legend ? chartOptions.legend : {}"
+    [markers]="chartOptions.markers ? chartOptions.markers : {}"
+    [grid]="chartOptions.grid ? chartOptions.grid : {}"
+    [yaxis]="chartOptions.yaxis ? chartOptions.yaxis : {}"
+    [title]="chartOptions.title ? chartOptions.title : {}"
+  ></apx-chart>
+</div>

@@ -40,5 +40,4 @@ export const environment = {
     "Puducherry",
   ],
   googleClientId: "631074242418-om4kcvar28m2bvdrj6fl585qjtkq7cmo.apps.googleusercontent.com",
-  facebookClientId: "247182341706570",
 };

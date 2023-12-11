@@ -10,6 +10,7 @@ import orderRoute from "./order.route.js";
 import paymentRoute from "./stripe.route.js";
 import couponRoute from "./coupon.route.js";
 import feedbackRoute from "./feedback.route.js";
+import AnalysisRoute from "./analytics.route.js";
 
 const router = express.Router();
 
@@ -24,5 +25,6 @@ router.use("/order", orderRoute);
 router.use("/payment", paymentRoute);
 router.use("/coupon", couponRoute);
 router.use("/feedback", feedbackRoute);
+router.use("/analysis", AnalysisRoute);
 
 export default router;
